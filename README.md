@@ -6,7 +6,8 @@ Installation
 PdfJumbler requires a Java Runtime Environment (JRE).
 You can download one at <http://www.java.com>.
 (Linux users should use their package management
-system and install, for example, sun-java6-jre,
+system and install, for example, the packages
+`default-jre` and `libopenjfx-java`,
 MacOS usually comes with a preinstalled JRE).
 
 Windows users can simply download and run the
