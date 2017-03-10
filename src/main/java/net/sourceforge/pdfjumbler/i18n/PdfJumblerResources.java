@@ -55,7 +55,7 @@ public class PdfJumblerResources extends ListResourceBundle {
 			{ "ABOUT_TITLE",              "About" }, 
 			{	
 				"ABOUT_TEXT",
-				"PdfJumbler %s \nCopyright (C) 2010 Martin Gropp\n" +
+				"PdfJumbler %s \nCopyright (C) 2017 Martin Gropp\n" +
 				"\n" +
 				"PDF Editor: %s\n" +
 				"PDF Renderer: %s\n" +
