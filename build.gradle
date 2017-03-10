@@ -1,0 +1,46 @@
+apply plugin: "java"
+
+repositories {
+	mavenCentral()
+}
+
+def mainPackage = "net.sourceforge.pdfjumbler"
+
+sourceSets{
+	main
+	itext
+	jpedal
+	jpod
+	pdfbox
+}
+
+dependencies {
+	itextCompile sourceSets.main.output
+	itextCompile 'com.itextpdf:itextpdf:5.5.10'
+	
+	jpedalCompile sourceSets.main.output
+	jpedalCompile 'org.jpedal:OpenViewerFX:20151002'
+	
+	jpodCompile sourceSets.main.output
+	//jpodCompile 'javax.media:jai_core:1.1.3'
+	//jpodCompile 'de.intarsys.opensource:jPod:5.5.1'
+	
+	pdfboxCompile sourceSets.main.output
+	pdfboxCompile 'org.apache.pdfbox:pdfbox:1.8.13'
+}
+
+task copyRuntimeLibs(type: Copy) {
+	into "lib"
+	from configurations.itextRuntime
+	from configurations.jpedalRuntime
+	from configurations.jpodRuntime
+	from configurations.pdfboxRuntime
+}
+
+jar {
+	manifest {
+		attributes(
+			"Main-Class": "${mainPackage}.PdfJumbler"
+		)
+	}
+}
