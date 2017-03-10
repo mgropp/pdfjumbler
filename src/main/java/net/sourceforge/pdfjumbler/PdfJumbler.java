@@ -70,7 +70,7 @@ public class PdfJumbler extends JFrame {
 
 	final PdfList mainList;
 	final PdfList secondaryList;
-	//final JToolBar toolBar;	
+	//final JToolBar toolBar;
 	final UndoManager undoManager = new UniqueUndoManager();
 	
 	private final Action docOpenAction;
@@ -81,7 +81,7 @@ public class PdfJumbler extends JFrame {
 	
 	private final Action zoomOutAction = new Actions.ZoomOutAction(this); 
 	private final Action zoomInAction = new Actions.ZoomInAction(this); 
-		
+	
 	private final Action clearAction = new Actions.ClearAction(this);
 	private final Action delAction = new Actions.DelAction(this);
 	

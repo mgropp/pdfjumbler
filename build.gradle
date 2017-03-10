@@ -1,10 +1,11 @@
+def mainPackage = "net.sourceforge.pdfjumbler"
+def mainClass = "${mainPackage}.PdfJumbler"
+
 apply plugin: "java"
 
 repositories {
 	mavenCentral()
 }
-
-def mainPackage = "net.sourceforge.pdfjumbler"
 
 sourceSets{
 	main
@@ -40,7 +41,29 @@ task copyRuntimeLibs(type: Copy) {
 jar {
 	manifest {
 		attributes(
-			"Main-Class": "${mainPackage}.PdfJumbler"
+			"Main-Class": mainClass
 		)
 	}
+	
+	dependsOn classes
+	dependsOn itextClasses
+	dependsOn jpedalClasses
+	
+	from sourceSets.main.output
+	from sourceSets.itext.output
+	from sourceSets.jpedal.output
+	
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	from {
+		configurations.itextCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	from {
+		configurations.jpedalCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
 }
