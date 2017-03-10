@@ -1,6 +1,8 @@
 PdfJumbler
 ==========
 
+![build status](https://travis-ci.org/mgropp/pdfjumbler.svg?branch=master)
+
 Installation
 ------------
 PdfJumbler requires a Java Runtime Environment (JRE).
