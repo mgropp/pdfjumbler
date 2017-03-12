@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.DropMode;
 import javax.swing.JComponent;
@@ -17,9 +18,9 @@ import javax.swing.undo.CompoundEdit;
 /**
  * A JList that supports drag & drop.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
-public class JDragDropList<T> extends JList {
+public class JDragDropList<T> extends JList<T> {
 	private static final long serialVersionUID = -6709912327369063711L;
 
 	private DropListener dropListener = null;
@@ -44,7 +45,7 @@ public class JDragDropList<T> extends JList {
 	private final class JDDLTransferHandler extends TransferHandler {
 		private static final long serialVersionUID = 8850624713729645277L;
 		
-		private void copyItems(JDragDropList<? extends T> sourceList, JDragDropList<? super T> targetList, T[] sourceObjects, int destIndex) {
+		private void copyItems(JDragDropList<? extends T> sourceList, JDragDropList<? super T> targetList, List<T> sourceObjects, int destIndex) {
 			StandardListModel<? super T> model = targetList.getModel();
 		
 			model.beginCompoundEdit("Copy");
@@ -57,7 +58,7 @@ public class JDragDropList<T> extends JList {
 				model.endCompoundEdit();
 			}
 				
-			targetList.setSelectionInterval(destIndex - sourceObjects.length, destIndex - 1);
+			targetList.setSelectionInterval(destIndex - sourceObjects.size(), destIndex - 1);
 		}
 		
 		private void moveItems(JDragDropList<? extends T> sourceList, JDragDropList<? super T> targetList, int[] sourceIndices, int destIndex) {
@@ -175,7 +176,7 @@ public class JDragDropList<T> extends JList {
 			*/
 			 
 			if ((info.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
-				copyItems(data.getSourceList(), JDragDropList.this, data.getValues(), destIndex);
+				copyItems(data.getSourceList(), JDragDropList.this, data.getValuesList(), destIndex);
 			} else if ((info.getDropAction() & DnDConstants.ACTION_MOVE) != 0) {
 				moveItems(data.getSourceList(), JDragDropList.this, data.getIndices(), destIndex);	
 			} else {
@@ -220,13 +221,12 @@ public class JDragDropList<T> extends JList {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public StandardListModel<T> getModel() {
 		return (StandardListModel<T>)super.getModel();
 	}
 
 	@Override
-	public void setModel(ListModel model) {
+	public void setModel(ListModel<T> model) {
 		if (model instanceof StandardListModel) {
 			super.setModel(model);
 		} else {
@@ -235,6 +235,7 @@ public class JDragDropList<T> extends JList {
 	}
 	
 	@Override
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public T[] getSelectedValues() {
 		return (T[])super.getSelectedValues();

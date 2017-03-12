@@ -20,7 +20,7 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessorListener;
 import net.sourceforge.pdfjumbler.pdf.PdfRenderer;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 2395480480996785313L;
@@ -95,16 +95,12 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		if (value instanceof Page) {
-			PdfCellRenderer component = (PdfCellRenderer)super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
-			assert (component == this);
-			component.page = (Page)value;
-			component.setLocation(0, getHeight() * index);
-			return component;
-		} else {
-			throw new IllegalArgumentException("PdfCellRenderer can only render Page objects.");
-		}
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		PdfCellRenderer component = (PdfCellRenderer)super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+		assert (component == this);
+		component.page = (Page)value;
+		component.setLocation(0, getHeight() * index);
+		return component;
 	}
 
 	public void setThumbnailWidth(int thumbnailWidth) {

@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.TransferHandler.TransferSupport;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class DropUtil {
 	public final static DataFlavor DATA_FLAVOR_URILIST_STRING;

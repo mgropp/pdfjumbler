@@ -22,7 +22,7 @@ import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
  * In der Hoffnung, dass es irgendwann einmal /eine/
  * Bibliothek gibt, die das alles kann...
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public final class PdfProcessingFactory {
 	private static final String[] EDITOR_CLASSES = {

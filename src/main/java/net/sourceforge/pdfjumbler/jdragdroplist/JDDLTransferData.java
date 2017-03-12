@@ -1,9 +1,11 @@
 package net.sourceforge.pdfjumbler.jdragdroplist;
 
 import java.awt.datatransfer.DataFlavor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public final class JDDLTransferData<T> {
 	public static final DataFlavor DATA_FLAVOR;
@@ -22,12 +24,12 @@ public final class JDDLTransferData<T> {
 	
 	private final JDragDropList<T> sourceList;
 	private final int[] indices;
-	private final T[] values;
+	private final List<T> values;
 
 	public JDDLTransferData(JDragDropList<T> list) {
 		this.sourceList = list;
 		this.indices = (int[])list.getSelectedIndices().clone();
-		this.values = list.getSelectedValues().clone();
+		this.values = new ArrayList<>(list.getSelectedValuesList());
 	}
 
 	public JDragDropList<T> getSourceList() {
@@ -38,7 +40,7 @@ public final class JDDLTransferData<T> {
 		return indices;
 	}
 
-	public T[] getValues() {
+	public List<T> getValuesList() {
 		return values;
 	}
 }

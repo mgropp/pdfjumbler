@@ -58,7 +58,7 @@ import net.sourceforge.pdfjumbler.util.FileUtils;
 /**
  * PdfJumbler main class.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfJumbler extends JFrame {
 	private static final long serialVersionUID = 4382647271800905977L;

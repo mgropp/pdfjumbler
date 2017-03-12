@@ -18,7 +18,7 @@ import net.sourceforge.pdfjumbler.pdf.Page;
 /**
  * PdfJumbler interface to iText.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 	public static String getFriendlyName() {
