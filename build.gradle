@@ -178,3 +178,8 @@ task allJars {
 	//dependsOn jpodJar
 	dependsOn pdfboxJar
 }
+
+check.dependsOn classes
+check.dependsOn itextClasses
+check.dependsOn jpedalClasses
+check.dependsOn pdfboxClasses
