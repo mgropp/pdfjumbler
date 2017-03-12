@@ -33,7 +33,7 @@ dependencies {
 	itextCompile 'com.itextpdf:itextpdf:5.5.10'
 	
 	jpedalCompile sourceSets.main.output
-	jpedalCompile 'org.jpedal:OpenViewerFX:20151002'
+	jpedalCompile 'org.jpedal:OpenViewerFX:7.10.24'
 	
 	jpodCompile sourceSets.main.output
 	// Currently, the jPod version in Maven is broken

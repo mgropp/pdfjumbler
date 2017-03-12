@@ -7,22 +7,27 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.sourceforge.pdfjumbler.pdf.Page;
+import javax.swing.SwingUtilities;
 
 import org.jpedal.PdfDecoderFX;
 import org.jpedal.exception.PdfException;
 
+import net.sourceforge.pdfjumbler.pdf.Page;
+
 /**
  * PdfJumbler interface to JPedal.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfRenderer implements net.sourceforge.pdfjumbler.pdf.PdfRenderer {
+	private static boolean initialized = false;
+	
 	public static String getFriendlyName() {
 		return "JPedal";
 	}
@@ -34,6 +39,8 @@ public class PdfRenderer implements net.sourceforge.pdfjumbler.pdf.PdfRenderer {
 	private Map<File,PdfDecoderFX> docMap = new HashMap<File,PdfDecoderFX>();
 	
 	private PdfDecoderFX openDocument(File file) throws IOException {
+		ensureInitialized();
+		
 		PdfDecoderFX pdfDecoder = new PdfDecoderFX();
 		//PdfDecoderFX.setFontReplacements(pdfDecoder);
 		try {
@@ -45,6 +52,37 @@ public class PdfRenderer implements net.sourceforge.pdfjumbler.pdf.PdfRenderer {
 		docMap.put(file, pdfDecoder);
 		
 		return pdfDecoder;
+	}
+	
+	private static void ensureInitialized() {
+		// No point in making this method synchronized,
+		// initializing twice doesn't hurt.
+		if (initialized) {
+			return;
+		}
+		
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					// To avoid access restriction problems in
+					// Eclipse, we'll use reflection here.
+					// new JFXPanel();
+					try {
+						Class<?> cls = Class.forName("javafx.embed.swing.JFXPanel");
+						cls.newInstance();
+					}
+					catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+		}
+		catch (InvocationTargetException | InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		
+		initialized = true;
 	}
 	
 	@Override
