@@ -6,16 +6,26 @@ apply plugin: "java"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+defaultTasks "allJars"
+
 repositories {
 	mavenCentral()
 }
 
 sourceSets{
 	main
-	itext
-	jpedal
-	jpod
-	pdfbox
+	itext {
+		compileClasspath += sourceSets.main.output
+	}
+	jpedal {
+		compileClasspath += sourceSets.main.output
+	}
+	jpod {
+		compileClasspath += sourceSets.main.output
+	}
+	pdfbox {
+		compileClasspath += sourceSets.main.output
+	}
 }
 
 dependencies {
@@ -26,8 +36,9 @@ dependencies {
 	jpedalCompile 'org.jpedal:OpenViewerFX:20151002'
 	
 	jpodCompile sourceSets.main.output
-	//jpodCompile 'javax.media:jai_core:1.1.3'
-	//jpodCompile 'de.intarsys.opensource:jPod:5.5.1'
+	// Currently, the jPod version in Maven is broken
+	// (bad dependencies).
+	// jpodCompile 'de.intarsys.opensource:jPod:5.5.1'
 	
 	pdfboxCompile sourceSets.main.output
 	pdfboxCompile 'org.apache.pdfbox:pdfbox:1.8.13'
@@ -42,15 +53,17 @@ task copyRuntimeLibs(type: Copy) {
 }
 
 jar {
+	dependsOn classes
+	dependsOn itextClasses
+	dependsOn jpedalClasses
+	
+	archiveName = "pdfjumbler.jar"
+	
 	manifest {
 		attributes(
 			"Main-Class": mainClass
 		)
 	}
-	
-	dependsOn classes
-	dependsOn itextClasses
-	dependsOn jpedalClasses
 	
 	from sourceSets.main.output
 	from sourceSets.itext.output
@@ -69,4 +82,99 @@ jar {
 	exclude "META-INF/*.SF"
 	exclude "META-INF/*.DSA"
 	exclude "META-INF/*.RSA"
+}
+
+task noPluginsJar(type: Jar) {
+	dependsOn classes
+	
+	archiveName = "pdfjumbler-noplugins.jar"
+	
+	manifest {
+		attributes(
+			"Main-Class": mainClass
+		)
+	}
+	
+	from sourceSets.main.output
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
+}
+
+task itextJar(type: Jar) {
+	dependsOn classes
+	dependsOn itextClasses
+	
+	archiveName = "pdfjumbler-itext.jar"
+	
+	from sourceSets.itext.output
+	
+	from {
+		configurations.itextCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
+}
+
+task jpedalJar(type: Jar) {
+	dependsOn classes
+	dependsOn jpedalClasses
+	
+	archiveName = "pdfjumbler-jpedal.jar"
+	
+	from sourceSets.jpedal.output
+	
+	from {
+		configurations.jpedalCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
+}
+
+task jpodJar(type: Jar) {
+	dependsOn classes
+	dependsOn jpodClasses
+	
+	archiveName = "pdfjumbler-jpod.jar"
+	
+	from sourceSets.jpod.output
+	
+	from {
+		configurations.jpodCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
+}
+
+task pdfboxJar(type: Jar) {
+	dependsOn classes
+	dependsOn pdfboxClasses
+	
+	archiveName = "pdfjumbler-pdfbox.jar"
+	
+	from sourceSets.pdfbox.output
+	
+	from {
+		configurations.pdfboxCompile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	
+	exclude "META-INF/*.SF"
+	exclude "META-INF/*.DSA"
+	exclude "META-INF/*.RSA"
+}
+
+task allJars {
+	dependsOn jar
+	dependsOn noPluginsJar
+	dependsOn itextJar
+	dependsOn jpedalJar
+	//dependsOn jpodJar
+	dependsOn pdfboxJar
 }
