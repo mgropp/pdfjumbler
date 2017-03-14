@@ -141,7 +141,7 @@ task pdfboxJar(type: Jar) {
 	exclude "META-INF/*.RSA"
 }
 
-task plugins {
+task allPlugins {
 	dependsOn itextJar
 	dependsOn jpedalJar
 	//dependsOn jpodJar
@@ -150,10 +150,7 @@ task plugins {
 
 task allJars {
 	dependsOn jar
-	dependsOn plugins
+	dependsOn allPlugins
 }
 
-check.dependsOn classes
-check.dependsOn itextClasses
-check.dependsOn jpedalClasses
-check.dependsOn pdfboxClasses
+check.dependsOn allJars
