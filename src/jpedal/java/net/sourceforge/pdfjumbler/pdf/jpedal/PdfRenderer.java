@@ -31,10 +31,6 @@ public class PdfRenderer implements net.sourceforge.pdfjumbler.pdf.PdfRenderer {
 	public static String getFriendlyName() {
 		return "JPedal";
 	}
-
-	public static double getRequiredVersion() {
-		return 0.15;
-	}
 	
 	private Map<File,PdfDecoderFX> docMap = new HashMap<File,PdfDecoderFX>();
 	

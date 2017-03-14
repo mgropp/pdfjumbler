@@ -31,6 +31,9 @@ sourceSets{
 dependencies {
 	itextCompile sourceSets.main.output
 	itextCompile 'com.itextpdf:itextpdf:5.5.10'
+	itextCompile 'org.bouncycastle:bcprov-jdk15on:1.56'
+	//itextCompile 'org.bouncycastle:bctsp-jdk15on:1.46'
+	//itextCompile 'org.bouncycastle:bcmail-jdk15on:1.56'
 	
 	jpedalCompile sourceSets.main.output
 	jpedalCompile 'org.jpedal:OpenViewerFX:7.10.24'
@@ -54,40 +57,8 @@ task copyRuntimeLibs(type: Copy) {
 
 jar {
 	dependsOn classes
-	dependsOn itextClasses
-	dependsOn jpedalClasses
 	
 	archiveName = "pdfjumbler.jar"
-	
-	manifest {
-		attributes(
-			"Main-Class": mainClass
-		)
-	}
-	
-	from sourceSets.main.output
-	from sourceSets.itext.output
-	from sourceSets.jpedal.output
-	
-	from {
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-	from {
-		configurations.itextCompile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-	from {
-		configurations.jpedalCompile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-	
-	exclude "META-INF/*.SF"
-	exclude "META-INF/*.DSA"
-	exclude "META-INF/*.RSA"
-}
-
-task noPluginsJar(type: Jar) {
-	dependsOn classes
-	
-	archiveName = "pdfjumbler-noplugins.jar"
 	
 	manifest {
 		attributes(
@@ -170,13 +141,16 @@ task pdfboxJar(type: Jar) {
 	exclude "META-INF/*.RSA"
 }
 
-task allJars {
-	dependsOn jar
-	dependsOn noPluginsJar
+task plugins {
 	dependsOn itextJar
 	dependsOn jpedalJar
 	//dependsOn jpodJar
 	dependsOn pdfboxJar
+}
+
+task allJars {
+	dependsOn jar
+	dependsOn plugins
 }
 
 check.dependsOn classes

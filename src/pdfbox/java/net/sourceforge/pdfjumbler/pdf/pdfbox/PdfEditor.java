@@ -22,10 +22,6 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 		return "PDFBox";
 	}
 	
-	public static double getRequiredVersion() {
-		return 0.15;
-	}
-
 	@Override
 	public void close() throws IOException { }
 

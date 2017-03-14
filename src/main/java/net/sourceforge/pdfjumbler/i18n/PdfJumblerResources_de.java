@@ -50,7 +50,12 @@ public class PdfJumblerResources_de extends ListResourceBundle {
 			{ "ACCELERATOR:DELETE",       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0) },
 			{ "ACCELERATOR:UNDO",         KeyStroke.getKeyStroke('Z', InputEvent.CTRL_DOWN_MASK) },
 			{ "ACCELERATOR:REDO",         KeyStroke.getKeyStroke('Y', InputEvent.CTRL_DOWN_MASK) },
-			{ "ABOUT_TITLE",              "Informationen" }, 
+			{ "ABOUT_TITLE",              "Informationen" },
+			{ "PLUGIN_ERROR_TITLE",       "Plugin-Fehler" },
+			{
+				"PLUGIN_ERROR_VERSION_INCOMPATIBLE",
+				"Dieser Plugin benötigt PdfJumbler Version %s."
+			},
 			{
 				"ABOUT_TEXT",
 				"PdfJumbler %s \nCopyright (C) 2017 Martin Gropp\n" +

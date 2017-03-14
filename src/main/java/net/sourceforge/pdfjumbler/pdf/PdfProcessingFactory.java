@@ -2,15 +2,16 @@ package net.sourceforge.pdfjumbler.pdf;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
@@ -25,37 +26,95 @@ import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
  * @author Martin Gropp
  */
 public final class PdfProcessingFactory {
-	private static final String[] EDITOR_CLASSES = {
-		System.getProperty("pdfjumbler.editor", null),
-		Preferences.userNodeForPackage(PdfJumbler.class).get("editor", null),
-		"net.sourceforge.pdfjumbler.pdf.itext.PdfEditor",
-		"net.sourceforge.pdfjumbler.pdf.pdfbox.PdfEditor"
-	};
-	private static final String[] RENDERER_CLASSES = {
-		System.getProperty("pdfjumbler.renderer", null),
-		Preferences.userNodeForPackage(PdfJumbler.class).get("renderer", null),
-		"net.sourceforge.pdfjumbler.pdf.jpedal.PdfRenderer",
-		"net.sourceforge.pdfjumbler.pdf.jpod.PdfRenderer"
-	};
-		
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
-
-	private static ClassLoader pluginClassLoader;
+	
+	private static List<Class<? extends PdfEditor>> pdfEditorClasses = new ArrayList<>();
+	private static List<Class<? extends PdfRenderer>> pdfRendererClasses = new ArrayList<>();
 	
 	private static PdfEditor editor = null;
 	private static PdfRenderer renderer = null;
 	
 	private static LinkedList<PdfProcessorListener> listeners = new LinkedList<PdfProcessorListener>();
 	
-	private static File getMainJarPath() {
+	static {
+		discoverPlugins();
+		selectInitialEditor();
+		selectInitialRenderer();
+	}
+	
+	private static void discoverPlugins() {
+		File pluginPath = getPluginPath();
+		if (pluginPath == null) {
+			return;
+		}
+		
+		File[] jarFiles = pluginPath.listFiles(
+			new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String name) {
+					return name.endsWith(".jar");
+				}
+			}
+		);
+		Arrays.sort(jarFiles);
+		
+		for (File jarFile : jarFiles) {
+			Plugin plugin;
+			try {
+				plugin = new Plugin(jarFile);
+			}
+			catch (IOException e) {
+				// Ignore this plugin
+				continue;
+			}
+			catch (PluginException e) {
+				JOptionPane.showMessageDialog(
+					null,
+					resources.getString(e.getMessage()),
+					resources.getString("PLUGIN_ERROR_TITLE"),
+					JOptionPane.ERROR_MESSAGE
+				);
+				System.exit(103);
+				return;
+			}
+			
+			if (plugin.hasPdfEditors()) {
+				pdfEditorClasses.addAll(
+					plugin.getPdfEditorClasses()
+				);
+			}
+			
+			if (plugin.hasPdfRenderers()) {
+				pdfRendererClasses.addAll(
+					plugin.getPdfRendererClasses()
+				);
+			}
+		}
+	}
+	
+	private static File getPluginPath() {
+		String userPluginPath = System.getProperty("pdfjumbler.pluginpath", null);
+		if (userPluginPath != null) {
+			return new File(userPluginPath);
+		}
+		
 		try {
-			URL url = PdfProcessingFactory.class.getResource(PdfProcessingFactory.class.getSimpleName() + ".class");
+			String cls = "/" + PdfProcessingFactory.class.getName().replace('.', '/') + ".class";
+			URL url = PdfProcessingFactory.class.getResource(cls);
 			if (url.getProtocol().equals("jar")) {
 				String path = url.getPath();
 				path = path.substring(0, path.indexOf('!'));
 				URL jarURL = new URL(path);
 				if (jarURL.getProtocol().equals("file")) {
 					return new File(jarURL.toURI()).getParentFile();
+				} else {
+					return null;
+				}
+			} else if (url.getProtocol().equals("file")) {
+				String path = url.getPath();
+				if (path.endsWith(cls)) {
+					path = path.substring(0, path.length() - cls.length());
+					return new File(path);
 				} else {
 					return null;
 				}
@@ -68,51 +127,51 @@ public final class PdfProcessingFactory {
 		}
 	}
 	
-	/**
-	 * If the program is run from a local jar, plugins can be loaded
-	 * from other jars in the same directory.
-	 * This method creates a suitable classloader, or returns the
-	 * factory's class loader if something goes wrong. 
-	 * 
-	 * @return
-	 *   A classloader for the plugins.
-	 */
-	private static ClassLoader getPluginClassloader() {
-		File path = getMainJarPath();
-		if (path == null) {
-			return PdfProcessingFactory.class.getClassLoader();
-		} else {
-			File[] jarFiles = path.listFiles(
-				new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						return name.endsWith(".jar");
-					}
-				}
-			);
-			URL[] jarUrls = new URL[jarFiles.length];
-			for (int i = 0; i < jarFiles.length; i++) {
-				try {
-					jarUrls[i] = jarFiles[i].toURI().toURL();
-				}
-				catch (MalformedURLException e) {
-					throw new AssertionError(e);
-				}
-			}
-			
-			return new URLClassLoader(jarUrls, PdfProcessingFactory.class.getClassLoader());
+	private static Class<? extends PdfEditor> findEditorClass(String className) {
+		if (className == null) {
+			return null;
 		}
+		
+		for (Class<? extends PdfEditor> cls : pdfEditorClasses) {
+			if (cls.getName().equals(className)) {
+				return cls;
+			}
+		}
+		
+		return null;
 	}
-
-	static {
-		pluginClassLoader = getPluginClassloader();
-		for (String className : EDITOR_CLASSES) {
-			if (className == null) {
+	
+	private static Class<? extends PdfRenderer> findRendererClass(String className) {
+		if (className == null) {
+			return null;
+		}
+		
+		for (Class<? extends PdfRenderer> cls : pdfRendererClasses) {
+			if (cls.getName().equals(className)) {
+				return cls;
+			}
+		}
+		
+		return null;
+	}
+	
+	private static void selectInitialEditor() {
+		List<Class<? extends PdfEditor>> classes = new ArrayList<>(pdfEditorClasses.size() + 2);
+		classes.add(findEditorClass(
+			System.getProperty("pdfjumbler.editor", null)
+		));
+		classes.add(findEditorClass(
+			Preferences.userNodeForPackage(PdfJumbler.class).get("editor", null)
+		));
+		classes.addAll(pdfEditorClasses);
+		
+		for (Class<? extends PdfEditor> cls : classes) {
+			if (cls == null) {
 				continue;
 			}
-			System.err.print("Trying to load editor class: " + className + "... ");
+			System.err.print("Trying to instantiate editor: " + cls + "... ");
 			try {
-				editor = (PdfEditor)pluginClassLoader.loadClass(className).newInstance();
+				editor = cls.newInstance();
 			}
 			catch (Exception e) {
 				System.err.println("Error: " + e.getClass().getCanonicalName());
@@ -131,15 +190,26 @@ public final class PdfProcessingFactory {
 			);
 			System.exit(101);
 		}
+	}
 		
+	private static void selectInitialRenderer() {	
+		List<Class<? extends PdfRenderer>> classes = new ArrayList<>(pdfRendererClasses.size() + 2);
+		classes.add(findRendererClass(
+			System.getProperty("pdfjumbler.renderer", null)
+		));
+		classes.add(findRendererClass(
+			Preferences.userNodeForPackage(PdfJumbler.class).get("renderer", null)
+		));
+		classes.addAll(pdfRendererClasses);
 		
-		for (String className : RENDERER_CLASSES) {
-			if (className == null) {
+		for (Class<? extends PdfRenderer> cls : classes) {
+			if (cls == null) {
 				continue;
 			}
-			System.err.print("Trying to load renderer class: " + className + "... ");
+			
+			System.err.print("Trying to instantiate renderer: " + cls + "... ");
 			try {
-				renderer = (PdfRenderer)pluginClassLoader.loadClass(className).newInstance();
+				renderer = cls.newInstance();
 			}
 			catch (Exception e) {
 				System.err.println("Error: " + e.getClass().getCanonicalName());
@@ -199,63 +269,12 @@ public final class PdfProcessingFactory {
 		}
 	}
 	
-	private static boolean checkPluginVersion(Class<?> cls) {
-		try {
-			Method m = cls.getMethod("getRequiredVersion");
-			if ((Double)m.invoke(null) <= PdfJumbler.VERSION) {
-				return true;
-			} else {
-				System.err.println("Warning: Incompatible plugin detected: " + cls.getCanonicalName());
-				return false;
-			}
-		}
-		catch (Exception e) {
-			return false;
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
 	public static Collection<Class<? extends PdfEditor>> getAvailableEditors() {
-		Set<Class<? extends PdfEditor>> classes = new HashSet<Class<? extends PdfEditor>>(EDITOR_CLASSES.length);
-		for (String className : EDITOR_CLASSES) {
-			if (className != null) {		
-				try {
-					Class<?> cls = pluginClassLoader.loadClass(className);
-					if (PdfEditor.class.isAssignableFrom(cls)) {
-						if (checkPluginVersion(cls)) {
-							classes.add((Class<? extends PdfEditor>)cls);
-						}
-					}
-				}
-				catch (ClassNotFoundException e) {
-					continue;
-				}
-			}
-		}
-		
-		return classes;
+		return Collections.unmodifiableCollection(pdfEditorClasses);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static Collection<Class<? extends PdfRenderer>> getAvailableRenderers() {
-		Set<Class<? extends PdfRenderer>> classes = new HashSet<Class<? extends PdfRenderer>>(RENDERER_CLASSES.length);
-		for (String className : RENDERER_CLASSES) {
-			if (className != null) {		
-				try {
-					Class<?> cls = pluginClassLoader.loadClass(className);
-					if (PdfRenderer.class.isAssignableFrom(cls)) {
-						if (checkPluginVersion(cls)) {
-							classes.add((Class<? extends PdfRenderer>)cls);
-						}
-					}
-				}
-				catch (ClassNotFoundException e) {
-					continue;
-				}
-			}
-		}
-		
-		return classes;
+		return Collections.unmodifiableCollection(pdfRendererClasses);
 	}
 	
 	private static void fireEditorChanged(PdfEditor oldEditor) {

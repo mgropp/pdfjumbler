@@ -62,8 +62,8 @@ import net.sourceforge.pdfjumbler.util.FileUtils;
  */
 public class PdfJumbler extends JFrame {
 	private static final long serialVersionUID = 4382647271800905977L;
-	public static final int VERSION = 20170310;
-	public static final String VERSION_STRING = "2017-03-10";
+	public static final int VERSION = 20170315;
+	public static final String VERSION_STRING = "2017-03-15";
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
 	private static PdfJumbler instance = null; 
