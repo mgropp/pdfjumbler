@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public interface PdfRenderer {
 	/**

@@ -1,4 +1,4 @@
-package net.sourceforge.pdfjumbler.pdf.pdfbox;
+package net.sourceforge.pdfjumbler.pdfbox;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,14 +8,14 @@ import java.util.Map;
 
 import net.sourceforge.pdfjumbler.pdf.Page;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
+
+import org.tinylog.Logger;
 
 /**
  * PdfJumbler interface to PDFBox.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 	public static String getFriendlyName() {
@@ -27,13 +27,15 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 
 	@Override
 	public void saveDocument(List<Page> pages, File file) throws IOException {
+		Logger.info("Saving {} pages to {}", pages.size(), file);
+
 		if (pages.size() == 0) {
 			throw new IOException("Empty document.");
 		}
 		
 		PDDocument outDoc = new PDDocument();
-		
-		Map<File,PDDocument> docs = new HashMap<File,PDDocument>();
+
+		Map<File,PDDocument> docs = new HashMap<>();
 		try {
 			for (Page page : pages) {
 				PDDocument pageDoc = docs.get(page.getFile());
@@ -41,16 +43,13 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 					pageDoc = PDDocument.load(page.getFile());
 					docs.put(page.getFile(), pageDoc);
 				}
-				
-				outDoc.addPage((PDPage)pageDoc.getPrintable(page.getIndex()));
+
+				outDoc.addPage(pageDoc.getPage(page.getIndex()));
+
 			}
-			
-			try {
-				outDoc.save(file.toString());
-			}
-			catch (COSVisitorException e) {
-				throw new IOException(e);
-			}
+
+			outDoc.save(file.toString());
+			Logger.info("File saved successfully.");
 		}
 		finally {
 			outDoc.close();

@@ -52,9 +52,10 @@ public class PdfJumblerResources_de extends ListResourceBundle {
 			{ "ACCELERATOR:REDO",         KeyStroke.getKeyStroke('Y', InputEvent.CTRL_DOWN_MASK) },
 			{ "ABOUT_TITLE",              "Informationen" },
 			{ "PLUGIN_ERROR_TITLE",       "Plugin-Fehler" },
+			{ "PLUGIN_INIT_ERROR",        "Fehler beim Initialisieren von Plugin %s" },
 			{
 				"PLUGIN_ERROR_VERSION_INCOMPATIBLE",
-				"Dieser Plugin benötigt PdfJumbler Version %s."
+				"Dieses Plugin benötigt PdfJumbler Version %s."
 			},
 			{
 				"ABOUT_TEXT",

@@ -34,7 +34,7 @@ public class Plugin {
 		try (JarFile jar = new JarFile(jarFile)) {
 			ZipEntry entry = jar.getEntry("pdfjumbler-plugin.properties");
 			if (entry == null) {
-				throw new PluginException("Missing pdfjumbler-plugin.properties entry!");
+				throw new IOException("Missing pdfjumbler-plugin.properties entry!");
 			}
 			
 			try (InputStream stream = jar.getInputStream(entry)) {

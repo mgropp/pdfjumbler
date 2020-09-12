@@ -64,7 +64,7 @@ Several settings can be changed using Java system properties:
 
 * `pdfjumbler.editor`: sets the editor plugin (if installed)	
 	 * iText: `net.sourceforge.pdfjumbler.pdf.itext.PdfEditor`
-	 * PDFBox: `net.sourceforge.pdfjumbler.pdf.pdfbox.PdfEditor`
+	 * PDFBox: `net.sourceforge.pdfjumbler.pdf.PdfEditor`
 
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed)	
 	 * JPedal: `net.sourceforge.pdfjumbler.pdf.jpedal.PdfRenderer`
@@ -81,5 +81,5 @@ Several settings can be changed using Java system properties:
 
 ### Example ###
 ```
-java -Dpdfjumbler.editor=net.sourceforge.pdfjumbler.pdf.pdfbox.PdfEditor -jar pdfjumbler.jar foo.pdf bar.pdf
+java -Dpdfjumbler.editor=net.sourceforge.pdfjumbler.pdf.PdfEditor -jar pdfjumbler.jar foo.pdf bar.pdf
 ```

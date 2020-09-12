@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public final class Page {
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());

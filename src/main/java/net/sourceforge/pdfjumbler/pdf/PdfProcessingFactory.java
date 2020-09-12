@@ -17,11 +17,15 @@ import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
 import net.sourceforge.pdfjumbler.PdfJumbler;
+import net.sourceforge.pdfjumbler.i18n.I18nUtil;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
+import org.tinylog.Logger;
 
 /**
  * In der Hoffnung, dass es irgendwann einmal /eine/
  * Bibliothek gibt, die das alles kann...
+ *
+ * 2020: PdfBox <3 !
  * 
  * @author Martin Gropp
  */
@@ -30,7 +34,13 @@ public final class PdfProcessingFactory {
 	
 	private static List<Class<? extends PdfEditor>> pdfEditorClasses = new ArrayList<>();
 	private static List<Class<? extends PdfRenderer>> pdfRendererClasses = new ArrayList<>();
-	
+
+	// add plugins from main (could be empty)
+	static {
+		pdfEditorClasses.add(net.sourceforge.pdfjumbler.pdfbox.PdfEditor.class);
+		pdfRendererClasses.add(net.sourceforge.pdfjumbler.pdfbox.PdfRenderer.class);
+	}
+
 	private static PdfEditor editor = null;
 	private static PdfRenderer renderer = null;
 	
@@ -45,8 +55,10 @@ public final class PdfProcessingFactory {
 	private static void discoverPlugins() {
 		File pluginPath = getPluginPath();
 		if (pluginPath == null) {
+			Logger.error("No plugin path found.");
 			return;
 		}
+		Logger.info("Plugin path: {}", pluginPath);
 		
 		File[] jarFiles = pluginPath.listFiles(
 			new FilenameFilter() {
@@ -59,18 +71,28 @@ public final class PdfProcessingFactory {
 		Arrays.sort(jarFiles);
 		
 		for (File jarFile : jarFiles) {
+			Logger.info("Attempting to load plugin: {}", jarFile);
 			Plugin plugin;
 			try {
 				plugin = new Plugin(jarFile);
 			}
 			catch (IOException e) {
 				// Ignore this plugin
+				Logger.info("Ignoring plugin {}: {}", jarFile, e);
 				continue;
 			}
 			catch (PluginException e) {
+				Logger.error(e);
 				JOptionPane.showMessageDialog(
 					null,
-					resources.getString(e.getMessage()),
+					String.format(
+						"%s: %s",
+						String.format(
+							resources.getString("PLUGIN_INIT_ERROR"),
+							jarFile.getAbsolutePath()
+						),
+						I18nUtil.getString(resources, e.getMessage(), e.getMessage())
+					),
 					resources.getString("PLUGIN_ERROR_TITLE"),
 					JOptionPane.ERROR_MESSAGE
 				);
@@ -169,19 +191,19 @@ public final class PdfProcessingFactory {
 			if (cls == null) {
 				continue;
 			}
-			System.err.print("Trying to instantiate editor: " + cls + "... ");
+			Logger.info("Trying to instantiate editor: " + cls + "... ");
 			try {
-				editor = cls.newInstance();
+				editor = cls.getDeclaredConstructor().newInstance();
 			}
 			catch (Exception e) {
-				System.err.println("Error: " + e.getClass().getCanonicalName());
-				e.printStackTrace();
+				Logger.error(e);
 				continue;
 			}
-			System.err.println("ok.");
+			Logger.info("Created editor instance.");
 			break;
 		}
 		if (editor == null) {
+			Logger.error("No pdf editors found, exiting.");
 			JOptionPane.showMessageDialog(
 				null,
 				resources.getString("NO_PDF_EDITOR_TEXT"),
@@ -192,7 +214,7 @@ public final class PdfProcessingFactory {
 		}
 	}
 		
-	private static void selectInitialRenderer() {	
+	private static void selectInitialRenderer() {
 		List<Class<? extends PdfRenderer>> classes = new ArrayList<>(pdfRendererClasses.size() + 2);
 		classes.add(findRendererClass(
 			System.getProperty("pdfjumbler.renderer", null)
@@ -207,18 +229,19 @@ public final class PdfProcessingFactory {
 				continue;
 			}
 			
-			System.err.print("Trying to instantiate renderer: " + cls + "... ");
+			Logger.info("Trying to instantiate renderer: " + cls + "... ");
 			try {
-				renderer = cls.newInstance();
+				renderer = cls.getDeclaredConstructor().newInstance();
 			}
 			catch (Exception e) {
-				System.err.println("Error: " + e.getClass().getCanonicalName());
+				Logger.error(e);
 				continue;
 			}
-			System.err.println("ok.");
+			Logger.info("Created renderer instance.");
 			break;
 		}
 		if (renderer == null) {
+			Logger.error("No pdf renderers found, exiting.");
 			JOptionPane.showMessageDialog(
 				null,
 				resources.getString("NO_PDF_RENDERER_TEXT"),
@@ -279,13 +302,14 @@ public final class PdfProcessingFactory {
 	
 	private static void fireEditorChanged(PdfEditor oldEditor) {
 		for (PdfProcessorListener listener : listeners) {
-			System.err.println(listener);
+			Logger.trace("Editor changed, notifying pdf processor listener: {}", listener);
 			listener.pdfEditorChanged(oldEditor, editor);
 		}
 	}
 
 	private static void fireRendererChanged(PdfRenderer oldRenderer) {
 		for (PdfProcessorListener listener : listeners) {
+			Logger.trace("Renderer changed, notifying pdf processor listener: {}", listener);
 			listener.pdfRendererChanged(oldRenderer, renderer);
 		}
 	}

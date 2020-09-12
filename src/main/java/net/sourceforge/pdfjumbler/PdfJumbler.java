@@ -55,6 +55,8 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessorListener;
 import net.sourceforge.pdfjumbler.pdf.PdfRenderer;
 import net.sourceforge.pdfjumbler.util.FileUtils;
 
+import org.tinylog.Logger;
+
 /**
  * PdfJumbler main class.
  * 
@@ -62,8 +64,8 @@ import net.sourceforge.pdfjumbler.util.FileUtils;
  */
 public class PdfJumbler extends JFrame {
 	private static final long serialVersionUID = 4382647271800905977L;
-	public static final int VERSION = 20170315;
-	public static final String VERSION_STRING = "2017-03-15";
+	public static final int VERSION = 20200912;
+	public static final String VERSION_STRING = "2020-09-12";
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
 	private static PdfJumbler instance = null; 
@@ -205,6 +207,8 @@ public class PdfJumbler extends JFrame {
 	}
 
 	private PdfJumbler(String[] files) throws IOException {
+		Logger.info("PdfJumbler is starting");
+
 		PdfJumbler.instance = this;
 
 		installExceptionHandler();
