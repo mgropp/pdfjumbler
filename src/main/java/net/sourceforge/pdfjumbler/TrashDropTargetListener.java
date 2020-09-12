@@ -13,7 +13,7 @@ import net.sourceforge.pdfjumbler.jdragdroplist.JDDLTransferData;
 import net.sourceforge.pdfjumbler.pdf.Page;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class TrashDropTargetListener implements DropTargetListener {
 	@Override

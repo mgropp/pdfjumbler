@@ -22,7 +22,7 @@ import net.sourceforge.pdfjumbler.pdf.Page;
 import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class PdfList extends JDragDropList<Page> {
 	private static final long serialVersionUID = 7475943073466784769L;

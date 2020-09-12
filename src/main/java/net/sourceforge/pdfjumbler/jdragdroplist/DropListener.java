@@ -3,7 +3,7 @@ package net.sourceforge.pdfjumbler.jdragdroplist;
 import javax.swing.TransferHandler;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public interface DropListener {
 	/**

@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * PdfJumbler interface to PDFBox.
+ *
+ * @author Martin Gropp
+ */
 public class PdfRenderer implements net.sourceforge.pdfjumbler.pdf.PdfRenderer {
 	public static String getFriendlyName() {
 		return "PDFBox";

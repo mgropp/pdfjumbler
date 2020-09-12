@@ -326,7 +326,7 @@ public class PdfJumbler extends JFrame {
  * Actions & workers for the main PdfJumbler class.
  * Moved to an extra class for readability.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 class Actions {
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
@@ -886,7 +886,7 @@ class Actions {
  * (implemented as remove + add compound edits) and
  * is simpler than using insignificant edits. 
  *  
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 class UniqueUndoManager extends UndoManager {
 	private static final long serialVersionUID = -2740016241678747836L;

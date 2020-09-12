@@ -24,7 +24,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 
 /**
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class ProgressDialog extends JDialog {
 	private static final long serialVersionUID = 5790932640733135316L;

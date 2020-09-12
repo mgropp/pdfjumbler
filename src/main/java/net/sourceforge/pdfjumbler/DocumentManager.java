@@ -15,7 +15,7 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
 /**
  * Creates & keeps track of open pages.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class DocumentManager {
 	private static Map<File,List<Page>> pageMap = new HashMap<File,List<Page>>();

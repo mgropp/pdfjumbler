@@ -17,6 +17,9 @@ import java.util.zip.ZipEntry;
 import net.sourceforge.pdfjumbler.PdfJumbler;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 
+/**
+ * @author Martin Gropp
+ */
 public class Plugin {
 	public static final String REQUIRED_VERSION_KEY = "pdfjumbler-required-version";
 	public static final String PDF_EDITOR_KEY = "pdfjumbler-plugin-editor";

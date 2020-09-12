@@ -1,5 +1,8 @@
 package net.sourceforge.pdfjumbler.pdf;
 
+/**
+ * @author Martin Gropp
+ */
 public class PluginException extends Exception {
 	private static final long serialVersionUID = 1L;
 

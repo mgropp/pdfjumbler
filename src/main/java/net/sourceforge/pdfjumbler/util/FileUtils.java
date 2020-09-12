@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Methods to move & copy files.
  * 
- * @author Martin Gropp <martin.gropp@googlemail.com>
+ * @author Martin Gropp
  */
 public class FileUtils {
 	public static void copyFile(File sourceFile, File destFile) throws IOException {
