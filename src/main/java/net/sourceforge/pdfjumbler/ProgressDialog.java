@@ -21,6 +21,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.pdfjumbler.i18n.I18nKeys;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 
 /**
@@ -64,7 +65,7 @@ public class ProgressDialog extends JDialog {
     	add(progressBar, c);
     	
     	JButton abortButton = new JButton(
-    		new AbstractAction(resources.getString("PROGRESS_ABORT")) {
+    		new AbstractAction(resources.getString(I18nKeys.PROGRESS_ABORT)) {
 				private static final long serialVersionUID = -8203887045883710945L;
 
 				@Override

@@ -25,7 +25,7 @@ public class JDragDropList<T> extends JList<T> {
 
 	private DropListener dropListener = null;
 	
-	public JDragDropList(StandardListModel<T> model) {
+	public JDragDropList(UndoableListModel<T> model) {
 		super(model);
 		
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -46,7 +46,7 @@ public class JDragDropList<T> extends JList<T> {
 		private static final long serialVersionUID = 8850624713729645277L;
 		
 		private void copyItems(JDragDropList<? extends T> sourceList, JDragDropList<? super T> targetList, List<T> sourceObjects, int destIndex) {
-			StandardListModel<? super T> model = targetList.getModel();
+			UndoableListModel<? super T> model = targetList.getModel();
 		
 			model.beginCompoundEdit("Copy");
 			try {
@@ -62,8 +62,8 @@ public class JDragDropList<T> extends JList<T> {
 		}
 		
 		private void moveItems(JDragDropList<? extends T> sourceList, JDragDropList<? super T> targetList, int[] sourceIndices, int destIndex) {
-			StandardListModel<? extends T> sourceModel = sourceList.getModel();
-			StandardListModel<? super T> targetModel = targetList.getModel();
+			UndoableListModel<? extends T> sourceModel = sourceList.getModel();
+			UndoableListModel<? super T> targetModel = targetList.getModel();
 			
 			CompoundEdit edit = new CompoundEdit() {
 				private static final long serialVersionUID = -8658162613932247385L;
@@ -164,17 +164,8 @@ public class JDragDropList<T> extends JList<T> {
 			}
 
 			JDDLTransferData<T> data = getData(info);
-			int destIndex = JDragDropList.this.getDropLocation().getIndex();		
-			
-			/*
-			System.err.print("[ ");
-			for (int index : data.getIndices()) {
-				System.err.print(index + " ");
-			}
-			System.err.print("] -> ");
-			System.err.println(destIndex);
-			*/
-			 
+			int destIndex = JDragDropList.this.getDropLocation().getIndex();
+
 			if ((info.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
 				copyItems(data.getSourceList(), JDragDropList.this, data.getValuesList(), destIndex);
 			} else if ((info.getDropAction() & DnDConstants.ACTION_MOVE) != 0) {
@@ -221,13 +212,13 @@ public class JDragDropList<T> extends JList<T> {
 	}
 	
 	@Override
-	public StandardListModel<T> getModel() {
-		return (StandardListModel<T>)super.getModel();
+	public UndoableListModel<T> getModel() {
+		return (UndoableListModel<T>)super.getModel();
 	}
 
 	@Override
 	public void setModel(ListModel<T> model) {
-		if (model instanceof StandardListModel) {
+		if (model instanceof UndoableListModel) {
 			super.setModel(model);
 		} else {
 			throw new IllegalArgumentException("Unsupported model type.");

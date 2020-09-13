@@ -96,7 +96,13 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		PdfCellRenderer component = (PdfCellRenderer)super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+		PdfCellRenderer component = (PdfCellRenderer)super.getListCellRendererComponent(
+			list,
+			null,
+			index,
+			isSelected,
+			cellHasFocus
+		);
 		assert (component == this);
 		component.page = (Page)value;
 		component.setLocation(0, getHeight() * index);
@@ -110,7 +116,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 		}
 	}
 
-	public int getThumbnailWidth() {		
+	public int getThumbnailWidth() {
 		return thumbnailWidth;
 	}
 
@@ -126,6 +132,6 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	public void clearImageCache() {
-		imageCache.clear();	
+		imageCache.clear();
 	}
 }

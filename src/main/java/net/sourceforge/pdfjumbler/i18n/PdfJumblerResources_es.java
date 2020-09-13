@@ -9,59 +9,57 @@ import javax.swing.KeyStroke;
 /**
  * @author Andres Yesid Diaz Pinto
  */
-public class PdfJumblerResources_es extends ListResourceBundle {
+public class PdfJumblerResources_es extends ListResourceBundle implements I18nKeys {
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {
-			{ "OPEN_DOCUMENT",            "Abrir documento" },  
-			{ "SAVE_DOCUMENT",            "Guardar documento" },
-			{ "FILE_FILTER_PDF",          "Documentos PDF  (*.pdf)" },
-			{ "OVERWRITE_FILE_TITLE",     "¿Sobreescribir?" },
-			{ "OVERWRITE_FILE_TEXT",      "El fichero ya existe, ¿lo desea sobreescribir?" },
-			{ "ZOOM_OUT",                 "Zoom out" },
-			{ "ZOOM_IN",                  "Zoom in" },
-			{ "CLEAR_LIST",               "Borrar lista" },
-			{ "DELETE",                   "Eliminar" },
-			{ "ABOUT",                    "Acerca de" },
-			{ "LIST_DROP_PDFS_TO_EDIT",   "¡Arrastrar documentos PDF aquí!" },
-			{ "LIST_CLIPBOARD_EMPTY",     "Portapapeles\n(vacío)" },
-			{ "CONFIRM_CLEAR_LIST_TITLE", "Confirmar" },
-			{ "CONFIRM_CLEAR_LIST_TEXT",  "¿Eliminar todas las páginas?" },
-			{ "NO_PDF_EDITOR_TITLE",      "Error" },
-			{ "NO_PDF_EDITOR_TEXT",       "Error al cargar el plugin para editar PDF." },
-			{ "NO_PDF_RENDERER_TITLE",    "Error" },
-			{ "NO_PDF_RENDERER_TEXT",     "Error al cargar el plugin para mostrar PDF." },
-			{ "PDF_PAGE_TITLE",           "%d (%s)" },
-			{ "WRENCH",                   "Configuración" },
-			{ "WRENCH_EDITOR",            "Plugin para editar PDF" },
-			{ "WRENCH_RENDERER",          "Plugin para mostrar PDF" },
-			{ "MOVE_UP",                  "Mover arriba" },
-			{ "MOVE_DOWN",                "Mover abajo" },
-			{ "PROGRESS_ABORT",           "Detener" },
-			{ "UNDO",                     "Deshacer" },
-			{ "REDO",                     "Rehacer" },
-			{ "UNDO_ADD",                 "Añadir" },
-			{ "UNDO_MOVE",                "Mover" },
-			{ "UNDO_DELETE",              "Eliminar" },
-			{ "ACCELERATOR:OPEN",         KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK) },
-			{ "ACCELERATOR:SAVE",         KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK) },
-			{ "ACCELERATOR:ZOOM_IN",      KeyStroke.getKeyStroke('+') },
-			{ "ACCELERATOR:ZOOM_OUT",     KeyStroke.getKeyStroke('-') },
-			{ "ACCELERATOR:MOVE_UP",      KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK) },
-			{ "ACCELERATOR:MOVE_DOWN",    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK) },
-			{ "ACCELERATOR:DELETE",       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0) },
-			{ "ACCELERATOR:UNDO",         KeyStroke.getKeyStroke('Z', InputEvent.CTRL_DOWN_MASK) },
-			{ "ACCELERATOR:REDO",         KeyStroke.getKeyStroke('Y', InputEvent.CTRL_DOWN_MASK) },
-			{ "ABOUT_TITLE",              "Acerca de" },
-			{ "PLUGIN_ERROR_TITLE",       "Error Plugin" },
-			{ "PLUGIN_INIT_ERROR",        "Error al inicializar el plugin %s" },
+			{ OPEN_DOCUMENT,            "Abrir documento" },  
+			{ SAVE_DOCUMENT,            "Guardar documento" },
+			{ FILE_FILTER_PDF,          "Documentos PDF  (*.pdf)" },
+			{ OVERWRITE_FILE_TITLE,     "¿Sobreescribir?" },
+			{ OVERWRITE_FILE_TEXT,      "El fichero ya existe, ¿lo desea sobreescribir?" },
+			{ ZOOM_OUT,                 "Zoom out" },
+			{ ZOOM_IN,                  "Zoom in" },
+			{ CLEAR_LIST,               "Borrar lista" },
+			{ DELETE,                   "Eliminar" },
+			{ ABOUT,                    "Acerca de" },
+			{ LIST_DROP_PDFS_TO_EDIT,   "¡Arrastrar documentos PDF aquí!" },
+			{ LIST_CLIPBOARD_EMPTY,     "Portapapeles\n(vacío)" },
+			{ CONFIRM_CLEAR_LIST_TITLE, "Confirmar" },
+			{ CONFIRM_CLEAR_LIST_TEXT,  "¿Eliminar todas las páginas?" },
+			{ NO_PDF_EDITOR_TITLE,      "Error" },
+			{ NO_PDF_EDITOR_TEXT,       "Error al cargar el plugin para editar PDF." },
+			{ NO_PDF_RENDERER_TITLE,    "Error" },
+			{ NO_PDF_RENDERER_TEXT,     "Error al cargar el plugin para mostrar PDF." },
+			{ PDF_PAGE_TITLE,           "%d (%s)" },
+			{ MENU,                     "Configuración" },
+			{ MENU_EDITOR,              "Plugin para editar PDF" },
+			{ MENU_RENDERER,            "Plugin para mostrar PDF" },
+			{ MOVE_UP,                  "Mover arriba" },
+			{ MOVE_DOWN,                "Mover abajo" },
+			{ PROGRESS_ABORT,           "Detener" },
+			{ UNDO,                     "Deshacer" },
+			{ REDO,                     "Rehacer" },
+			{ ACCELERATOR_OPEN,         KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK) },
+			{ ACCELERATOR_SAVE,         KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK) },
+			{ ACCELERATOR_ZOOM_IN,      KeyStroke.getKeyStroke('+') },
+			{ ACCELERATOR_ZOOM_OUT,     KeyStroke.getKeyStroke('-') },
+			{ ACCELERATOR_MOVE_UP,      KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK) },
+			{ ACCELERATOR_MOVE_DOWN,    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK) },
+			{ ACCELERATOR_DELETE,       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0) },
+			{ ACCELERATOR_UNDO,         KeyStroke.getKeyStroke('Z', InputEvent.CTRL_DOWN_MASK) },
+			{ ACCELERATOR_REDO,         KeyStroke.getKeyStroke('Y', InputEvent.CTRL_DOWN_MASK) },
+			{ ABOUT_TITLE,              "Acerca de" },
+			{ PLUGIN_ERROR_TITLE,       "Error Plugin" },
+			{ PLUGIN_INIT_ERROR,        "Error al inicializar el plugin %s" },
 			{
-				"PLUGIN_ERROR_VERSION_INCOMPATIBLE",
+				PLUGIN_ERROR_VERSION_INCOMPATIBLE,
 				"Este plugin requiere la versión %s de PdfJumbler."
 			},
 			{
-				"ABOUT_TEXT",
+				ABOUT_TEXT,
 				"PdfJumbler %s \nCopyright (C) 2020 Martin Gropp\n" +
+				"Traduccion: Andres Yesid Diaz Pinto\n" +
 				"\n" +
 				"PDF Editor: %s\n" +
 				"PDF Renderer: %s\n" +
@@ -77,7 +75,7 @@ public class PdfJumblerResources_es extends ListResourceBundle {
 				"You should have received a copy of the GNU Affero General Public License along\n" +
 				"with this program; if not, see http://www.gnu.org/licenses/.\n" +
 				"\n" +
-				"Este programa puede incluir,entre otros, las siguientes partes de software de terceros:\n" + 
+				"Este programa puede incluir, entre otros, las siguientes partes de software de terceros:\n" +
 				"iText - Copyright iText Software Corp. (Affero GPL license)\n" +
 				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
 				"JPedal - Copyright IDR Solutions (LGPL license)\n" +

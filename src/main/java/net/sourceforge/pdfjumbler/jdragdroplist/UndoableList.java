@@ -563,7 +563,7 @@ public class UndoableList<T> implements List<T> {
 			}
 		};
 		
-		UndoableList<Integer> list = new UndoableList<Integer>(new LinkedList<Integer>());
+		UndoableList<Integer> list = new UndoableList<>(new LinkedList<>());
 		list.addUndoableEditListener(editListener);
 		for (int i = 1; i < 10; i++) {
 			list.add(2*i);

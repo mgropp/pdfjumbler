@@ -1,5 +1,7 @@
 package net.sourceforge.pdfjumbler.jdragdroplist;
 
+import org.tinylog.Logger;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
@@ -53,7 +55,6 @@ public class DropUtil {
 			List<URI> uriList = new ArrayList<URI>(data.size());
 			for (File file : data) {
 				uriList.add(file.toURI());
-				System.err.println(file);
 			}
 			
 			return uriList;
@@ -82,7 +83,7 @@ public class DropUtil {
 					uriList.add(new URI(uri));
 				}
 				catch (URISyntaxException e) {
-					System.err.println("WARNING: " + e);
+					Logger.error(e);
 				}
 			}
 			

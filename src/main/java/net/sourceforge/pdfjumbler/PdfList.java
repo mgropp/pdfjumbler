@@ -13,11 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.TransferHandler.TransferSupport;
 
-import net.sourceforge.pdfjumbler.jdragdroplist.DropListener;
-import net.sourceforge.pdfjumbler.jdragdroplist.DropUtil;
-import net.sourceforge.pdfjumbler.jdragdroplist.JDDLTransferData;
-import net.sourceforge.pdfjumbler.jdragdroplist.JDragDropList;
-import net.sourceforge.pdfjumbler.jdragdroplist.StandardListModel;
+import net.sourceforge.pdfjumbler.jdragdroplist.*;
 import net.sourceforge.pdfjumbler.pdf.Page;
 import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
 
@@ -34,7 +30,7 @@ public class PdfList extends JDragDropList<Page> {
 	private String displayMessage = null;
 	
 	public PdfList() {
-		super(new StandardListModel<Page>());
+		super(new UndoableListModel<Page>());
 		setCellRenderer(new PdfCellRenderer(PdfProcessingFactory.getRenderer()));
 		setDropListener(new URIDropListener());
 		addMouseWheelListener(new ZoomMouseWheelListener());
@@ -154,5 +150,10 @@ public class PdfList extends JDragDropList<Page> {
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public UndoableListModel<Page> getModel() {
+		return (UndoableListModel<Page>)super.getModel();
 	}
 }

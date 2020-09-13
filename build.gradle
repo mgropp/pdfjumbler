@@ -7,7 +7,7 @@ apply plugin: "idea"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-defaultTasks "allJars"
+defaultTasks "jar"
 
 repositories {
 	mavenCentral()
@@ -21,6 +21,7 @@ dependencies {
 	compile 'org.tinylog:tinylog-api:2.1.2'
 	compile 'org.tinylog:tinylog-impl:2.1.2'
 	compile 'org.apache.pdfbox:pdfbox:2.0.21'
+	implementation 'at.swimmesberger:swingx-plaf:1.6.8'
 }
 
 jar {

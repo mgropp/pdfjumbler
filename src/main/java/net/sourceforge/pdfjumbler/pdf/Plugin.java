@@ -15,6 +15,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import net.sourceforge.pdfjumbler.PdfJumbler;
+import net.sourceforge.pdfjumbler.i18n.I18nKeys;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 
 /**
@@ -55,9 +56,9 @@ public class Plugin {
 		if (requiredVersion == null) {
 			throw new PluginException("Missing version declaration in plugin!");
 		}
-		if (Double.parseDouble(requiredVersion) > PdfJumbler.VERSION) {
+		if (Integer.parseInt(requiredVersion) > PdfJumbler.VERSION) {
 			throw new PluginException(String.format(
-				resources.getString("PLUGIN_ERROR_VERSION_INCOMPATIBLE"),
+				resources.getString(I18nKeys.PLUGIN_ERROR_VERSION_INCOMPATIBLE),
 				requiredVersion
 			));
 		}

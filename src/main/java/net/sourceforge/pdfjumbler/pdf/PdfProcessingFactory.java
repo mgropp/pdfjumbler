@@ -17,6 +17,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
 import net.sourceforge.pdfjumbler.PdfJumbler;
+import net.sourceforge.pdfjumbler.i18n.I18nKeys;
 import net.sourceforge.pdfjumbler.i18n.I18nUtil;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 import org.tinylog.Logger;
@@ -88,12 +89,12 @@ public final class PdfProcessingFactory {
 					String.format(
 						"%s: %s",
 						String.format(
-							resources.getString("PLUGIN_INIT_ERROR"),
+							resources.getString(I18nKeys.PLUGIN_INIT_ERROR),
 							jarFile.getAbsolutePath()
 						),
 						I18nUtil.getString(resources, e.getMessage(), e.getMessage())
 					),
-					resources.getString("PLUGIN_ERROR_TITLE"),
+					resources.getString(I18nKeys.PLUGIN_ERROR_TITLE),
 					JOptionPane.ERROR_MESSAGE
 				);
 				System.exit(103);
@@ -206,8 +207,8 @@ public final class PdfProcessingFactory {
 			Logger.error("No pdf editors found, exiting.");
 			JOptionPane.showMessageDialog(
 				null,
-				resources.getString("NO_PDF_EDITOR_TEXT"),
-				resources.getString("NO_PDF_EDITOR_TITLE"),
+				resources.getString(I18nKeys.NO_PDF_EDITOR_TEXT),
+				resources.getString(I18nKeys.NO_PDF_EDITOR_TITLE),
 				JOptionPane.ERROR_MESSAGE
 			);
 			System.exit(101);
@@ -244,8 +245,8 @@ public final class PdfProcessingFactory {
 			Logger.error("No pdf renderers found, exiting.");
 			JOptionPane.showMessageDialog(
 				null,
-				resources.getString("NO_PDF_RENDERER_TEXT"),
-				resources.getString("NO_PDF_RENDERER_TITLE"),
+				resources.getString(I18nKeys.NO_PDF_RENDERER_TEXT),
+				resources.getString(I18nKeys.NO_PDF_RENDERER_TITLE),
 				JOptionPane.ERROR_MESSAGE
 			);
 			System.exit(102);

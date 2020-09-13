@@ -10,6 +10,7 @@ import net.sourceforge.pdfjumbler.pdf.Page;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.tinylog.Logger;
 
 /**
@@ -44,8 +45,10 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 					docs.put(page.getFile(), pageDoc);
 				}
 
-				outDoc.addPage(pageDoc.getPage(page.getIndex()));
+				PDPage pdPage = pageDoc.getPage(page.getIndex());
+				pdPage.setRotation(page.getRotation());
 
+				outDoc.addPage(pdPage);
 			}
 
 			outDoc.save(file.toString());
