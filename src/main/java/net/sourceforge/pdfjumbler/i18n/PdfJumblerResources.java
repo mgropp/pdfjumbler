@@ -82,10 +82,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 				"with this program; if not, see http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"This software may include (among others) the following third party programs:\n" +
-				"iText - Copyright iText Software Corp. (Affero GPL license)\n" +
 				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
-				"JPedal - Copyright IDR Solutions (LGPL license)\n" +
-				"JPod - Copyright intarsys (BSD style license)\n" +
 				"Oxygen Icons - The Oxygen Team (LGPL/CC by-sa)\n"
 			}
 		};

@@ -41,7 +41,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 			{ UNDO,                     "Отменить" },
 			{ REDO,                     "Повторить" },
 			{ ROTATE_CW,                "Повернуть по часовой стрелке" },
-			{ ROTATE_CCW,               "Вращать против часовой стрелки" },
+			{ ROTATE_CCW,               "Повернуть против часовой стрелки" },
 			{ ACCELERATOR_OPEN,         KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK) },
 			{ ACCELERATOR_SAVE,         KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK) },
 			{ ACCELERATOR_ZOOM_IN,      KeyStroke.getKeyStroke('+') },
@@ -78,10 +78,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 				"с этой программой; если нет, смотри http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"Это программное обеспечение может включать (среди прочего) следующие сторонние программы:\n" +
-				"iText - Авторские права iText Software Corp. (лицензия Affero GPL)\n" +
 				"PdfBox - Авторские права Apache Foundation (Apache license)\n" +
-				"JPedal - Авторские права IDR Solutions (LGPL license)\n" +
-				"JPod - Авторские права intarsys (лицензия BSD)\n" +
 				"Oxygen Icons - The Oxygen Team (LGPL/CC by-sa)\n"
 			}
 		};

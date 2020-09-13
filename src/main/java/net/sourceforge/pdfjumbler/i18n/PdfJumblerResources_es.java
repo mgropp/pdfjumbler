@@ -61,7 +61,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 			{
 				ABOUT_TEXT,
 				"PdfJumbler %s \nCopyright (C) 2020 Martin Gropp\n" +
-				"Traduccion: Andres Yesid Diaz Pinto\n" +
+				"Traducción: Andres Yesid Diaz Pinto\n" +
 				"\n" +
 				"PDF Editor: %s\n" +
 				"PDF Renderer: %s\n" +
@@ -78,10 +78,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 				"with this program; if not, see http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"Este programa puede incluir, entre otros, las siguientes partes de software de terceros:\n" +
-				"iText - Copyright iText Software Corp. (Affero GPL license)\n" +
 				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
-				"JPedal - Copyright IDR Solutions (LGPL license)\n" +
-				"JPod - Copyright intarsys (BSD style license)\n" +
 				"Oxygen Icons - The Oxygen Team (LGPL/CC by-sa)\n"
 			}
 		};

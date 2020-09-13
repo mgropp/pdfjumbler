@@ -76,10 +76,7 @@ public class PdfJumblerResources_de extends ListResourceBundle implements I18nKe
 				"diesem Programm erhalten haben. Falls nicht, siehe http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"Dieses Programm enthält möglicherweise (unter anderem) die folgenden Bibliotheken:\n" +
-				"iText - Copyright iText Software Corp. (Lizenz: Affero GPL)\n" +
 				"PdfBox - Copyright Apache Foundation (Lizenz: Apache License)\n" +
-				"JPedal - Copyright IDR Solutions (Lizenz: LGPL)\n" +
-				"JPod - Copyright intarsys (Lizenz: BSD style)\n" +
 				"Oxygen Icons - The Oxygen Team (Lizenz: LGPL/CC by-sa)\n"
 			}
 		};
