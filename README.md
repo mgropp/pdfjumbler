@@ -56,7 +56,7 @@ Several settings can be changed using Java system properties:
 	to see a list.
 
 * `user.language`: sets the program language	
-	So far, `de` (German), `es` (Spanish), and `en` (English; default)
+	So far, `de` (German), `es` (Spanish), `ru` (Russian) and `en` (English; default)
 	localizations are available.
 
 ### Example ###
