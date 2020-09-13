@@ -3,6 +3,12 @@ PdfJumbler
 
 [![Build Status](https://travis-ci.org/mgropp/pdfjumbler.svg?branch=master)](https://travis-ci.org/mgropp/pdfjumbler)
 
+Releases
+--------
+
+* v0.2.0: https://github.com/mgropp/pdfjumbler/releases/download/v0.2.0/pdfjumbler.jar
+
+
 Installation
 ------------
 PdfJumbler requires a Java Runtime Environment (JRE).
@@ -50,12 +56,12 @@ Several settings can be changed using Java system properties:
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed; previous plugins are no longer supported)
 	 * PDFBox: `net.sourceforge.pdfjumbler.pdfbox.PdfRenderer`
 
-* `pdfjumbler.lookandfeel`: sets the user interface look-and-feel
+* `pdfjumbler.lookandfeel`: sets the user interface look-and-feel.
 	Possible values depend on the installed Swing look-and-feels.
 	Run PdfJumbler on the command line and set the property to ?
 	to see a list.
 
-* `user.language`: sets the program language	
+* `user.language`: sets the program language.
 	So far, `de` (German), `es` (Spanish), `ru` (Russian) and `en` (English; default)
 	localizations are available.
 
