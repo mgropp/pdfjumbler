@@ -11,8 +11,6 @@ import javax.swing.KeyStroke;
  * @author Martin Gropp
  */
 public class PdfJumblerResources extends ListResourceBundle implements I18nKeys {
-	private static final int MENU_SHORTCUT_KEY = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {
@@ -45,17 +43,17 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 			{ REDO,                       "Redo" },
 			{ ROTATE_CW,                  "Rotate clockwise" },
 			{ ROTATE_CCW,                 "Rotate counter-clockwise" },
-			{ ACCELERATOR_OPEN,           KeyStroke.getKeyStroke('O', MENU_SHORTCUT_KEY) },
-			{ ACCELERATOR_SAVE,           KeyStroke.getKeyStroke('S', MENU_SHORTCUT_KEY) },
+			{ ACCELERATOR_OPEN,           KeyStroke.getKeyStroke('O', I18nUtil.MENU_SHORTCUT_KEY) },
+			{ ACCELERATOR_SAVE,           KeyStroke.getKeyStroke('S', I18nUtil.MENU_SHORTCUT_KEY) },
 			{ ACCELERATOR_ZOOM_IN,        KeyStroke.getKeyStroke('+') },
 			{ ACCELERATOR_ZOOM_OUT,       KeyStroke.getKeyStroke('-') },
 			{ ACCELERATOR_MOVE_UP,        KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK) },
 			{ ACCELERATOR_MOVE_DOWN,      KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK) },
 			{ ACCELERATOR_DELETE,         KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0) },
-			{ ACCELERATOR_UNDO,           KeyStroke.getKeyStroke('Z', MENU_SHORTCUT_KEY) },
-			{ ACCELERATOR_REDO,           KeyStroke.getKeyStroke('Y', MENU_SHORTCUT_KEY) },
-			{ ACCELERATOR_ROTATE_CW,      KeyStroke.getKeyStroke('R', MENU_SHORTCUT_KEY) },
-			{ ACCELERATOR_ROTATE_CCW,     KeyStroke.getKeyStroke('R', MENU_SHORTCUT_KEY | InputEvent.SHIFT_DOWN_MASK) },
+			{ ACCELERATOR_UNDO,           KeyStroke.getKeyStroke('Z', I18nUtil.MENU_SHORTCUT_KEY) },
+			{ ACCELERATOR_REDO,           KeyStroke.getKeyStroke('Y', I18nUtil.MENU_SHORTCUT_KEY) },
+			{ ACCELERATOR_ROTATE_CW,      KeyStroke.getKeyStroke('R', I18nUtil.MENU_SHORTCUT_KEY) },
+			{ ACCELERATOR_ROTATE_CCW,     KeyStroke.getKeyStroke('R', I18nUtil.MENU_SHORTCUT_KEY | InputEvent.SHIFT_DOWN_MASK) },
 			{ ABOUT_TITLE,                "About" },
 			{ PLUGIN_ERROR_TITLE,         "Plugin Error" },
 			{ PLUGIN_INIT_ERROR,          "Error initializing plugin %s" },
