@@ -38,6 +38,8 @@ public class PdfJumblerResources_de extends ListResourceBundle implements I18nKe
 			{ PROGRESS_ABORT,           "Abbrechen" },
 			{ UNDO,                     "Rückgängig" },
 			{ REDO,                     "Wiederherstellen" },
+			{ ROTATE_CW,                "Drehen (im Uhrzeigersinn)" },
+			{ ROTATE_CCW,               "Drehen (gegen den Uhrzeigersinn)" },
 			{ ACCELERATOR_OPEN,         KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK) },
 			{ ACCELERATOR_SAVE,         KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK) },
 			{ ACCELERATOR_ZOOM_IN,      KeyStroke.getKeyStroke('+') },
