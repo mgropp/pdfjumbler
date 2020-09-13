@@ -25,15 +25,17 @@ there's a second page list available to the left
 
 Keyboard Shortcuts
 ------------------
-* Ctrl+O    Open file
-* Ctrl+S    Save file
-* +         Zoom in
-* -         Zoom out
-* Alt+Up    Move page up
-* Alt+Down  Move page down
-* Del       Delete page
-* Ctrl+Z    Undo
-* Ctrl+Y    Redo
+* Ctrl+O       Open file
+* Ctrl+S       Save file
+* \+           Zoom in
+* \-           Zoom out
+* Alt+Up       Move page up
+* Alt+Down     Move page down
+* Del          Delete page
+* Ctrl+Z       Undo
+* Ctrl+Y       Redo
+* Ctrl+R       Rotate clockwise
+* Ctrl+Shift+R Rotate counter-clockwise
 
 
 Command Line
