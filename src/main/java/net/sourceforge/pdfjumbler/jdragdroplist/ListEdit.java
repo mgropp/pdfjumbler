@@ -52,7 +52,7 @@ class ListEdit<T> extends AbstractUndoableEdit {
 		this.index = index;
 		this.item = null;
 		this.item2 = null;
-		this.items = new ArrayList<T>(items);
+		this.items = new ArrayList<>(items);
 	}
 	
 	@Override
@@ -75,5 +75,10 @@ class ListEdit<T> extends AbstractUndoableEdit {
 			return
 				type + " @ " + index + ": " + items;
 		}
+	}
+
+	@Override
+	public String getPresentationName() {
+		return toString();
 	}
 }

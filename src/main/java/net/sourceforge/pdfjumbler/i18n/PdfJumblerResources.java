@@ -1,9 +1,9 @@
 package net.sourceforge.pdfjumbler.i18n;
 
-import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
 
 import javax.swing.KeyStroke;
 
@@ -11,6 +11,12 @@ import javax.swing.KeyStroke;
  * @author Martin Gropp
  */
 public class PdfJumblerResources extends ListResourceBundle implements I18nKeys {
+	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
+
+	public static ResourceBundle getResources() {
+		return resources;
+	}
+
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {

@@ -27,8 +27,7 @@ public class Plugin {
 	public static final String PDF_RENDERER_KEY = "pdfjumbler-plugin-renderer";
 	
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
-	
-	private final ClassLoader classLoader;
+
 	private final List<Class<? extends PdfEditor>> pdfEditorClasses;
 	private final List<Class<? extends PdfRenderer>> pdfRendererClasses;
 	
@@ -62,7 +61,8 @@ public class Plugin {
 				requiredVersion
 			));
 		}
-		
+
+		ClassLoader classLoader;
 		try {
 			classLoader = new URLClassLoader(
 				new URL[]{ jarFile.toURI().toURL() },
@@ -80,7 +80,7 @@ public class Plugin {
 			for (String className : classNames) {
 				try {
 					pdfEditorClasses.add(
-						(Class)classLoader.loadClass(
+						(Class) classLoader.loadClass(
 							className
 						)
 					);
@@ -102,7 +102,7 @@ public class Plugin {
 			for (String className : classNames) {
 				try {
 					pdfRendererClasses.add(
-						(Class)classLoader.loadClass(
+						(Class) classLoader.loadClass(
 							className
 						)
 					);

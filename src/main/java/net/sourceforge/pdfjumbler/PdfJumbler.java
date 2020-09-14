@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.io.File;
-import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.undo.UndoManager;
 
+import net.sourceforge.pdfjumbler.actions.*;
 import net.sourceforge.pdfjumbler.i18n.I18nKeys;
 import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
@@ -49,37 +49,32 @@ public class PdfJumbler extends JFrame {
 
 	private static PdfJumbler instance = null; 
 
-	final PdfList mainList;
-	final PdfList secondaryList;
-	//final JToolBar toolBar;
-	final UndoManager undoManager = new UniqueUndoManager();
-	
-	private final Action docOpenAction;
-	private final Action docSaveAction; 
-	
-	private final Action docOpenAction2;
-	private final Action docSaveAction2;
-	
-	private final Action zoomOutAction = new Actions.ZoomOutAction(this); 
-	private final Action zoomInAction = new Actions.ZoomInAction(this); 
-	
-	final Action clearAction = new Actions.ClearAction(this);
-	final Action delAction = new Actions.DelAction(this);
+	private final PdfList mainList;
+	private final PdfList secondaryList;
+	private final UndoManager undoManager = new UniqueUndoManager();
+	private final Actions actions;
 
-	final Action rotateCwAction = new Actions.RotateClockwiseAction(this);
-	final Action rotateCcwAction = new Actions.RotateCounterClockwiseAction(this);
-	
-	private final Action moveUpAction = new Actions.MoveUpAction();
-	private final Action moveDownAction = new Actions.MoveDownAction();
+	public PdfList getMainPdfList() {
+		return mainList;
+	}
 
-	final Action undoAction;
-	final Action redoAction;
-	
-	static void openFiles(PdfList list, int insertPos, Collection<File> files) {
+	public PdfList getSecondaryPdfList() {
+		return secondaryList;
+	}
+
+	public UndoManager getUndoManager() {
+		return undoManager;
+	}
+
+	public Actions getActions() {
+		return actions;
+	}
+
+	public static void openFiles(PdfList list, int insertPos, Collection<File> files) {
 		if (files.size() > 0) {
 			try {
 				ProgressDialog.run(
-					new Actions.OpenDocumentWorker(
+					new OpenDocumentWorker(
 						list.getModel(),
 						insertPos,
 						files
@@ -95,17 +90,17 @@ public class PdfJumbler extends JFrame {
 	}
 
 	static void openFiles(PdfList list, int insertPos, String... fileNames) {
-		ArrayList<File> files = new ArrayList<File>(fileNames.length);
+		ArrayList<File> files = new ArrayList<>(fileNames.length);
 		for (String fileName : fileNames) {
 			files.add(new File(fileName));
 		}
 		openFiles(list, insertPos, files);
 	}
 
-	static void saveFile(PdfList list, File file) {
+	public static void saveFile(PdfList list, File file) {
 		try {
 			ProgressDialog.run(
-				new Actions.SaveDocumentWorker(
+				new SaveDocumentWorker(
 					list.getModel(),
 					file
 				),
@@ -199,14 +194,14 @@ public class PdfJumbler extends JFrame {
 		}
 	}
 
-	private PdfJumbler(String[] files) throws IOException {
+	private PdfJumbler(String[] files) {
 		Logger.info("PdfJumbler is starting");
 
 		PdfJumbler.instance = this;
 
 		installExceptionHandler();
 		setTitle(getClass().getSimpleName());
-		setIconImage(Icons.PDFJUMBLER.getImage());
+		setIconImage(Icons.PDF_JUMBLER.getImage());
 		setLookAndFeel();
 
 		// Prepare toolbars
@@ -245,59 +240,55 @@ public class PdfJumbler extends JFrame {
 		add(splitPane, BorderLayout.CENTER);
 
 		// Actions
-		docOpenAction = new Actions.DocOpenAction(this, mainList);
-		docSaveAction = new Actions.DocSaveAction(this, mainList); 
-		
-		docOpenAction2 = new Actions.DocOpenAction(this, secondaryList, Icons.Size16.DOCUMENT_OPEN);
-		docSaveAction2 = new Actions.DocSaveAction(this, secondaryList, Icons.Size16.DOCUMENT_SAVE);
+		actions = new Actions(this);
 
 		// Toolbar
-		toolBar.add(docOpenAction);
-		toolBar.add(docSaveAction);
+		toolBar.add(actions.getDocOpenAction());
+		toolBar.add(actions.getDocSaveAction());
 		toolBar.addSeparator();
-		toolBar.add(zoomOutAction);
-		toolBar.add(zoomInAction);
+		toolBar.add(actions.getZoomOutAction());
+		toolBar.add(actions.getZoomInAction());
 		toolBar.addSeparator();
-		JButton delButton = toolBar.add(delAction);
+		JButton delButton = toolBar.add(actions.getDeleteAction());
 		delButton.setDropTarget(new DropTarget(delButton, new TrashDropTargetListener()));
 		toolBar.addSeparator();
-		toolBar.add(new Actions.RotateClockwiseAction(this));
+		toolBar.add(new RotateClockwiseAction(this));
 
-		undoAction = new Actions.UndoAction(undoManager);
-		redoAction = new Actions.RedoAction(undoManager);
-		
 		toolBar.add(Box.createHorizontalGlue());
-		Actions.MenuAction menuAction = new Actions.MenuAction(this);
+		MenuAction menuAction = new MenuAction(this);
 		menuAction.setComponent(toolBar.add(menuAction));
 
 		add(toolBar, BorderLayout.NORTH);
 
 		// Toolbar 2
 		toolBar2.add(Box.createHorizontalGlue());
-		toolBar2.add(docOpenAction2);
-		toolBar2.add(docSaveAction2);
+		toolBar2.add(actions.getDocOpenAction2());
+		toolBar2.add(actions.getDocSaveAction2());
 
 		// Open files
 		openFiles(mainList, -1, files);
 
 		// Listen for editor/renderer changes
-		PdfProcessingFactory.addProcessorListener(new Actions.ReloadingProcessorListener(this));
+		PdfProcessingFactory.addProcessorListener(new ReloadingProcessorListener(this));
 
 		// Register accelerators
 		registerAccelerators(
 			getRootPane(),
-			docOpenAction, docSaveAction,
-			zoomInAction, zoomOutAction,
-			undoAction, redoAction,
-			rotateCwAction, rotateCcwAction
+			actions.getDocOpenAction(), actions.getDocSaveAction(),
+			actions.getZoomInAction(), actions.getZoomOutAction(),
+			actions.getUndoAction(), actions.getRedoAction(),
+			actions.getRotateClockwiseAction(),
+			actions.getRotateCounterClockwiseAction()
 		);
 		registerAccelerators(
 			mainList,
-			moveUpAction, moveDownAction, delAction
+			actions.getMoveUpAction(), actions.getMoveDownAction(), actions.getDeleteAction()
 		);
 		registerAccelerators(
 			secondaryList,
-			moveUpAction, moveDownAction, delAction
+			actions.getMoveUpAction(),
+			actions.getMoveDownAction(),
+			actions.getDeleteAction()
 		);
 	}
 

@@ -3,6 +3,7 @@ package net.sourceforge.pdfjumbler.pdf;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ import org.tinylog.Logger;
 public final class PdfProcessingFactory {
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 	
-	private static List<Class<? extends PdfEditor>> pdfEditorClasses = new ArrayList<>();
-	private static List<Class<? extends PdfRenderer>> pdfRendererClasses = new ArrayList<>();
+	private static final List<Class<? extends PdfEditor>> pdfEditorClasses = new ArrayList<>();
+	private static final List<Class<? extends PdfRenderer>> pdfRendererClasses = new ArrayList<>();
 
 	// add plugins from main (could be empty)
 	static {
@@ -45,7 +46,7 @@ public final class PdfProcessingFactory {
 	private static PdfEditor editor = null;
 	private static PdfRenderer renderer = null;
 	
-	private static LinkedList<PdfProcessorListener> listeners = new LinkedList<PdfProcessorListener>();
+	private static final LinkedList<PdfProcessorListener> listeners = new LinkedList<>();
 	
 	static {
 		discoverPlugins();
@@ -269,16 +270,16 @@ public final class PdfProcessingFactory {
 		return renderer.getClass();
 	}
 	
-	public static void setEditorClass(Class<? extends PdfEditor> cls) throws InstantiationException, IllegalAccessException {
+	public static void setEditorClass(Class<? extends PdfEditor> cls) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		PdfEditor oldEditor = editor;
-		editor = cls.newInstance();
+		editor = cls.getDeclaredConstructor().newInstance();
 		fireEditorChanged(oldEditor);
 		Preferences.userNodeForPackage(PdfJumbler.class).put("editor", cls.getCanonicalName());
 	}
 	
-	public static void setRendererClass(Class<? extends PdfRenderer> cls) throws InstantiationException, IllegalAccessException {
+	public static void setRendererClass(Class<? extends PdfRenderer> cls) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		PdfRenderer oldRenderer = renderer;
-		renderer = cls.newInstance();
+		renderer = cls.getDeclaredConstructor().newInstance();
 		fireRendererChanged(oldRenderer);
 		Preferences.userNodeForPackage(PdfJumbler.class).put("renderer", cls.getCanonicalName());
 	}

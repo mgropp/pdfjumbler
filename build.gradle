@@ -4,8 +4,8 @@ def mainClass = "${mainPackage}.PdfJumbler"
 apply plugin: "java"
 apply plugin: "idea"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 defaultTasks "jar"
 
@@ -22,6 +22,9 @@ dependencies {
 	compile 'org.tinylog:tinylog-impl:2.1.2'
 	compile 'org.apache.pdfbox:pdfbox:2.0.21'
 	implementation 'at.swimmesberger:swingx-plaf:1.6.8'
+	implementation 'com.twelvemonkeys.imageio:imageio:3.6'
+	implementation 'com.twelvemonkeys.imageio:imageio-batik:3.6'
+	implementation 'org.apache.xmlgraphics:batik-transcoder:1.13'
 }
 
 jar {

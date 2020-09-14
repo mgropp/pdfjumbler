@@ -33,11 +33,9 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 		if (pages.size() == 0) {
 			throw new IOException("Empty document.");
 		}
-		
-		PDDocument outDoc = new PDDocument();
 
-		Map<File,PDDocument> docs = new HashMap<>();
-		try {
+		Map<File, PDDocument> docs = new HashMap<>();
+		try (PDDocument outDoc = new PDDocument()) {
 			for (Page page : pages) {
 				PDDocument pageDoc = docs.get(page.getFile());
 				if (pageDoc == null) {
@@ -55,7 +53,6 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 			Logger.info("File saved successfully.");
 		}
 		finally {
-			outDoc.close();
 			for (PDDocument doc : docs.values()) {
 				doc.close();
 			}

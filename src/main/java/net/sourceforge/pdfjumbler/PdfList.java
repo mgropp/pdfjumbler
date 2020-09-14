@@ -23,14 +23,11 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
 public class PdfList extends JDragDropList<Page> {
 	private static final long serialVersionUID = 7475943073466784769L;
 
-	public static int INSERT_POSITION_DROP = Integer.MIN_VALUE;
-	public static int INSERT_POSITION_END = -1;
-
 	private int zoomSpeed = 20;
 	private String displayMessage = null;
 	
 	public PdfList() {
-		super(new UndoableListModel<Page>());
+		super(new UndoableListModel<>());
 		setCellRenderer(new PdfCellRenderer(PdfProcessingFactory.getRenderer()));
 		setDropListener(new URIDropListener());
 		addMouseWheelListener(new ZoomMouseWheelListener());
@@ -135,7 +132,7 @@ public class PdfList extends JDragDropList<Page> {
 			@SuppressWarnings("unchecked")
 			JDragDropList<Page> list = (JDragDropList<Page>)sender;
 			if (DropUtil.isURIDrop(info)) {
-				ArrayList<File> files = new ArrayList<File>();
+				ArrayList<File> files = new ArrayList<>();
 				int position = list.getDropLocation().getIndex();
 				for (URI uri : DropUtil.getURIs(info)) {
 					if (uri.getScheme().equals("file")) {
@@ -154,6 +151,6 @@ public class PdfList extends JDragDropList<Page> {
 
 	@Override
 	public UndoableListModel<Page> getModel() {
-		return (UndoableListModel<Page>)super.getModel();
+		return super.getModel();
 	}
 }

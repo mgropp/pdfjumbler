@@ -41,13 +41,10 @@ public class TrashDropTargetListener implements DropTargetListener {
 			try {
 				data = (JDDLTransferData<Page>)dtde.getTransferable().getTransferData(JDDLTransferData.DATA_FLAVOR);
 			}
-			catch (UnsupportedFlavorException e) {
+			catch (UnsupportedFlavorException | IOException e) {
 				throw new AssertionError(e);
 			}
-			catch (IOException e) {
-				throw new AssertionError(e);
-			}
-			
+
 			int[] indices = data.getIndices();
 			Arrays.sort(indices);
 			for (int i = indices.length-1; i >= 0; i--) {
