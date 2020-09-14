@@ -58,19 +58,19 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 				"PDF Renderer: %s\n" +
 				"\n" +
 				"This program is free software; you can redistribute it and/or modify it\n" +
-				"under the terms of the GNU Affero General Public License as published by the\n" +
+				"under the terms of the GNU General Public License as published by the\n" +
 				"Free Software Foundation; either version 3 of the License, or (at your\n" +
 				"option) any later version.\n\n" +
 				"This program is distributed in the hope that it will be useful, but\n" +
 				"WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
 				"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n" +
-				"See the GNU Affero General Public License for more details.\n\n" +
-				"You should have received a copy of the GNU Affero General Public License along\n" +
+				"See the GNU General Public License for more details.\n\n" +
+				"You should have received a copy of the GNU General Public License along\n" +
 				"with this program; if not, see http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"Este programa puede incluir, entre otros, las siguientes partes de software de terceros:\n" +
 				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
-				"Oxygen Icons - The Oxygen Team (LGPL/CC by-sa)\n"
+				"Ubuntu Mobile Icons - Canonical Ltd. (CC-BY-SA-3.0)"
 			}
 		};
 	}

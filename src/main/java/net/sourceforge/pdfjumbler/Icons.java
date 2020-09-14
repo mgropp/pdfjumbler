@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public final class Icons {
 	private static final int STANDARD_BASE_SIZE = 22;
