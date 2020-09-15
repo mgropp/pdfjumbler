@@ -24,6 +24,9 @@ Alternatively, there is a runnable jar file (just double-click), pdfjumbler.jar.
 
 User Interface
 --------------
+
+![Screenshot](screenshots/screenshot01.png)
+
 The user interface is actually rather simple:
 pages can be moved around using drag&drop (or the
 keyboard, see below), and for more complex operations
