@@ -7,7 +7,9 @@ Releases
 --------
 
 * v0.2.0: https://github.com/mgropp/pdfjumbler/releases/download/v0.2.0/pdfjumbler.jar
-
+* v0.3.0:
+  * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/pdfjumbler.jar
+  * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/setup-pdfjumbler.exe
 
 Installation
 ------------
