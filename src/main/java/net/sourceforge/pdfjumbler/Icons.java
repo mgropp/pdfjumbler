@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public final class Icons {
+	private static final String BASE_DIR = "icons/";
+
 	private static final int STANDARD_BASE_SIZE = 22;
 	private static final int SMALL_BASE_SIZE = 16;
 	private static final int APP_ICON_BASE_SIZE = 64;
@@ -37,6 +39,8 @@ public final class Icons {
 	}
 
 	private static ImageIcon createMultiResIcon(String svgResourceName, int baseSize) {
+		svgResourceName = BASE_DIR + svgResourceName;
+
 		List<Image> images = new ArrayList<>(FACTORS.length);
 		ImageTranscoder transcoder = new ImageTranscoder() {
 			@Override
@@ -53,11 +57,14 @@ public final class Icons {
 		TranscodingHints hints = transcoder.getTranscodingHints();
 		for (double factor : FACTORS) {
 			hints.put(
-				ImageTranscoder.KEY_MAX_WIDTH,
+				ImageTranscoder.KEY_WIDTH,
 				(float)(factor * baseSize)
 			);
 
 			try (InputStream stream = Icons.class.getClassLoader().getResourceAsStream(svgResourceName)) {
+				if (stream == null) {
+					throw new IOException("Resource not found: " + svgResourceName);
+				}
 				TranscoderInput input = new TranscoderInput(stream);
 				transcoder.setTranscodingHints(hints);
 				transcoder.transcode(input, null);

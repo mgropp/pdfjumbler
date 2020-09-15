@@ -1,15 +1,15 @@
 package net.sourceforge.pdfjumbler;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.dnd.DropTarget;
-import java.io.File;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
+import com.formdev.flatlaf.FlatLightLaf;
+import net.sourceforge.pdfjumbler.actions.MenuAction;
+import net.sourceforge.pdfjumbler.actions.OpenDocumentWorker;
+import net.sourceforge.pdfjumbler.actions.ReloadingProcessorListener;
+import net.sourceforge.pdfjumbler.actions.RotateClockwiseAction;
+import net.sourceforge.pdfjumbler.actions.SaveDocumentWorker;
+import net.sourceforge.pdfjumbler.i18n.I18nKeys;
+import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
+import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
+import org.tinylog.Logger;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -25,16 +25,16 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.undo.UndoManager;
-
-import net.sourceforge.pdfjumbler.actions.*;
-import net.sourceforge.pdfjumbler.i18n.I18nKeys;
-import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
-import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
-
-import org.tinylog.Logger;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.dnd.DropTarget;
+import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
  * PdfJumbler main class.
@@ -43,8 +43,8 @@ import org.tinylog.Logger;
  */
 public class PdfJumbler extends JFrame {
 	private static final long serialVersionUID = 4382647271800905977L;
-	public static final int VERSION = 20200912;
-	public static final String VERSION_STRING = "2020-09-12";
+	public static final int VERSION = 20200915;
+	public static final String VERSION_STRING = "2020-09-15";
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
 	private static PdfJumbler instance = null; 
@@ -114,33 +114,7 @@ public class PdfJumbler extends JFrame {
 	}
 
 	public static void setLookAndFeel() {
-		String plaf = System.getProperty("pdfjumbler.lookandfeel", "");
-		if (plaf.equals("?")) {
-			for (LookAndFeelInfo l : UIManager.getInstalledLookAndFeels()) {
-				System.out.println(l.getName() + ": " + l.getClassName());
-			}
-			plaf = "";
-		}
-		
-		if (plaf.length() == 0) {
-			plaf = Preferences.userNodeForPackage(PdfJumbler.class).get("lookandfeel", "");
-		}
-
-		if (plaf.length() > 0) {
-			try {
-				UIManager.setLookAndFeel(plaf);
-			}
-			catch (Exception e) {
-				Logger.error(e);
-			}
-		} else {
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-			catch (Exception e) {
-				// ignore
-			}
-		}
+		FlatLightLaf.install();
 	}
 
 	private void installExceptionHandler() {
@@ -200,9 +174,9 @@ public class PdfJumbler extends JFrame {
 		PdfJumbler.instance = this;
 
 		installExceptionHandler();
+		setLookAndFeel();
 		setTitle(getClass().getSimpleName());
 		setIconImage(Icons.PDF_JUMBLER.getImage());
-		setLookAndFeel();
 
 		// Prepare toolbars
 		JToolBar toolBar = new JToolBar();

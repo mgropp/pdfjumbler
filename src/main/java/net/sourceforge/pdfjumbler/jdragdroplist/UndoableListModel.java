@@ -12,25 +12,24 @@ import java.util.List;
 public final class UndoableListModel<T> extends AbstractListModel<T> {
 	private final UndoableList<T> list;
 
-	private final ListDataListener listDataListener = new ListDataListener() {
-		@Override
-		public void intervalAdded(ListDataEvent e) {
-			fireIntervalAdded(this, e.getIndex0(), e.getIndex1());
-		}
-
-		@Override
-		public void intervalRemoved(ListDataEvent e) {
-			fireIntervalRemoved(this, e.getIndex0(), e.getIndex1());
-		}
-
-		@Override
-		public void contentsChanged(ListDataEvent e) {
-			fireContentsChanged(this, e.getIndex0(), e.getIndex1());
-		}
-	};
-
 	public UndoableListModel(UndoableList<T> list) {
 		this.list = list;
+		ListDataListener listDataListener = new ListDataListener() {
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				fireIntervalAdded(this, e.getIndex0(), e.getIndex1());
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				fireIntervalRemoved(this, e.getIndex0(), e.getIndex1());
+			}
+
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				fireContentsChanged(this, e.getIndex0(), e.getIndex1());
+			}
+		};
 		list.addListDataListener(listDataListener);
 	}
 

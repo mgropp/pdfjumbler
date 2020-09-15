@@ -1,10 +1,6 @@
 package net.sourceforge.pdfjumbler.i18n;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.ListResourceBundle;
-
-import javax.swing.KeyStroke;
 
 /**
  * @author s-r-grass
@@ -13,7 +9,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {
-			{ OPEN_DOCUMENT,            "Открыть" },
+			{ OPEN_DOCUMENT,            "Открыть/Добавить" },
 			{ SAVE_DOCUMENT,            "Сохранить" },
 			{ FILE_FILTER_PDF,          "PDF документы (*.pdf)" },
 			{ OVERWRITE_FILE_TITLE,     "Перезаписать?" },
@@ -70,7 +66,9 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 				"\n" +
 				"Это программное обеспечение может включать (среди прочего) следующие сторонние программы:\n" +
 				"PdfBox - Авторские права Apache Foundation (Apache license)\n" +
-				"Ubuntu Mobile Icons - Canonical Ltd. (CC-BY-SA-3.0)"
+				"FlatLaf - Авторские права FormDev Software GmbH (Apache License)\n" +
+				"IntelliJ IDEA CE Icons - Авторские права JetBrains s.r.o. (Apache License)\n" +
+				"Ubuntu Mobile Icons - Авторские права Canonical Ltd. (CC-BY-SA-3.0)"
 			}
 		};
 	}

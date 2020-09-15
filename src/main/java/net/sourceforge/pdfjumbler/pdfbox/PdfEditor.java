@@ -24,7 +24,7 @@ public class PdfEditor implements net.sourceforge.pdfjumbler.pdf.PdfEditor {
 	}
 	
 	@Override
-	public void close() throws IOException { }
+	public void close() {}
 
 	@Override
 	public void saveDocument(List<Page> pages, File file) throws IOException {

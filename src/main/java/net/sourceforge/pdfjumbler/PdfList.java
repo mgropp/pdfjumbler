@@ -10,6 +10,7 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.TransferHandler.TransferSupport;
 
@@ -23,7 +24,6 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
 public class PdfList extends JDragDropList<Page> {
 	private static final long serialVersionUID = 7475943073466784769L;
 
-	private int zoomSpeed = 20;
 	private String displayMessage = null;
 	
 	public PdfList() {
@@ -110,6 +110,7 @@ public class PdfList extends JDragDropList<Page> {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent event) {
 			if (event.isControlDown() && (getCellRenderer() instanceof PdfCellRenderer)) {
+				int zoomSpeed = 20;
 				setThumbnailSize(
 					Math.max(10, getThumbnailSize() - zoomSpeed * event.getWheelRotation())
 				);
@@ -134,7 +135,7 @@ public class PdfList extends JDragDropList<Page> {
 			if (DropUtil.isURIDrop(info)) {
 				ArrayList<File> files = new ArrayList<>();
 				int position = list.getDropLocation().getIndex();
-				for (URI uri : DropUtil.getURIs(info)) {
+				for (URI uri : Objects.requireNonNull(DropUtil.getURIs(info))) {
 					if (uri.getScheme().equals("file")) {
 						files.add(new File(uri.getPath()));
 					}

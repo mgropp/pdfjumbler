@@ -122,10 +122,7 @@ public class JDragDropList<T> extends JList<T> {
 			try {
 				data = (JDDLTransferData<T>)info.getTransferable().getTransferData(JDDLTransferData.DATA_FLAVOR);
 			}
-			catch (UnsupportedFlavorException e) {
-				throw new AssertionError(e);
-			}
-			catch (IOException e) {
+			catch (UnsupportedFlavorException | IOException e) {
 				throw new AssertionError(e);
 			}
 
@@ -186,7 +183,7 @@ public class JDragDropList<T> extends JList<T> {
 		@Override
 		protected Transferable createTransferable(JComponent c) {
 			@SuppressWarnings("unchecked")
-			final JDDLTransferData<T> data = new JDDLTransferData<T>((JDragDropList<T>)c);
+			final JDDLTransferData<T> data = new JDDLTransferData<>((JDragDropList<T>) c);
 			return new Transferable() {
 				@Override
 				public JDDLTransferData<T> getTransferData(DataFlavor flavor)

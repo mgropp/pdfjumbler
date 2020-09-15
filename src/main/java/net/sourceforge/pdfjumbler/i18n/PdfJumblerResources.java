@@ -20,7 +20,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {
-			{ OPEN_DOCUMENT,              "Open document" },
+			{ OPEN_DOCUMENT,              "Open/add document" },
 			{ SAVE_DOCUMENT,              "Save document" },
 			{ FILE_FILTER_PDF,            "PDF documents (*.pdf)" },
 			{ OVERWRITE_FILE_TITLE,       "Overwrite?" },
@@ -86,8 +86,10 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 				"with this program; if not, see http://www.gnu.org/licenses/.\n" +
 				"\n" +
 				"This software may include (among others) the following third party content:\n" +
-				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
-				"Ubuntu Mobile Icons - Canonical Ltd. (CC-BY-SA-3.0)"
+				"PdfBox - Copyright Apache Foundation (Apache License)\n" +
+				"FlatLaf - Copyright FormDev Software GmbH (Apache License)\n" +
+				"IntelliJ IDEA CE Icons - Copyright JetBrains s.r.o. (Apache License)\n" +
+				"Ubuntu Mobile Icons - Copyright Canonical Ltd. (CC-BY-SA-3.0)"
 			}
 		};
 	}

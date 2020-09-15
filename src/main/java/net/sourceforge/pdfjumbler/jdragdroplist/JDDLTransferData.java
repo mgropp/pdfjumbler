@@ -28,7 +28,7 @@ public final class JDDLTransferData<T> {
 
 	public JDDLTransferData(JDragDropList<T> list) {
 		this.sourceList = list;
-		this.indices = (int[])list.getSelectedIndices().clone();
+		this.indices = list.getSelectedIndices().clone();
 		this.values = new ArrayList<>(list.getSelectedValuesList());
 	}
 

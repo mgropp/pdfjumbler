@@ -29,15 +29,15 @@ public class UndoableList<T> implements List<T> {
 	 */
 	private final boolean[] editProtection;
 	
-	private final Deque<CompoundEdit> compoundEdits = new LinkedList<CompoundEdit>();
+	private final Deque<CompoundEdit> compoundEdits = new LinkedList<>();
 	
 	public UndoableList(List<T> list) {
 		this.list = list;
 		this.parent = null;
 		this.offset = 0;
 		this.editProtection = new boolean[]{ false };
-		this.editListeners = new ArrayList<UndoableEditListener>();
-		this.listDataListeners = new ArrayList<ListDataListener>();
+		this.editListeners = new ArrayList<>();
+		this.listDataListeners = new ArrayList<>();
 	}
 	
 	private UndoableList(UndoableList<T> parent, List<T> subList, int offset) {
@@ -174,7 +174,7 @@ public class UndoableList<T> implements List<T> {
 
 		list.add(index, element);
 		callListenersAdd(
-			new ListEdit<T>(ListEdit.Type.ADD, getMainList(), index + offset, element),
+				new ListEdit<>(ListEdit.Type.ADD, getMainList(), index + offset, element),
 			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_ADDED, index + offset, index)
 		);		
 	}
@@ -192,7 +192,7 @@ public class UndoableList<T> implements List<T> {
 
 		list.addAll(index, c);
 		callListenersAdd(
-			new ListEdit<T>(ListEdit.Type.ADD_MULTIPLE, getMainList(), index + offset, c),
+				new ListEdit<>(ListEdit.Type.ADD_MULTIPLE, getMainList(), index + offset, c),
 			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_ADDED, index + offset, index + offset + c.size() - 1)
 		);
 		return true;
@@ -204,10 +204,10 @@ public class UndoableList<T> implements List<T> {
 			throw new ConcurrentModificationException();
 		}
 
-		Collection<T> copy = new ArrayList<T>(list);
+		Collection<T> copy = new ArrayList<>(list);
 		list.clear();
 		callListenersRemove(
-			new ListEdit<T>(ListEdit.Type.REMOVE_MULTIPLE, getMainList(), offset, copy),
+				new ListEdit<>(ListEdit.Type.REMOVE_MULTIPLE, getMainList(), offset, copy),
 			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_REMOVED, offset, offset + copy.size() - 1)
 		);
 	}
@@ -251,7 +251,7 @@ public class UndoableList<T> implements List<T> {
 	public ListIterator<T> listIterator(int index) {
 		final ListIterator<T> it = list.listIterator(index);
 		
-		return new ListIterator<T>() {
+		return new ListIterator<>() {
 			@Override
 			public boolean hasNext() {
 				return it.hasNext();
@@ -323,7 +323,7 @@ public class UndoableList<T> implements List<T> {
 
 		T item = list.remove(index);
 		callListenersRemove(
-			new ListEdit<T>(ListEdit.Type.REMOVE, getMainList(), index + offset, item),
+				new ListEdit<>(ListEdit.Type.REMOVE, getMainList(), index + offset, item),
 			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_REMOVED, index + offset, index + offset)
 		);
 		
@@ -348,7 +348,7 @@ public class UndoableList<T> implements List<T> {
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		ArrayList<T> removeItems = new ArrayList<T>();
+		ArrayList<T> removeItems = new ArrayList<>();
 		for (T item : list) {
 			if (!c.contains(item)) {
 				removeItems.add(item);
@@ -366,7 +366,7 @@ public class UndoableList<T> implements List<T> {
 
 		T oldElement = list.set(index, element);
 		callListenersSet(
-			new ListEdit<T>(ListEdit.Type.SET, getMainList(), index + offset, oldElement, element),
+				new ListEdit<>(ListEdit.Type.SET, getMainList(), index + offset, oldElement, element),
 			new ListDataEvent(getMainList(), ListDataEvent.CONTENTS_CHANGED, index + offset, index + offset)
 		);
 		
@@ -380,7 +380,7 @@ public class UndoableList<T> implements List<T> {
 
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
-		return new UndoableList<T>(getMainList(), list.subList(fromIndex, toIndex), fromIndex + offset);
+		return new UndoableList<>(getMainList(), list.subList(fromIndex, toIndex), fromIndex + offset);
 	}
 
 	@Override
@@ -411,6 +411,9 @@ public class UndoableList<T> implements List<T> {
 	}
 	
 	private void undoAddMultiple(ListEdit<T> edit) {
+		if (edit.items == null) {
+			throw new IllegalArgumentException("edit.items is null!");
+		}
 		for (T item : edit.items) {
 			assert (edit.list.list.get(edit.index) == item);
 			edit.list.list.remove(edit.index);
@@ -422,6 +425,9 @@ public class UndoableList<T> implements List<T> {
 	}
 	
 	private void undoRemoveMultiple(ListEdit<T> edit) {
+		if (edit.items == null) {
+			throw new IllegalArgumentException("edit.items is null!");
+		}
 		int index = edit.index;
 		for (T item : edit.items) {
 			edit.list.list.add(index++, item);
@@ -554,7 +560,7 @@ public class UndoableList<T> implements List<T> {
 	}
 	
 	public static void main(String[] args) {
-		final LinkedList<UndoableEdit> edits = new LinkedList<UndoableEdit>();
+		final LinkedList<UndoableEdit> edits = new LinkedList<>();
 		UndoableEditListener editListener = new UndoableEditListener() {
 			@Override
 			public void undoableEditHappened(UndoableEditEvent e) {

@@ -8,7 +8,7 @@ import javax.swing.undo.AbstractUndoableEdit;
 class ListEdit<T> extends AbstractUndoableEdit {
 	private static final long serialVersionUID = 1158687785913642971L;
 
-	public static enum Type {
+	public enum Type {
 		ADD, ADD_MULTIPLE,
 		REMOVE, REMOVE_MULTIPLE,
 		SET

@@ -1,9 +1,5 @@
 package net.sourceforge.pdfjumbler.i18n;
 
-import javax.swing.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
 public interface I18nKeys {
 	String OPEN_DOCUMENT = "OPEN_DOCUMENT";
 	String SAVE_DOCUMENT = "SAVE_DOCUMENT";

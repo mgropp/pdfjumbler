@@ -25,13 +25,12 @@ import net.sourceforge.pdfjumbler.pdf.PdfRenderer;
 public class PdfCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 2395480480996785313L;
 
-	private final Map<Page,Image> imageCache = new HashMap<Page,Image>();
+	private final Map<Page,Image> imageCache = new HashMap<>();
 	private PdfRenderer renderer;
 	
 	private Page page = null;
-	private int padding = 6;
-	
-	private int textWidth = 128;
+	private final int padding = 6;
+
 	private int thumbnailWidth = 96;
 	private int thumbnailHeight = 128;
 	
@@ -54,6 +53,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	private void sizeChanged() {
+		int textWidth = 128;
 		setSize(thumbnailWidth + textWidth + 4*padding, thumbnailHeight + 2*padding);
 		setPreferredSize(getSize());
 		clearImageCache();

@@ -18,7 +18,7 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
  * @author Martin Gropp
  */
 public class DocumentManager {
-	private static Map<File,List<Page>> pageMap = new HashMap<File,List<Page>>();
+	private static final Map<File,List<Page>> pageMap = new HashMap<>();
 	
 	public static List<Page> getPages(File file) throws IOException {
 		if (pageMap.containsKey(file)) {
@@ -26,7 +26,7 @@ public class DocumentManager {
 		}
 		
 		int pageCount = PdfProcessingFactory.getRenderer().getNumberOfPages(file);
-		List<Page> pages = new ArrayList<Page>(pageCount);
+		List<Page> pages = new ArrayList<>(pageCount);
 		for (int i = 0; i < pageCount; i++) {
 			Page page = new Page(file, i);
 			pages.add(page);
@@ -43,7 +43,7 @@ public class DocumentManager {
 	}
 	
 	public static Collection<Page> getAllPages() {
-		ArrayList<Page> pages = new ArrayList<Page>();
+		ArrayList<Page> pages = new ArrayList<>();
 		for (List<Page> pageList : pageMap.values()) {
 			pages.addAll(pageList);
 		}

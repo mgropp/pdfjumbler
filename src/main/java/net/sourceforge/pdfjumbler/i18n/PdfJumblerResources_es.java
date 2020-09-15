@@ -1,10 +1,6 @@
 package net.sourceforge.pdfjumbler.i18n;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.ListResourceBundle;
-
-import javax.swing.KeyStroke;
 
 /**
  * @author Andres Yesid Diaz Pinto
@@ -13,7 +9,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 	@Override
 	protected Object[][] getContents() {
 		return new Object[][] {
-			{ OPEN_DOCUMENT,            "Abrir documento" },  
+			{ OPEN_DOCUMENT,            "Abrir/añadir documento" },
 			{ SAVE_DOCUMENT,            "Guardar documento" },
 			{ FILE_FILTER_PDF,          "Documentos PDF  (*.pdf)" },
 			{ OVERWRITE_FILE_TITLE,     "¿Sobreescribir?" },
@@ -70,7 +66,9 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 				"\n" +
 				"Este programa puede incluir, entre otros, las siguientes partes de software de terceros:\n" +
 				"PdfBox - Copyright Apache Foundation (Apache license)\n" +
-				"Ubuntu Mobile Icons - Canonical Ltd. (CC-BY-SA-3.0)"
+				"FlatLaf - Copyright FormDev Software GmbH (Apache License)\n" +
+				"IntelliJ IDEA CE Icons - Copyright JetBrains s.r.o. (Apache License)\n" +
+				"Ubuntu Mobile Icons - Copyright Canonical Ltd. (CC-BY-SA-3.0)"
 			}
 		};
 	}

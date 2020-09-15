@@ -15,7 +15,7 @@ public interface DropListener {
 	 * @param info
 	 * @return
 	 */
-	public boolean acceptDrop(Object sender, TransferHandler.TransferSupport info);
+	boolean acceptDrop(Object sender, TransferHandler.TransferSupport info);
 	
 	/**
 	 * Called for drops the list can't handle itself (i.e. for everything
@@ -27,5 +27,5 @@ public interface DropListener {
 	 * @param info
 	 * @return
 	 */
-	public boolean handleDrop(Object sender, TransferHandler.TransferSupport info);
+	boolean handleDrop(Object sender, TransferHandler.TransferSupport info);
 }

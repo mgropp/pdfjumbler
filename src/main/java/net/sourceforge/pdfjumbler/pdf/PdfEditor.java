@@ -15,10 +15,10 @@ public interface PdfEditor {
 	 * @param file
 	 * @throws IOException
 	 */
-	public void saveDocument(List<Page> pages, File file) throws IOException;
+	void saveDocument(List<Page> pages, File file) throws IOException;
 	
 	/**
 	 * Close the editor, for example because a different editor is selected. 
 	 */
-	public void close() throws IOException;
+	void close() throws IOException;
 }

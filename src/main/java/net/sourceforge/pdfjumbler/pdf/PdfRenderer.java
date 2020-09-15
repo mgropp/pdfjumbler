@@ -27,7 +27,7 @@ public interface PdfRenderer {
 	 *   An Image of the PDF page.
 	 * @throws IOException
 	 */
-	public Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException;
+	Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException;
 	
 	/**
 	 * Return the number of pages in a PDF file.
@@ -37,12 +37,12 @@ public interface PdfRenderer {
 	 *   The number of pages in the file.
 	 * @throws IOException
 	 */
-	public int getNumberOfPages(File file) throws IOException;
+	int getNumberOfPages(File file) throws IOException;
 	
 	/**
 	 * Close the editor, for example because a different editor is selected.
 	 * 
 	 * @throws IOException
 	 */
-	public void close() throws IOException;
+	void close() throws IOException;
 }

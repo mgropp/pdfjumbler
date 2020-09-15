@@ -52,7 +52,7 @@ public class DropUtil {
 				throw new RuntimeException(e);
 			}
 			
-			List<URI> uriList = new ArrayList<URI>(data.size());
+			List<URI> uriList = new ArrayList<>(data.size());
 			for (File file : data) {
 				uriList.add(file.toURI());
 			}
@@ -71,7 +71,7 @@ public class DropUtil {
 			}
 			
 			String[] uris = data.split("\n");
-			List<URI> uriList = new ArrayList<URI>(uris.length);
+			List<URI> uriList = new ArrayList<>(uris.length);
 			
 			for (String uri : uris) {
 				uri = uri.trim();

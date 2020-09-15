@@ -1,7 +1,6 @@
 package net.sourceforge.pdfjumbler.pdf;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -63,13 +62,12 @@ public final class PdfProcessingFactory {
 		Logger.info("Plugin path: {}", pluginPath);
 		
 		File[] jarFiles = pluginPath.listFiles(
-			new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".jar");
-				}
-			}
+			(dir, name) -> name.endsWith(".jar")
 		);
+		if (jarFiles == null || jarFiles.length == 0) {
+			return;
+		}
+
 		Arrays.sort(jarFiles);
 		
 		for (File jarFile : jarFiles) {
