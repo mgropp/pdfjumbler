@@ -20,11 +20,11 @@ sourceSets {
 }
 
 dependencies {
-	implementation 'org.tinylog:tinylog-api:2.1.2'
-	implementation 'org.tinylog:tinylog-impl:2.1.2'
-	implementation 'org.apache.pdfbox:pdfbox:2.0.21'
-	implementation 'org.apache.xmlgraphics:batik-transcoder:1.13'
-	implementation 'com.formdev:flatlaf:0.41'
+	compile 'org.tinylog:tinylog-api:2.1.2'
+	compile 'org.tinylog:tinylog-impl:2.1.2'
+	compile 'org.apache.pdfbox:pdfbox:2.0.21'
+	compile 'org.apache.xmlgraphics:batik-transcoder:1.13'
+	compile 'com.formdev:flatlaf:0.41'
 }
 
 jar {
