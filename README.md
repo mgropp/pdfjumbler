@@ -3,6 +3,8 @@ PdfJumbler
 
 [![Build Status](https://travis-ci.org/mgropp/pdfjumbler.svg?branch=master)](https://travis-ci.org/mgropp/pdfjumbler)
 
+PdfJumbler simple tool to rearrange, merge, delete, and rotate pages from PDF files. 
+
 Releases
 --------
 
