@@ -63,11 +63,11 @@ Several settings can be changed using Java system properties:
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed; previous plugins are no longer supported)
 	 * PDFBox: `net.sourceforge.pdfjumbler.pdfbox.PdfRenderer`
 
-* `user.language`: sets the program language.
+* `user.language`: sets the program language (in case auto-detection doesn't work).
 	So far, `de` (German), `es` (Spanish), `ru` (Russian) and `en` (English; default)
 	localizations are available.
 
 ### Example ###
 ```
-java -Dpdfjumbler.editor=net.sourceforge.pdfjumbler.pdfbox.PdfEditor -jar pdfjumbler.jar foo.pdf bar.pdf
+java -Duser.language=es -jar pdfjumbler.jar foo.pdf bar.pdf
 ```
