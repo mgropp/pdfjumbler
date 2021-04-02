@@ -35,9 +35,14 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	private int thumbnailWidth = 96;
 	private int thumbnailHeight = 128;
 
-	private boolean showText = true;
+	private boolean showText;
 
 	public PdfCellRenderer(PdfRenderer renderer) {
+		this(renderer, true);
+	}
+
+	public PdfCellRenderer(PdfRenderer renderer, boolean showText) {
+		this.showText = showText;
 		this.renderer = PdfProcessingFactory.getRenderer();
 		PdfProcessingFactory.addProcessorListener(
 			new PdfProcessorListener() {

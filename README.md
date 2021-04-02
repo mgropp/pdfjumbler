@@ -8,6 +8,9 @@ PdfJumbler simple tool to rearrange, merge, delete, and rotate pages from PDF fi
 Releases
 --------
 
+* v0.4.0:
+  * https://github.com/mgropp/pdfjumbler/releases/download/v0.4.0/pdfjumbler.jar
+  * https://github.com/mgropp/pdfjumbler/releases/download/v0.4.0/setup-pdfjumbler.exe
 * v0.3.0:
   * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/pdfjumbler.jar
   * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/setup-pdfjumbler.exe

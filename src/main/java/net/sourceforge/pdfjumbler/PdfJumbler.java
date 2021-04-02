@@ -35,6 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 /**
  * PdfJumbler main class.
@@ -185,11 +186,15 @@ public class PdfJumbler extends JFrame {
 		toolBar2.setFloatable(false);
 		
 		// Lists
-		mainList = new PdfList();
+		mainList = new PdfList(
+			Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true)
+		);
 		mainList.setDisplayMessage(resources.getString(I18nKeys.LIST_DROP_PDFS_TO_EDIT));
 		JScrollPane mainPane = new JScrollPane(mainList);
 		
-		secondaryList = new PdfList();
+		secondaryList = new PdfList(
+			Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true)
+		);
 		secondaryList.setDisplayMessage(resources.getString(I18nKeys.LIST_CLIPBOARD_EMPTY));
 		secondaryList.setThumbnailSize(16);
 		JScrollPane secondaryPane = new JScrollPane(secondaryList);

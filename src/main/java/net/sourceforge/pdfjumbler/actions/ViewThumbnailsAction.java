@@ -1,5 +1,6 @@
 package net.sourceforge.pdfjumbler.actions;
 
+import net.sourceforge.pdfjumbler.ConfigKeys;
 import net.sourceforge.pdfjumbler.PdfJumbler;
 import net.sourceforge.pdfjumbler.PdfList;
 import net.sourceforge.pdfjumbler.i18n.I18nKeys;
@@ -8,6 +9,7 @@ import net.sourceforge.pdfjumbler.i18n.PdfJumblerResources;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.awt.event.ActionEvent;
+import java.util.prefs.Preferences;
 
 public class ViewThumbnailsAction extends AbstractAction {
 	private static final long serialVersionUID = 7357355236947950441L;
@@ -21,7 +23,8 @@ public class ViewThumbnailsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PdfList mainList = parent.getMainPdfList();
-		mainList.setShowCellText(false);
+		parent.getMainPdfList().setShowCellText(false);
+		parent.getSecondaryPdfList().setShowCellText(false);
+		Preferences.userNodeForPackage(PdfJumbler.class).putBoolean(ConfigKeys.SHOW_TEXT, false);
 	}
 }

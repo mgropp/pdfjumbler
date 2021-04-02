@@ -29,6 +29,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 			{ NO_PDF_RENDERER_TEXT,     "Не удалось загрузить плагин для рендеринга PDF." },
 			{ PDF_PAGE_TITLE,           "%d (%s)" },
 			{ MENU,                     "Настройки" },
+			{ MENU_VIEW,                "Вид" },
 			{ MENU_EDITOR,              "PDF Редактор" },
 			{ MENU_RENDERER,            "PDF Рендер" },
 			{ MOVE_UP,                  "Переместить вверх" },
@@ -41,13 +42,15 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
 			{ ABOUT_TITLE,              "О программе" },
 			{ PLUGIN_ERROR_TITLE,       "Ошибка плагина" },
 			{ PLUGIN_INIT_ERROR,        "Ошибка инициализации плагина %s" },
+			{ VIEW_LIST,                "Ведомость" },
+			{ VIEW_THUMBNAILS,          "Эскиз" },
 			{
 				PLUGIN_ERROR_VERSION_INCOMPATIBLE,
 				"Для этого плагина требуется версия PdfJumbler %s."
 			},
 			{
 				ABOUT_TEXT,
-				"PdfJumbler %s \nАвторские права (C) 2020 Мартин Гропп\n" +
+				"PdfJumbler %s \nАвторские права (C) 2021 Мартин Гропп\n" +
 				"Перевод: s-r-grass\n" +
 				"\n" +
 				"PDF Редактор: %s\n" +

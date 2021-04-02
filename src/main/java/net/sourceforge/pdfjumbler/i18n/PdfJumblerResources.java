@@ -72,7 +72,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 			},
 			{
 				ABOUT_TEXT,
-				"PdfJumbler %s \nCopyright (C) 2020 Martin Gropp\n" +
+				"PdfJumbler %s \nCopyright (C) 2021 Martin Gropp\n" +
 				"\n" +
 				"PDF Editor: %s\n" +
 				"PDF Renderer: %s\n" +

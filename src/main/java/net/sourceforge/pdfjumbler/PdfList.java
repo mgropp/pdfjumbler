@@ -11,6 +11,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 
 import javax.swing.JList;
 import javax.swing.TransferHandler.TransferSupport;
@@ -28,12 +29,17 @@ public class PdfList extends JDragDropList<Page> {
 	private static final int DEFAULT_VISIBLE_ROW_COUNT = 8;
 
 	private String displayMessage = null;
-	
-	public PdfList() {
+
+	public PdfList(boolean showText) {
 		super(new UndoableListModel<>());
-		setCellRenderer(new PdfCellRenderer(PdfProcessingFactory.getRenderer()));
 		setDropListener(new URIDropListener());
 		addMouseWheelListener(new ZoomMouseWheelListener());
+
+		setCellRenderer(new PdfCellRenderer(
+			PdfProcessingFactory.getRenderer(),
+			showText
+		));
+		this.setShowCellText(showText);
 	}
 	
 	private void drawCenteredText(Graphics g, String message, boolean alignCenter) {

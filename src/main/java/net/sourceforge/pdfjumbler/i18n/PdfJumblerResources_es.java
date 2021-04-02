@@ -50,7 +50,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
 			},
 			{
 				ABOUT_TEXT,
-				"PdfJumbler %s \nCopyright (C) 2020 Martin Gropp\n" +
+				"PdfJumbler %s \nCopyright (C) 2021 Martin Gropp\n" +
 				"Traducción: Andres Yesid Diaz Pinto\n" +
 				"\n" +
 				"PDF Editor: %s\n" +

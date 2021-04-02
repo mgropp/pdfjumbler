@@ -16,6 +16,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import net.sourceforge.pdfjumbler.ConfigKeys;
 import net.sourceforge.pdfjumbler.PdfJumbler;
 import net.sourceforge.pdfjumbler.i18n.I18nKeys;
 import net.sourceforge.pdfjumbler.i18n.I18nUtil;
@@ -183,7 +184,7 @@ public final class PdfProcessingFactory {
 			System.getProperty("pdfjumbler.editor", null)
 		));
 		classes.add(findEditorClass(
-			Preferences.userNodeForPackage(PdfJumbler.class).get("editor", null)
+			Preferences.userNodeForPackage(PdfJumbler.class).get(ConfigKeys.EDITOR, null)
 		));
 		classes.addAll(pdfEditorClasses);
 		
@@ -220,7 +221,7 @@ public final class PdfProcessingFactory {
 			System.getProperty("pdfjumbler.renderer", null)
 		));
 		classes.add(findRendererClass(
-			Preferences.userNodeForPackage(PdfJumbler.class).get("renderer", null)
+			Preferences.userNodeForPackage(PdfJumbler.class).get(ConfigKeys.RENDERER, null)
 		));
 		classes.addAll(pdfRendererClasses);
 		
@@ -272,14 +273,14 @@ public final class PdfProcessingFactory {
 		PdfEditor oldEditor = editor;
 		editor = cls.getDeclaredConstructor().newInstance();
 		fireEditorChanged(oldEditor);
-		Preferences.userNodeForPackage(PdfJumbler.class).put("editor", cls.getCanonicalName());
+		Preferences.userNodeForPackage(PdfJumbler.class).put(ConfigKeys.EDITOR, cls.getCanonicalName());
 	}
 	
 	public static void setRendererClass(Class<? extends PdfRenderer> cls) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		PdfRenderer oldRenderer = renderer;
 		renderer = cls.getDeclaredConstructor().newInstance();
 		fireRendererChanged(oldRenderer);
-		Preferences.userNodeForPackage(PdfJumbler.class).put("renderer", cls.getCanonicalName());
+		Preferences.userNodeForPackage(PdfJumbler.class).put(ConfigKeys.RENDERER, cls.getCanonicalName());
 	}
 	
 	public static String getFriendlyName(Class<?> cls) {
