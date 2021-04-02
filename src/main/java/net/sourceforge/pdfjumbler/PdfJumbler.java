@@ -43,8 +43,8 @@ import java.util.ResourceBundle;
  */
 public class PdfJumbler extends JFrame {
 	private static final long serialVersionUID = 4382647271800905977L;
-	public static final int VERSION = 20200915;
-	public static final String VERSION_STRING = "2020-09-15";
+	public static final int VERSION = 20210402;
+	public static final String VERSION_STRING = "2021-04-02";
 	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
 	private static PdfJumbler instance = null; 
@@ -270,7 +270,7 @@ public class PdfJumbler extends JFrame {
 		try {
 			PdfJumbler frame = new PdfJumbler(args);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(320, 600);
+			frame.setSize(340, 600);
 			frame.setVisible(true);
 		}
 		catch (Exception e) {

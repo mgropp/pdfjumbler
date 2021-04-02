@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.swing.JList;
 import javax.swing.TransferHandler.TransferSupport;
 
 import net.sourceforge.pdfjumbler.jdragdroplist.*;
@@ -23,6 +24,8 @@ import net.sourceforge.pdfjumbler.pdf.PdfProcessingFactory;
  */
 public class PdfList extends JDragDropList<Page> {
 	private static final long serialVersionUID = 7475943073466784769L;
+
+	private static final int DEFAULT_VISIBLE_ROW_COUNT = 8;
 
 	private String displayMessage = null;
 	
@@ -88,6 +91,31 @@ public class PdfList extends JDragDropList<Page> {
 		// TODO: Aspect ratio of first?/most? pages.
 		((PdfCellRenderer)getCellRenderer()).setThumbnailWidth(size);
 		((PdfCellRenderer)getCellRenderer()).setThumbnailHeight((int)(size * Math.sqrt(2)));
+		updateUI();
+	}
+
+	public boolean getShowCellText() {
+		if (!(getCellRenderer() instanceof PdfCellRenderer)) {
+			throw new IllegalStateException("Wrong cell renderer in use.");
+		}
+
+		return ((PdfCellRenderer)getCellRenderer()).getShowText();
+	}
+
+	public void setShowCellText(boolean value) {
+		if (!(getCellRenderer() instanceof PdfCellRenderer)) {
+			throw new IllegalStateException("Wrong cell renderer in use.");
+		}
+
+		((PdfCellRenderer)getCellRenderer()).setShowText(value);
+
+		if (value) {
+			setVisibleRowCount(DEFAULT_VISIBLE_ROW_COUNT);
+			setLayoutOrientation(JList.VERTICAL);
+		} else {
+			setVisibleRowCount(-1);
+			setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		}
 		updateUI();
 	}
 

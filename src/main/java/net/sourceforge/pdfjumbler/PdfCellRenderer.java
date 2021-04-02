@@ -30,10 +30,13 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	
 	private Page page = null;
 	private final int padding = 6;
+	private final int textWidth = 128;
 
 	private int thumbnailWidth = 96;
 	private int thumbnailHeight = 128;
-	
+
+	private boolean showText = true;
+
 	public PdfCellRenderer(PdfRenderer renderer) {
 		this.renderer = PdfProcessingFactory.getRenderer();
 		PdfProcessingFactory.addProcessorListener(
@@ -53,8 +56,13 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	private void sizeChanged() {
-		int textWidth = 128;
-		setSize(thumbnailWidth + textWidth + 4*padding, thumbnailHeight + 2*padding);
+		int width = thumbnailWidth + 2 * padding;
+		int height = thumbnailHeight + 2 * padding;
+		if (showText) {
+			width += textWidth + 2 * padding;
+		}
+
+		setSize(width, height);
 		setPreferredSize(getSize());
 		clearImageCache();
 	}
@@ -85,13 +93,15 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 		g.drawImage(cachedImage, padding, padding, null);
 		g.setColor(Color.LIGHT_GRAY);
 		g.drawRect(padding, padding, cachedImage.getWidth(null), cachedImage.getHeight(null));
-		
-		g.setColor(this.getForeground());
-		g.drawString(
-			page.toString(),
-			thumbnailWidth + 2*padding,
-			padding + g.getFontMetrics().getAscent()
-		);
+
+		if (showText) {
+			g.setColor(this.getForeground());
+			g.drawString(
+				page.toString(),
+				thumbnailWidth + 2 * padding,
+				padding + g.getFontMetrics().getAscent()
+			);
+		}
 	}
 	
 	@Override
@@ -133,5 +143,17 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	
 	public void clearImageCache() {
 		imageCache.clear();
+	}
+
+	public boolean getShowText() {
+		return showText;
+	}
+
+	/**
+	 * Display the page's text representation next to the thumbnail iff true.
+	 */
+	public void setShowText(boolean value) {
+		this.showText = value;
+		sizeChanged();
 	}
 }

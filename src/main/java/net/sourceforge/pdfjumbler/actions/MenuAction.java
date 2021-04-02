@@ -41,6 +41,23 @@ public class MenuAction extends AbstractAction {
 
 		menu.addSeparator();
 
+		ButtonGroup viewGroup = new ButtonGroup();
+		JMenu viewMenu = new JMenu(PdfJumblerResources.getResources().getString(I18nKeys.MENU_VIEW));
+
+		JRadioButtonMenuItem itemViewList = new JRadioButtonMenuItem(parent.getActions().getViewListAction());
+		itemViewList.setSelected(parent.getMainPdfList().getShowCellText());
+		viewGroup.add(itemViewList);
+		viewMenu.add(itemViewList);
+
+		JRadioButtonMenuItem itemViewThumbnails = new JRadioButtonMenuItem(parent.getActions().getViewThumbnailsAction());
+		itemViewThumbnails.setSelected(!parent.getMainPdfList().getShowCellText());
+		viewGroup.add(itemViewThumbnails);
+		viewMenu.add(itemViewThumbnails);
+
+		menu.add(viewMenu);
+
+		menu.addSeparator();
+
 		ButtonGroup editorGroup = new ButtonGroup();
 		JMenu editorMenu = new JMenu(PdfJumblerResources.getResources().getString(I18nKeys.MENU_EDITOR));
 		for (Class<? extends PdfEditor> cls : PdfProcessingFactory.getAvailableEditors()) {

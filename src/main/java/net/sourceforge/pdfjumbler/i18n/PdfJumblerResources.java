@@ -40,6 +40,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 			{ NO_PDF_RENDERER_TEXT,       "Failed to load a PDF renderer plugin." },
 			{ PDF_PAGE_TITLE,             "%d (%s)" },
 			{ MENU,                       "Menu" },
+			{ MENU_VIEW,                  "View" },
 			{ MENU_EDITOR,                "PDF Editor" },
 			{ MENU_RENDERER,              "PDF Renderer" },
 			{ MOVE_UP,                    "Move up" },
@@ -63,6 +64,8 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
 			{ ABOUT_TITLE,                "About" },
 			{ PLUGIN_ERROR_TITLE,         "Plugin Error" },
 			{ PLUGIN_INIT_ERROR,          "Error initializing plugin %s" },
+			{ VIEW_LIST,                  "List" },
+			{ VIEW_THUMBNAILS,            "Thumbnails only" },
 			{
 				PLUGIN_ERROR_VERSION_INCOMPATIBLE,
 				"This plugin requires PdfJumbler version %s."

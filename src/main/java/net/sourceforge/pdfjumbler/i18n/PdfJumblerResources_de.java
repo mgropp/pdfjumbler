@@ -29,6 +29,7 @@ public class PdfJumblerResources_de extends ListResourceBundle implements I18nKe
 			{ NO_PDF_RENDERER_TEXT,     "Es konnte kein PDF-Renderer-Plugin geladen werden." },
 			{ PDF_PAGE_TITLE,           "%d (%s)" },
 			{ MENU,                     "Menü" },
+			{ MENU_VIEW,                "Ansicht" },
 			{ MENU_EDITOR,              "PDF-Editor" },
 			{ MENU_RENDERER,            "PDF-Anzeige" },
 			{ PROGRESS_ABORT,           "Abbrechen" },
@@ -39,6 +40,8 @@ public class PdfJumblerResources_de extends ListResourceBundle implements I18nKe
 			{ ABOUT_TITLE,              "Informationen" },
 			{ PLUGIN_ERROR_TITLE,       "Plugin-Fehler" },
 			{ PLUGIN_INIT_ERROR,        "Fehler beim Initialisieren von Plugin %s" },
+			{ VIEW_LIST,                "Liste" },
+			{ VIEW_THUMBNAILS,          "Nur Miniaturansichten" },
 			{
 				PLUGIN_ERROR_VERSION_INCOMPATIBLE,
 				"Dieses Plugin benötigt PdfJumbler Version %s."

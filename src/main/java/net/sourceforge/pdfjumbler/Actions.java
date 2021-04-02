@@ -24,6 +24,8 @@ public class Actions {
 	private final Action rotateCcwAction;
 	private final Action moveUpAction;
 	private final Action moveDownAction;
+	private final Action viewListAction;
+	private final Action viewThumbnailsAction;
 
 	public Actions(PdfJumbler parent) {
 		docOpenAction = new DocOpenAction(parent, parent.getMainPdfList());
@@ -40,7 +42,8 @@ public class Actions {
 		rotateCcwAction = new RotateCounterClockwiseAction(parent);
 		moveUpAction = new MoveUpAction();
 		moveDownAction = new MoveDownAction();
-
+		viewListAction = new ViewListAction(parent);
+		viewThumbnailsAction = new ViewThumbnailsAction(parent);
 	}
 
 	public Action getUndoAction() {
@@ -97,5 +100,13 @@ public class Actions {
 
 	public Action getMoveDownAction() {
 		return moveDownAction;
+	}
+
+	public Action getViewListAction() {
+		return viewListAction;
+	}
+
+	public Action getViewThumbnailsAction() {
+		return viewThumbnailsAction;
 	}
 }
