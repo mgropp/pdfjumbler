@@ -71,7 +71,7 @@ echo "Downloading files"
 curl -L "$jar_file_url" -o pdfjumbler.jar
 
 # Install
-sudo -c "sh install.sh"
+sudo sh install.sh
 
 echo
 echo "Done. Enjoy!"
