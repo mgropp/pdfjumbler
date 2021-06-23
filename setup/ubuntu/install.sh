@@ -28,8 +28,7 @@ fi
 
 # Create temp directory
 tmpdir=$( mktemp -d )
-#trap "rm -rf \"$tmpdir\"" EXIT
-echo "Temporary directory: $tmpdir"
+trap "rm -rf \"$tmpdir\"" EXIT
 cd "$tmpdir"
 
 # Create launcher
@@ -72,7 +71,7 @@ echo "Downloading files"
 curl -L "$jar_file_url" -o pdfjumbler.jar
 
 # Install
-#sudo -c "sh install.sh"
+sudo -c "sh install.sh"
 
 echo
 echo "Done. Enjoy!"
