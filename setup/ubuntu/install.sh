@@ -32,13 +32,13 @@ trap "rm -rf \"$tmpdir\"" EXIT
 cd "$tmpdir"
 
 # Create launcher
-cat > pdfjumbler << EOL
+cat > pdfjumbler << EOF
 #!/bin/sh
 exec java -jar "$jar_file" "\$@"
-EOL
+EOF
 
 # Create desktop file
-cat > pdfjumbler.desktop << EOL
+cat > pdfjumbler.desktop << EOF
 [Desktop Entry]
 Name=PdfJumbler
 Exec=$launcher_file
@@ -46,7 +46,7 @@ Icon=pdf
 Type=Application
 Categories=GTK;GNOME;Utility;
 Terminal=false
-EOL
+EOF
 
 # Create script to move files and set permissions
 cat > install.sh << EOF
