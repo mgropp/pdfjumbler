@@ -5,7 +5,6 @@ set -u
 
 dest_dir="/opt/pdfjumbler"
 desktop_file="/usr/share/applications/pdfjumbler.desktop"
-desktop_file_url="https://raw.githubusercontent.com/alex5250/PdfJumbler-Installer-Linux/main/config.config"
 jar_file="$dest_dir/pdfjumbler.jar"
 jar_file_url=$(
 	curl  https://api.github.com/repos/mgropp/pdfjumbler/releases/latest \
