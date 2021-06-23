@@ -24,6 +24,11 @@ You can download one at <https://adoptopenjdk.net/>.
 Windows users can simply download and run the installer (setup-pdfjumbler.exe),
 which creates a start menu entry for PdfJumbler.
 
+For Ubuntu (and probably Debian), you can use this command to install PdfJumbler:
+```
+curl -L -o install-pdfjumbler.sh https://raw.githubusercontent.com/mgropp/pdfjumbler/master/setup/ubuntu/install.sh && bash install-pdfjumbler.sh
+```
+
 Alternatively, there is a runnable jar file (just double-click), pdfjumbler.jar.
 
 
