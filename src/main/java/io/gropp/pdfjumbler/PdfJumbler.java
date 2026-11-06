@@ -14,8 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.io.File;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -118,34 +116,14 @@ public class PdfJumbler extends JFrame {
     }
 
     private void installExceptionHandler() {
-        while (true) {
-            try {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override
-                    public void run() {
-                        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-                            @Override
-                            public void uncaughtException(Thread t, Throwable e) {
-                                Logger.error(e);
-                                JOptionPane.showMessageDialog(
-                                        PdfJumbler.this,
-                                        e.getLocalizedMessage(),
-                                        e.getClass().getSimpleName(),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        });
-                    }
-                });
-            } catch (InterruptedException e) {
-                continue;
-            } catch (InvocationTargetException e) {
-                Logger.error(e);
-                JOptionPane.showMessageDialog(
-                        this, e.getLocalizedMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-            }
-
-            break;
-        }
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            Logger.error(throwable);
+            JOptionPane.showMessageDialog(
+                    this,
+                    throwable.getLocalizedMessage(),
+                    throwable.getClass().getSimpleName(),
+                    JOptionPane.ERROR_MESSAGE);
+        });
     }
 
     private static void registerAccelerators(JComponent component, Action... actions) {
@@ -157,13 +135,12 @@ public class PdfJumbler extends JFrame {
         }
     }
 
-    private PdfJumbler(String[] files) {
+    private PdfJumbler() {
         Logger.info("PdfJumbler is starting");
 
         PdfJumbler.instance = this;
 
         installExceptionHandler();
-        setLookAndFeel();
         setTitle(getClass().getSimpleName());
         setIconImage(Icons.PDF_JUMBLER.getImage());
 
@@ -230,9 +207,6 @@ public class PdfJumbler extends JFrame {
         toolBar2.add(actions.getDocOpenAction2());
         toolBar2.add(actions.getDocSaveAction2());
 
-        // Open files
-        openFiles(mainList, -1, files);
-
         // Listen for editor/renderer changes
         PdfProcessingFactory.getInstance().addProcessorListener(new ReloadingProcessorListener(this));
 
@@ -254,13 +228,19 @@ public class PdfJumbler extends JFrame {
     }
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> start(args));
+    }
+
+    private static void start(String[] files) {
         try {
-            PdfJumbler frame = new PdfJumbler(args);
+            setLookAndFeel();
+            PdfJumbler frame = new PdfJumbler();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(UIScale.scale(340), UIScale.scale(600));
             frame.setVisible(true);
+            openFiles(frame.mainList, -1, files);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
             JOptionPane.showMessageDialog(
                     null, e.getLocalizedMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
