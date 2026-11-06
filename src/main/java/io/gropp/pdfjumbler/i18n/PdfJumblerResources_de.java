@@ -2,9 +2,6 @@ package io.gropp.pdfjumbler.i18n;
 
 import java.util.ListResourceBundle;
 
-/**
- * @author Martin Gropp
- */
 public class PdfJumblerResources_de extends ListResourceBundle implements I18nKeys {
     @Override
     protected Object[][] getContents() {

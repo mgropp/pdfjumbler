@@ -6,9 +6,6 @@ import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
 import javax.swing.KeyStroke;
 
-/**
- * @author Martin Gropp
- */
 public class PdfJumblerResources extends ListResourceBundle implements I18nKeys {
     private static final ResourceBundle resources =
             ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());

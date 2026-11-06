@@ -4,9 +4,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Martin Gropp
- */
 public final class JDDLTransferData<T> {
     public static final DataFlavor DATA_FLAVOR;
 

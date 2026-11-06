@@ -11,9 +11,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 
-/**
- * @author Martin Gropp
- */
 public class TrashDropTargetListener implements DropTargetListener {
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {

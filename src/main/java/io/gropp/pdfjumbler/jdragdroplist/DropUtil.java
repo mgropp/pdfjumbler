@@ -12,9 +12,6 @@ import javax.swing.TransferHandler.TransferSupport;
 import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
-/**
- * @author Martin Gropp
- */
 public class DropUtil {
     public static final DataFlavor DATA_FLAVOR_URILIST_STRING;
 
