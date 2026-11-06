@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
 public class Plugin {
@@ -22,6 +23,7 @@ public class Plugin {
     public static final String PDF_EDITOR_KEY = "pdfjumbler-plugin-editor";
     public static final String PDF_RENDERER_KEY = "pdfjumbler-plugin-renderer";
 
+    private static final Pattern CLASS_NAME_SEPARATOR = Pattern.compile(",");
     private static final ResourceBundle resources =
             ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
@@ -66,8 +68,8 @@ public class Plugin {
         }
 
         if (pdfEditorClassNames != null) {
-            String[] classNames = pdfEditorClassNames.split(",");
-            pdfEditorClasses = new ArrayList<>(classNames.length);
+            List<String> classNames = splitClassNames(pdfEditorClassNames);
+            pdfEditorClasses = new ArrayList<>(classNames.size());
             for (String className : classNames) {
                 try {
                     pdfEditorClasses.add((Class) classLoader.loadClass(className));
@@ -80,8 +82,8 @@ public class Plugin {
         }
 
         if (pdfRendererClassNames != null) {
-            String[] classNames = pdfRendererClassNames.split(",");
-            pdfRendererClasses = new ArrayList<>(classNames.length);
+            List<String> classNames = splitClassNames(pdfRendererClassNames);
+            pdfRendererClasses = new ArrayList<>(classNames.size());
             for (String className : classNames) {
                 try {
                     pdfRendererClasses.add((Class) classLoader.loadClass(className));
@@ -92,6 +94,14 @@ public class Plugin {
         } else {
             pdfRendererClasses = List.of();
         }
+    }
+
+    private static List<String> splitClassNames(String value) {
+        return CLASS_NAME_SEPARATOR
+                .splitAsStream(value)
+                .map(String::trim)
+                .filter(name -> !name.isEmpty())
+                .toList();
     }
 
     public boolean hasPdfEditors() {

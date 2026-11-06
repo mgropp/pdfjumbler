@@ -83,6 +83,14 @@ class PluginTest {
     }
 
     @Test
+    void ignoresWhitespaceAndEmptyEntriesInClassList() throws Exception {
+        Plugin plugin = new Plugin(jarWith(properties(
+                Plugin.REQUIRED_VERSION_KEY, currentVersion(), Plugin.PDF_EDITOR_KEY, " " + EDITOR + " , ," + EDITOR)));
+
+        assertThat(plugin.getPdfEditorClasses()).hasSize(2);
+    }
+
+    @Test
     void pluginWithOnlyEditorsHasNoRenderers() throws Exception {
         Plugin plugin = new Plugin(
                 jarWith(properties(Plugin.REQUIRED_VERSION_KEY, currentVersion(), Plugin.PDF_EDITOR_KEY, EDITOR)));
