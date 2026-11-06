@@ -102,7 +102,25 @@ They run headless (`java.awt.headless=true`), so they must not open windows or d
 - Keep Swing-specific code thin, and put logic in classes that can be tested without a display
   (see `ListOperations`, `RotatePagesEdit` and `DocumentManager`).
 
+## Versioning
+
+- The application version is the Gradle property `version`. It defaults to `dev` in `gradle.properties`
+  and is set with `-Pversion=…` for releases. It is written to the jar manifest as `Implementation-Version`.
+- `AppVersion.current()` reads the version from the manifest and returns `dev` when there is none
+  (for example when running from the IDE). The About dialog shows this version.
+- `PdfJumbler.VERSION` is a separate integer that plugins check compatibility against
+  (`pdfjumbler-required-version`). Only change it when the plugin API changes.
+
+## CI and Releases
+
+- `.github/workflows/ci.yml` runs `./gradlew spotlessCheck test` on every branch push and pull request.
+- `.github/workflows/release.yml` runs when a tag of the form `v-<major>.<minor>.<patch>` is pushed
+  (for example `v-0.1.0`). It runs the tests, builds the jar with the tag's version (`0.1.0`), builds
+  the Windows installer with NSIS on Linux, and creates a GitHub release with `pdfjumbler.jar` and
+  `setup-pdfjumbler.exe` attached.
+
 ## Packaging
 
-- `pdfjumbler.nsi` is the NSIS script for the Windows installer. It expects `build/libs/pdfjumbler.jar`.
+- `pdfjumbler.nsi` is the NSIS script for the Windows installer. It expects `build/libs/pdfjumbler.jar`
+  and writes `build/setup-pdfjumbler.exe`. Build it locally with `makensis pdfjumbler.nsi`.
 - `setup/ubuntu/install.sh` installs the latest GitHub release jar on Ubuntu/Debian.
