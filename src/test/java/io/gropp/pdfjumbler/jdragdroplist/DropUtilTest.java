@@ -63,6 +63,15 @@ class DropUtilTest {
 	}
 
 	@Test
+	void skipsUriListComments() {
+		String data = "#dropped-by-file-manager\r\nfile:///docs/a.pdf\r\n";
+
+		List<URI> uris = DropUtil.getURIs(support(DropUtil.DATA_FLAVOR_URILIST_STRING, data));
+
+		assertThat(uris).containsExactly(URI.create("file:///docs/a.pdf"));
+	}
+
+	@Test
 	void recognizesUriDrops() {
 		assertThat(DropUtil.isURIDrop(support(DataFlavor.javaFileListFlavor, List.of()))).isTrue();
 		assertThat(DropUtil.isURIDrop(support(DropUtil.DATA_FLAVOR_URILIST_STRING, ""))).isTrue();
