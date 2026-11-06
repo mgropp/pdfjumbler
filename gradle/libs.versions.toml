@@ -3,6 +3,7 @@ tinylog = "2.8.1"
 pdfbox = "3.0.8"
 batik = "1.20"
 flatlaf = "3.8"
+spotless = "8.11.0"
 
 [libraries]
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
@@ -10,3 +11,6 @@ tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 batik-transcoder = { module = "org.apache.xmlgraphics:batik-transcoder", version.ref = "batik" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

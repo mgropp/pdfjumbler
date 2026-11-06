@@ -1,6 +1,7 @@
 plugins {
 	java
 	idea
+	alias(libs.plugins.spotless)
 }
 
 val mainPackage = "io.gropp.pdfjumbler"
@@ -18,6 +19,20 @@ dependencies {
 	implementation(libs.pdfbox)
 	implementation(libs.batik.transcoder)
 	implementation(libs.flatlaf)
+}
+
+spotless {
+	java {
+		palantirJavaFormat("2.50.0")
+	}
+}
+
+tasks.register("installGitHooks") {
+	doLast {
+		val hook = file("${rootDir}/.git/hooks/pre-push")
+		hook.writeText("#!/bin/sh\n./gradlew spotlessCheck\n")
+		hook.setExecutable(true)
+	}
 }
 
 tasks.compileJava {
