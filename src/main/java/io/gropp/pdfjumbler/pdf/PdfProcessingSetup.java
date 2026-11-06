@@ -5,6 +5,7 @@ import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.I18nUtil;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -90,8 +91,8 @@ final class PdfProcessingSetup {
             URL url = PdfProcessingSetup.class.getResource(cls);
             if (url.getProtocol().equals("jar")) {
                 String path = url.getPath();
-                URL jarURL = new URL(path.substring(0, path.indexOf('!')));
-                return jarURL.getProtocol().equals("file") ? new File(jarURL.toURI()).getParentFile() : null;
+                URI jarUri = URI.create(path.substring(0, path.indexOf('!')));
+                return "file".equals(jarUri.getScheme()) ? new File(jarUri).getParentFile() : null;
             } else if (url.getProtocol().equals("file")) {
                 String path = url.getPath();
                 return path.endsWith(cls) ? new File(path.substring(0, path.length() - cls.length())) : null;
