@@ -38,12 +38,7 @@ public class ProgressDialog extends JDialog {
         this.worker = worker;
 
         setSize(UIScale.scale(300), UIScale.scale(120));
-        if (parent != null) {
-            setLocationRelativeTo(null);
-            setLocation(
-                    parent.getLocationOnScreen().x + (parent.getWidth() - getWidth()) / 2,
-                    parent.getLocationOnScreen().y + (parent.getHeight() - getHeight()) / 2);
-        }
+        setLocationRelativeTo(parent);
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
