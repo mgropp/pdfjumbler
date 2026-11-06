@@ -18,7 +18,7 @@ which creates a start menu entry for PdfJumbler.
 
 For Ubuntu (and probably Debian), you can use this command to install PdfJumbler:
 ```
-curl -L https://raw.githubusercontent.com/mgropp/pdfjumbler/master/setup/ubuntu/install.sh | bash
+curl -L https://raw.githubusercontent.com/mgropp/pdfjumbler/main/setup/ubuntu/install.sh | bash
 ```
 
 Alternatively, there is a runnable jar file (just double-click), pdfjumbler.jar.
