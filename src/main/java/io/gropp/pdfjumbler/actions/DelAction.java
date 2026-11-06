@@ -5,12 +5,11 @@ import io.gropp.pdfjumbler.PdfJumbler;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import io.gropp.pdfjumbler.jdragdroplist.JDragDropList;
-import io.gropp.pdfjumbler.jdragdroplist.UndoableListModel;
+import io.gropp.pdfjumbler.jdragdroplist.ListOperations;
 import io.gropp.pdfjumbler.pdf.Page;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 
 public class DelAction extends AbstractAction {
 	private static final long serialVersionUID = 8258949195959150573L;
@@ -32,11 +31,6 @@ public class DelAction extends AbstractAction {
 		} else {
 			list = parent.getMainPdfList();
 		}
-		UndoableListModel<Page> model = list.getModel();
-		int[] selected = list.getSelectedIndices();
-		Arrays.sort(selected);
-		for (int i = selected.length-1; i >= 0; i--) {
-			model.remove(selected[i]);
-		}
+		ListOperations.removeAll(list.getModel(), list.getSelectedIndices());
 	}
 }

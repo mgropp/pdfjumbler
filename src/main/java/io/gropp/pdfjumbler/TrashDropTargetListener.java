@@ -7,9 +7,9 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
-import java.util.Arrays;
 
 import io.gropp.pdfjumbler.jdragdroplist.JDDLTransferData;
+import io.gropp.pdfjumbler.jdragdroplist.ListOperations;
 import io.gropp.pdfjumbler.pdf.Page;
 
 /**
@@ -45,11 +45,7 @@ public class TrashDropTargetListener implements DropTargetListener {
 				throw new AssertionError(e);
 			}
 
-			int[] indices = data.getIndices();
-			Arrays.sort(indices);
-			for (int i = indices.length-1; i >= 0; i--) {
-				PdfList.removeItem(data.getSourceList(), indices[i]);
-			}
+			ListOperations.removeAll(data.getSourceList().getModel(), data.getIndices());
 		}
 	}
 

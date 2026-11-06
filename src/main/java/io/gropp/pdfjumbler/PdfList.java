@@ -125,10 +125,6 @@ public class PdfList extends JDragDropList<Page> {
 		updateUI();
 	}
 
-	public static void removeItem(JDragDropList<Page> list, int index) {
-		list.getModel().remove(index);
-	}
-		
 	public void setDisplayMessage(String displayMessage) {
 		this.displayMessage = displayMessage;
 		if (getModel().getSize() == 0) {
