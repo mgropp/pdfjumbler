@@ -3,7 +3,7 @@ package io.gropp.pdfjumbler.actions;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import io.gropp.pdfjumbler.jdragdroplist.JDragDropList;
-import io.gropp.pdfjumbler.jdragdroplist.UndoableListModel;
+import io.gropp.pdfjumbler.jdragdroplist.ListOperations;
 import io.gropp.pdfjumbler.pdf.Page;
 
 import javax.swing.*;
@@ -27,15 +27,8 @@ public class MoveUpAction extends AbstractAction {
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		JDragDropList<Page> list = (JDragDropList)e.getSource();
 		int index = list.getSelectedIndex();
-		if (index <= 0) {
-			return;
+		if (ListOperations.move(list.getModel(), index, index - 1)) {
+			list.setSelectedIndex(index - 1);
 		}
-
-		UndoableListModel<Page> model = list.getModel();
-		Page page = model.get(index);
-		model.remove(index);
-		model.add(index-1, page);
-
-		list.setSelectedIndex(index-1);
 	}
 }
