@@ -115,7 +115,7 @@ public class PdfJumbler extends JFrame {
 	}
 
 	public static void setLookAndFeel() {
-		FlatLightLaf.install();
+		FlatLightLaf.setup();
 	}
 
 	private void installExceptionHandler() {
