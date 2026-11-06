@@ -12,18 +12,32 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import javax.swing.SwingUtilities;
 import org.jspecify.annotations.Nullable;
 
 public class PdfCellRenderer extends DefaultListCellRenderer {
     private static final long serialVersionUID = 2395480480996785313L;
+    private static final Executor THUMBNAIL_EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
+        Thread thread = new Thread(runnable, "thumbnail-renderer");
+        thread.setDaemon(true);
+        return thread;
+    });
 
-    private final Map<Page, Image> imageCache = new HashMap<>();
-    private PdfRenderer renderer;
+    private static final int THUMBNAIL_CACHE_CAPACITY = 256;
+
+    private volatile PdfRenderer renderer;
+    private final ThumbnailCache thumbnailCache = new ThumbnailCache(
+            THUMBNAIL_CACHE_CAPACITY,
+            (page, maxWidth, maxHeight) -> renderer.renderPage(page, maxWidth, maxHeight),
+            THUMBNAIL_EXECUTOR,
+            SwingUtilities::invokeLater,
+            this::repaintOwner);
+    private @Nullable JList<?> owner;
 
     private @Nullable Page page;
     private final int padding = 6;
@@ -40,7 +54,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 
     public PdfCellRenderer(PdfRenderer renderer, boolean showText) {
         this.showText = showText;
-        this.renderer = PdfProcessingFactory.getInstance().getRenderer();
+        this.renderer = renderer;
         PdfProcessingFactory.getInstance().addProcessorListener(new PdfProcessorListener() {
             @Override
             public void pdfEditorChanged(PdfEditor oldEditor, PdfEditor newEditor) {}
@@ -48,7 +62,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
             @Override
             public void pdfRendererChanged(PdfRenderer oldRenderer, PdfRenderer newRenderer) {
                 PdfCellRenderer.this.renderer = newRenderer;
-                imageCache.clear();
+                thumbnailCache.clear();
             }
         });
 
@@ -80,22 +94,15 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
         int padding = UIScale.scale(this.padding);
         int scaledThumbnailWidth = UIScale.scale(thumbnailWidth);
         int scaledThumbnailHeight = UIScale.scale(thumbnailHeight);
-        Image cachedImage;
-
-        if (imageCache.containsKey(page)) {
-            cachedImage = imageCache.get(page);
-        } else {
-            try {
-                cachedImage = renderer.renderPage(page, scaledThumbnailWidth, scaledThumbnailHeight);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            imageCache.put(page, cachedImage);
-        }
-
-        g.drawImage(cachedImage, padding, padding, null);
         g.setColor(Color.LIGHT_GRAY);
-        g.drawRect(padding, padding, cachedImage.getWidth(null), cachedImage.getHeight(null));
+        Optional<Image> thumbnail = thumbnailCache.get(page, scaledThumbnailWidth, scaledThumbnailHeight);
+        if (thumbnail.isPresent()) {
+            Image image = thumbnail.get();
+            g.drawImage(image, padding, padding, null);
+            g.drawRect(padding, padding, image.getWidth(null), image.getHeight(null));
+        } else {
+            g.drawRect(padding, padding, scaledThumbnailWidth, scaledThumbnailHeight);
+        }
 
         if (showText) {
             g.setColor(this.getForeground());
@@ -110,6 +117,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(
             JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+        owner = list;
         page = (Page) value;
         setLocation(0, getHeight() * index);
         return this;
@@ -138,7 +146,14 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
     }
 
     public void clearImageCache() {
-        imageCache.clear();
+        thumbnailCache.clear();
+    }
+
+    private void repaintOwner() {
+        JList<?> list = owner;
+        if (list != null) {
+            list.repaint();
+        }
     }
 
     public boolean getShowText() {
