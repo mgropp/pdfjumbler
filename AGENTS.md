@@ -140,7 +140,7 @@ They run headless (`java.awt.headless=true`), so they must not open windows or d
 
 ## CI and Releases
 
-- `.github/workflows/ci.yml` runs `./gradlew spotlessCheck test` on every branch push and pull request.
+- `.github/workflows/ci.yml` runs `./gradlew spotlessCheck test jar` on every branch push and pull request.
 - `.github/workflows/release.yml` runs when a tag of the form `v-<major>.<minor>.<patch>` is pushed
   (for example `v-0.1.0`). It runs the tests, builds the jar with the tag's version (`0.1.0`), builds
   the Windows installer with NSIS on Linux, and creates a GitHub release with `pdfjumbler.jar` and
