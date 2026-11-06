@@ -1,5 +1,6 @@
 package net.sourceforge.pdfjumbler;
 
+import com.formdev.flatlaf.util.UIScale;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -61,10 +62,11 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	private void sizeChanged() {
-		int width = thumbnailWidth + 2 * padding;
-		int height = thumbnailHeight + 2 * padding;
+		int padding = UIScale.scale(this.padding);
+		int width = UIScale.scale(thumbnailWidth) + 2 * padding;
+		int height = UIScale.scale(thumbnailHeight) + 2 * padding;
 		if (showText) {
-			width += textWidth + 2 * padding;
+			width += UIScale.scale(textWidth) + 2 * padding;
 		}
 
 		setSize(width, height);
@@ -81,13 +83,16 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 			return;
 		}
 
+		int padding = UIScale.scale(this.padding);
+		int scaledThumbnailWidth = UIScale.scale(thumbnailWidth);
+		int scaledThumbnailHeight = UIScale.scale(thumbnailHeight);
 		Image cachedImage;
 		
 		if (imageCache.containsKey(page)) {
 			cachedImage = imageCache.get(page);
 		} else {
 			try {
-				cachedImage = renderer.renderPage(page, thumbnailWidth, thumbnailHeight);
+				cachedImage = renderer.renderPage(page, scaledThumbnailWidth, scaledThumbnailHeight);
 			}
 			catch (IOException e) {
 				throw new RuntimeException(e);
@@ -103,7 +108,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 			g.setColor(this.getForeground());
 			g.drawString(
 				page.toString(),
-				thumbnailWidth + 2 * padding,
+				scaledThumbnailWidth + 2 * padding,
 				padding + g.getFontMetrics().getAscent()
 			);
 		}

@@ -1,6 +1,7 @@
 package net.sourceforge.pdfjumbler;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.util.UIScale;
 import net.sourceforge.pdfjumbler.actions.MenuAction;
 import net.sourceforge.pdfjumbler.actions.OpenDocumentWorker;
 import net.sourceforge.pdfjumbler.actions.ReloadingProcessorListener;
@@ -207,14 +208,15 @@ public class PdfJumbler extends JFrame {
 		mainList.getModel().addUndoableEditListener(undoManager);
 		secondaryList.getModel().addUndoableEditListener(undoManager);
 		
-		mainList.setMinimumSize(new Dimension(100, 100));
-		mainPane.setMinimumSize(new Dimension(100, 100));
+		mainList.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
+		mainPane.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
 		secondaryList.setMinimumSize(new Dimension(0, 0));
 		secondaryPane.setMinimumSize(new Dimension(0, 0));
 		secondaryPanel.setMinimumSize(new Dimension(0, 0));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, secondaryPanel, mainPane);
 		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerSize(UIScale.scale(splitPane.getDividerSize()));
 		splitPane.setDividerLocation(0.0);
 		add(splitPane, BorderLayout.CENTER);
 
@@ -275,7 +277,7 @@ public class PdfJumbler extends JFrame {
 		try {
 			PdfJumbler frame = new PdfJumbler(args);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(340, 600);
+			frame.setSize(UIScale.scale(340), UIScale.scale(600));
 			frame.setVisible(true);
 		}
 		catch (Exception e) {
