@@ -19,6 +19,7 @@ dependencies {
 	implementation(libs.pdfbox)
 	implementation(libs.batik.transcoder)
 	implementation(libs.flatlaf)
+	implementation(libs.jspecify)
 
 	testImplementation(platform(libs.junit.bom))
 	testImplementation(libs.junit.jupiter)
