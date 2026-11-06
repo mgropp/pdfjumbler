@@ -203,6 +203,9 @@ public class UndoableList<T> implements List<T> {
 		if (editProtection[0]) {
 			throw new ConcurrentModificationException();
 		}
+		if (list.isEmpty()) {
+			return;
+		}
 
 		Collection<T> copy = new ArrayList<>(list);
 		list.clear();
