@@ -58,10 +58,6 @@ Section "PdfJumbler Main" PdfJumblerMain
 	File "build\libs\pdfjumbler.jar"
 	File "src\main\resources\icons\pdfjumbler.ico"
 	File /oname=license.txt "LICENSE"
-	;File "build\libs\pdfjumbler-itext.jar"
-	;File "build\libs\pdfjumbler-jpedal.jar"
-	;File "build\libs\pdfjumbler-pdfbox.jar"
-	;File "build\libs\pdfjumbler-jpod.jar"
 	File /oname=readme.txt "README.md"
 	
 	WriteRegStr HKCU "Software\PdfJumbler" "" $INSTDIR
@@ -84,10 +80,6 @@ Section "Uninstall"
 	Delete "$INSTDIR\pdfjumbler.jar"
 	Delete "$INSTDIR\pdfjumbler.ico"
 	Delete "$INSTDIR\LICENSE.txt"
-	;Delete "$INSTDIR\pdfjumbler-itext.jar"
-	;Delete "$INSTDIR\pdfjumbler-jpedal.jar"
-	;Delete "$INSTDIR\pdfjumbler-pdfbox.jar"
-	;Delete "$INSTDIR\pdfjumbler-jpod.jar"
 	Delete "$INSTDIR\readme.txt"
 
 	Delete "$INSTDIR\Uninstall.exe"
