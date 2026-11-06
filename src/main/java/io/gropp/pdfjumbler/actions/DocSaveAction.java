@@ -36,14 +36,7 @@ public class DocSaveAction extends AbstractAction {
         chooser.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                return file.isDirectory()
-                        || ((file.getParentFile() != null)
-                                        && file.getParentFile().exists())
-                                && ((!file.exists() || file.isFile())
-                                        && file.canWrite()
-                                        && file.getName()
-                                                .toLowerCase(Locale.ROOT)
-                                                .endsWith(".pdf"));
+                return file.isDirectory() || (hasExistingParent(file) && isWritablePdf(file));
             }
 
             @Override
@@ -72,5 +65,16 @@ public class DocSaveAction extends AbstractAction {
             DocSaveAction.lastSavedLocation = file.getParent();
             PdfJumbler.saveFile(list, file);
         }
+    }
+
+    private static boolean hasExistingParent(File file) {
+        File parent = file.getParentFile();
+        return parent != null && parent.exists();
+    }
+
+    private static boolean isWritablePdf(File file) {
+        return (!file.exists() || file.isFile())
+                && file.canWrite()
+                && file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf");
     }
 }

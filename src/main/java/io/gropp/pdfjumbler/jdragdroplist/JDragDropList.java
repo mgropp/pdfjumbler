@@ -45,11 +45,7 @@ public class JDragDropList<T> extends JList<T> {
     private final class JDDLTransferHandler extends TransferHandler {
         private static final long serialVersionUID = 8850624713729645277L;
 
-        private void copyItems(
-                JDragDropList<? extends T> sourceList,
-                JDragDropList<? super T> targetList,
-                List<T> sourceObjects,
-                int destIndex) {
+        private void copyItems(JDragDropList<? super T> targetList, List<T> sourceObjects, int destIndex) {
             UndoableListModel<? super T> model = targetList.getModel();
 
             model.beginCompoundEdit("Copy");
@@ -165,7 +161,7 @@ public class JDragDropList<T> extends JList<T> {
             int destIndex = JDragDropList.this.getDropLocation().getIndex();
 
             if ((info.getDropAction() & DnDConstants.ACTION_COPY) != 0) {
-                copyItems(data.getSourceList(), JDragDropList.this, data.getValuesList(), destIndex);
+                copyItems(JDragDropList.this, data.getValuesList(), destIndex);
             } else if ((info.getDropAction() & DnDConstants.ACTION_MOVE) != 0) {
                 moveItems(data.getSourceList(), JDragDropList.this, data.getIndices(), destIndex);
             } else {

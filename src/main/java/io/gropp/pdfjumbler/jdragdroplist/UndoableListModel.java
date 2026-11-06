@@ -1,7 +1,7 @@
 package io.gropp.pdfjumbler.jdragdroplist;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
@@ -34,7 +34,7 @@ public final class UndoableListModel<T> extends AbstractListModel<T> {
     }
 
     public UndoableListModel() {
-        this(new UndoableList<>(new LinkedList<>()));
+        this(new UndoableList<>(new ArrayList<>()));
     }
 
     public List<T> getList() {
@@ -60,7 +60,6 @@ public final class UndoableListModel<T> extends AbstractListModel<T> {
     }
 
     public void clear() {
-        int size = list.size();
         list.clear();
     }
 
