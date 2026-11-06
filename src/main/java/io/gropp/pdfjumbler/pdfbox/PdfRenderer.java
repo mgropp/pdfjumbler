@@ -1,6 +1,7 @@
 package io.gropp.pdfjumbler.pdfbox;
 
 import io.gropp.pdfjumbler.pdf.Page;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -28,7 +29,7 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 	private final Map<File, Map<Page, PDPage>> pageMap = new HashMap<>();
 
 	private PDDocument openDocument(File file) throws IOException {
-		PDDocument pdDoc = PDDocument.load(file);
+		PDDocument pdDoc = Loader.loadPDF(file);
 		if (pdDoc == null) {
 			throw new IOException("Failed to load PDF document.");
 		}
