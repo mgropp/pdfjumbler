@@ -2,28 +2,30 @@
 # By Alex Zaslavskis and Martin Gropp
 set -e
 set -u
+set -o pipefail
 
+required_java_version=21
 dest_dir="/opt/pdfjumbler"
 desktop_file="/usr/share/applications/pdfjumbler.desktop"
 jar_file="$dest_dir/pdfjumbler.jar"
-jar_file_url=$(
-	curl  https://api.github.com/repos/mgropp/pdfjumbler/releases/latest \
-	| grep browser_download_url \
-	| grep .jar \
-	| cut -d '"' -f 4 \
-)
+jar_file_url="https://github.com/mgropp/pdfjumbler/releases/latest/download/pdfjumbler.jar"
 launcher_file="/usr/local/bin/pdfjumbler"
 
 # Make sure Java is installed
-if command -v java >/dev/null 2>&1
+if ! command -v java >/dev/null 2>&1
 then
-	echo "Java found."
-	echo "Version:"
-	java -version
-else
-	echo "Java not found. Please install Java!"
+	echo "Java not found. Please install Java $required_java_version or newer!"
 	exit 1
 fi
+
+java_version=$( java -version 2>&1 | sed -n 's/.* version "\([0-9]*\).*/\1/p' | head -n 1 )
+if [ -z "$java_version" ] || [ "$java_version" -lt "$required_java_version" ]
+then
+	echo "PdfJumbler requires Java $required_java_version or newer, but found:"
+	java -version
+	exit 1
+fi
+echo "Java $java_version found."
 
 # Create temp directory
 tmpdir=$( mktemp -d )
@@ -50,6 +52,7 @@ EOF
 # Create script to move files and set permissions
 cat > install.sh << EOF
 #!/bin/sh
+set -e
 mv pdfjumbler.desktop "$desktop_file"
 chown root:root "$desktop_file"
 chmod 644 "$desktop_file"
@@ -66,8 +69,8 @@ chmod 755 "$launcher_file"
 EOF
 
 # Download
-echo "Downloading files"
-curl -L "$jar_file_url" -o pdfjumbler.jar
+echo "Downloading PdfJumbler"
+curl -fL "$jar_file_url" -o pdfjumbler.jar
 
 # Install
 sudo sh install.sh
