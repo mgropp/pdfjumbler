@@ -4,32 +4,35 @@ import io.gropp.pdfjumbler.PdfJumbler;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import javax.swing.*;
 
 public class AboutAction extends AbstractAction {
-	private static final long serialVersionUID = -6505580153294146608L;
-	private final PdfJumbler parent;
+    private static final long serialVersionUID = -6505580153294146608L;
+    private final PdfJumbler parent;
 
-	public AboutAction(PdfJumbler parent) {
-		super(PdfJumblerResources.getResources().getString(I18nKeys.ABOUT));
-		this.parent = parent;
-		putValue(Action.SHORT_DESCRIPTION, PdfJumblerResources.getResources().getString(I18nKeys.ABOUT));
-	}
+    public AboutAction(PdfJumbler parent) {
+        super(PdfJumblerResources.getResources().getString(I18nKeys.ABOUT));
+        this.parent = parent;
+        putValue(Action.SHORT_DESCRIPTION, PdfJumblerResources.getResources().getString(I18nKeys.ABOUT));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JOptionPane.showMessageDialog(
-			parent,
-			String.format(
-				PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TEXT),
-				PdfJumbler.VERSION_STRING,
-				PdfProcessingFactory.getInstance().getEditor().getClass().getCanonicalName(),
-				PdfProcessingFactory.getInstance().getRenderer().getClass().getCanonicalName()
-			),
-			PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TITLE),
-			JOptionPane.INFORMATION_MESSAGE
-		);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(
+                parent,
+                String.format(
+                        PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TEXT),
+                        PdfJumbler.VERSION_STRING,
+                        PdfProcessingFactory.getInstance()
+                                .getEditor()
+                                .getClass()
+                                .getCanonicalName(),
+                        PdfProcessingFactory.getInstance()
+                                .getRenderer()
+                                .getClass()
+                                .getCanonicalName()),
+                PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TITLE),
+                JOptionPane.INFORMATION_MESSAGE);
+    }
 }

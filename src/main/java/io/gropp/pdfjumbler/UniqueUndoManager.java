@@ -13,14 +13,14 @@ import javax.swing.undo.UndoableEdit;
  * @author Martin Gropp
  */
 class UniqueUndoManager extends UndoManager {
-	private static final long serialVersionUID = -2740016241678747836L;
+    private static final long serialVersionUID = -2740016241678747836L;
 
-	@Override
-	public boolean addEdit(UndoableEdit edit) {
-		if ((lastEdit() != null) && lastEdit().equals(edit)) {
-			return false;
-		} else {
-			return super.addEdit(edit);
-		}
-	}
+    @Override
+    public boolean addEdit(UndoableEdit edit) {
+        if ((lastEdit() != null) && lastEdit().equals(edit)) {
+            return false;
+        } else {
+            return super.addEdit(edit);
+        }
+    }
 }

@@ -4,17 +4,17 @@ package io.gropp.pdfjumbler.pdf;
  * @author Martin Gropp
  */
 public class PluginException extends Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public PluginException(String msg) {
-		super(msg);
-	}
-	
-	public PluginException(Throwable cause) {
-		super(cause);
-	}
-	
-	public PluginException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+    public PluginException(String msg) {
+        super(msg);
+    }
+
+    public PluginException(Throwable cause) {
+        super(cause);
+    }
+
+    public PluginException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
 }

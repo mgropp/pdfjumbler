@@ -1,6 +1,11 @@
 package io.gropp.pdfjumbler;
 
 import com.formdev.flatlaf.util.UIScale;
+import io.gropp.pdfjumbler.pdf.Page;
+import io.gropp.pdfjumbler.pdf.PdfEditor;
+import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
+import io.gropp.pdfjumbler.pdf.PdfProcessorListener;
+import io.gropp.pdfjumbler.pdf.PdfRenderer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -10,160 +15,145 @@ import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
-
-import io.gropp.pdfjumbler.pdf.Page;
-import io.gropp.pdfjumbler.pdf.PdfEditor;
-import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
-import io.gropp.pdfjumbler.pdf.PdfProcessorListener;
-import io.gropp.pdfjumbler.pdf.PdfRenderer;
 
 /**
  * @author Martin Gropp
  */
 public class PdfCellRenderer extends DefaultListCellRenderer {
-	private static final long serialVersionUID = 2395480480996785313L;
+    private static final long serialVersionUID = 2395480480996785313L;
 
-	private final Map<Page,Image> imageCache = new HashMap<>();
-	private PdfRenderer renderer;
-	
-	private Page page = null;
-	private final int padding = 6;
-	private final int textWidth = 128;
+    private final Map<Page, Image> imageCache = new HashMap<>();
+    private PdfRenderer renderer;
 
-	private int thumbnailWidth = 96;
-	private int thumbnailHeight = 128;
+    private Page page = null;
+    private final int padding = 6;
+    private final int textWidth = 128;
 
-	private boolean showText;
+    private int thumbnailWidth = 96;
+    private int thumbnailHeight = 128;
 
-	public PdfCellRenderer(PdfRenderer renderer) {
-		this(renderer, true);
-	}
+    private boolean showText;
 
-	public PdfCellRenderer(PdfRenderer renderer, boolean showText) {
-		this.showText = showText;
-		this.renderer = PdfProcessingFactory.getInstance().getRenderer();
-		PdfProcessingFactory.getInstance().addProcessorListener(
-			new PdfProcessorListener() {
-				@Override
-				public void pdfEditorChanged(PdfEditor oldEditor, PdfEditor newEditor) { }
+    public PdfCellRenderer(PdfRenderer renderer) {
+        this(renderer, true);
+    }
 
-				@Override
-				public void pdfRendererChanged(PdfRenderer oldRenderer, PdfRenderer newRenderer) {
-					PdfCellRenderer.this.renderer = newRenderer;
-					imageCache.clear();
-				}
-			}
-		);
+    public PdfCellRenderer(PdfRenderer renderer, boolean showText) {
+        this.showText = showText;
+        this.renderer = PdfProcessingFactory.getInstance().getRenderer();
+        PdfProcessingFactory.getInstance().addProcessorListener(new PdfProcessorListener() {
+            @Override
+            public void pdfEditorChanged(PdfEditor oldEditor, PdfEditor newEditor) {}
 
-		sizeChanged();
-	}
-	
-	private void sizeChanged() {
-		int padding = UIScale.scale(this.padding);
-		int width = UIScale.scale(thumbnailWidth) + 2 * padding;
-		int height = UIScale.scale(thumbnailHeight) + 2 * padding;
-		if (showText) {
-			width += UIScale.scale(textWidth) + 2 * padding;
-		}
+            @Override
+            public void pdfRendererChanged(PdfRenderer oldRenderer, PdfRenderer newRenderer) {
+                PdfCellRenderer.this.renderer = newRenderer;
+                imageCache.clear();
+            }
+        });
 
-		setSize(width, height);
-		setPreferredSize(getSize());
-		clearImageCache();
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		super.paint(g);
+        sizeChanged();
+    }
 
-		if (page == null) {
-			return;
-		}
+    private void sizeChanged() {
+        int padding = UIScale.scale(this.padding);
+        int width = UIScale.scale(thumbnailWidth) + 2 * padding;
+        int height = UIScale.scale(thumbnailHeight) + 2 * padding;
+        if (showText) {
+            width += UIScale.scale(textWidth) + 2 * padding;
+        }
 
-		int padding = UIScale.scale(this.padding);
-		int scaledThumbnailWidth = UIScale.scale(thumbnailWidth);
-		int scaledThumbnailHeight = UIScale.scale(thumbnailHeight);
-		Image cachedImage;
-		
-		if (imageCache.containsKey(page)) {
-			cachedImage = imageCache.get(page);
-		} else {
-			try {
-				cachedImage = renderer.renderPage(page, scaledThumbnailWidth, scaledThumbnailHeight);
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-			imageCache.put(page, cachedImage);
-		}
-		
-		g.drawImage(cachedImage, padding, padding, null);
-		g.setColor(Color.LIGHT_GRAY);
-		g.drawRect(padding, padding, cachedImage.getWidth(null), cachedImage.getHeight(null));
+        setSize(width, height);
+        setPreferredSize(getSize());
+        clearImageCache();
+    }
 
-		if (showText) {
-			g.setColor(this.getForeground());
-			g.drawString(
-				page.toString(),
-				scaledThumbnailWidth + 2 * padding,
-				padding + g.getFontMetrics().getAscent()
-			);
-		}
-	}
-	
-	@Override
-	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		PdfCellRenderer component = (PdfCellRenderer)super.getListCellRendererComponent(
-			list,
-			null,
-			index,
-			isSelected,
-			cellHasFocus
-		);
-		assert (component == this);
-		component.page = (Page)value;
-		component.setLocation(0, getHeight() * index);
-		return component;
-	}
+    @Override
+    public void paint(Graphics g) {
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        super.paint(g);
 
-	public void setThumbnailWidth(int thumbnailWidth) {
-		if (thumbnailWidth != this.thumbnailWidth) {
-			this.thumbnailWidth = thumbnailWidth;
-			sizeChanged();
-		}
-	}
+        if (page == null) {
+            return;
+        }
 
-	public int getThumbnailWidth() {
-		return thumbnailWidth;
-	}
+        int padding = UIScale.scale(this.padding);
+        int scaledThumbnailWidth = UIScale.scale(thumbnailWidth);
+        int scaledThumbnailHeight = UIScale.scale(thumbnailHeight);
+        Image cachedImage;
 
-	public void setThumbnailHeight(int thumbnailHeight) {
-		if (thumbnailHeight != this.thumbnailHeight) {
-			this.thumbnailHeight = thumbnailHeight;
-			sizeChanged();
-		}
-	}
+        if (imageCache.containsKey(page)) {
+            cachedImage = imageCache.get(page);
+        } else {
+            try {
+                cachedImage = renderer.renderPage(page, scaledThumbnailWidth, scaledThumbnailHeight);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            imageCache.put(page, cachedImage);
+        }
 
-	public int getThumbnailHeight() {
-		return thumbnailHeight;
-	}
-	
-	public void clearImageCache() {
-		imageCache.clear();
-	}
+        g.drawImage(cachedImage, padding, padding, null);
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(padding, padding, cachedImage.getWidth(null), cachedImage.getHeight(null));
 
-	public boolean getShowText() {
-		return showText;
-	}
+        if (showText) {
+            g.setColor(this.getForeground());
+            g.drawString(
+                    page.toString(),
+                    scaledThumbnailWidth + 2 * padding,
+                    padding + g.getFontMetrics().getAscent());
+        }
+    }
 
-	/**
-	 * Display the page's text representation next to the thumbnail iff true.
-	 */
-	public void setShowText(boolean value) {
-		this.showText = value;
-		sizeChanged();
-	}
+    @Override
+    public Component getListCellRendererComponent(
+            JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        PdfCellRenderer component =
+                (PdfCellRenderer) super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+        assert (component == this);
+        component.page = (Page) value;
+        component.setLocation(0, getHeight() * index);
+        return component;
+    }
+
+    public void setThumbnailWidth(int thumbnailWidth) {
+        if (thumbnailWidth != this.thumbnailWidth) {
+            this.thumbnailWidth = thumbnailWidth;
+            sizeChanged();
+        }
+    }
+
+    public int getThumbnailWidth() {
+        return thumbnailWidth;
+    }
+
+    public void setThumbnailHeight(int thumbnailHeight) {
+        if (thumbnailHeight != this.thumbnailHeight) {
+            this.thumbnailHeight = thumbnailHeight;
+            sizeChanged();
+        }
+    }
+
+    public int getThumbnailHeight() {
+        return thumbnailHeight;
+    }
+
+    public void clearImageCache() {
+        imageCache.clear();
+    }
+
+    public boolean getShowText() {
+        return showText;
+    }
+
+    /**
+     * Display the page's text representation next to the thumbnail iff true.
+     */
+    public void setShowText(boolean value) {
+        this.showText = value;
+        sizeChanged();
+    }
 }
