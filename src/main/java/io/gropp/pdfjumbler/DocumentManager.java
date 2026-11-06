@@ -3,6 +3,7 @@ package io.gropp.pdfjumbler;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,8 +53,8 @@ public class DocumentManager {
 		}
 
 		File tempFile = File.createTempFile("pdfjumbler", ".pdf");
-		Files.move(file.toPath(), tempFile.toPath());
 		tempFile.deleteOnExit();
+		Files.move(file.toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 		for (Page page : pageMap.get(file)) {
 			page.setFile(tempFile);
