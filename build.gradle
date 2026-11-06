@@ -6,8 +6,10 @@ apply plugin: "idea"
 
 compileJava.options.encoding = 'UTF-8'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
 
 defaultTasks "jar"
 
@@ -20,17 +22,18 @@ sourceSets {
 }
 
 dependencies {
-	compile 'org.tinylog:tinylog-api:2.1.2'
-	compile 'org.tinylog:tinylog-impl:2.1.2'
-	compile 'org.apache.pdfbox:pdfbox:2.0.21'
-	compile 'org.apache.xmlgraphics:batik-transcoder:1.13'
-	compile 'com.formdev:flatlaf:0.41'
+	implementation 'org.tinylog:tinylog-api:2.1.2'
+	implementation 'org.tinylog:tinylog-impl:2.1.2'
+	implementation 'org.apache.pdfbox:pdfbox:2.0.21'
+	implementation 'org.apache.xmlgraphics:batik-transcoder:1.13'
+	implementation 'com.formdev:flatlaf:0.41'
 }
 
 jar {
 	dependsOn classes
 	
 	archiveFileName = "pdfjumbler.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	
 	manifest {
 		attributes(
@@ -41,7 +44,7 @@ jar {
 	from sourceSets.main.output
 
 	from {
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
 	
 	exclude "META-INF/*.SF"
