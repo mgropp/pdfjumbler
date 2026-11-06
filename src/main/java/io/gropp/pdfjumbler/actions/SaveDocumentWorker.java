@@ -1,6 +1,7 @@
 package io.gropp.pdfjumbler.actions;
 
 import io.gropp.pdfjumbler.DocumentManager;
+import io.gropp.pdfjumbler.DocumentSaver;
 import io.gropp.pdfjumbler.jdragdroplist.UndoableListModel;
 import io.gropp.pdfjumbler.pdf.Page;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
@@ -23,11 +24,11 @@ public class SaveDocumentWorker extends SwingWorker<Void, Void> {
     protected Void doInBackground() throws Exception {
         firePropertyChange("note", "", file.getName());
 
-        // TODO: Detect links! (java.nio.file?)
-
-        documentManager.moveAsideIfOpen(file);
-
-        PdfProcessingFactory.getInstance().getEditor().saveDocument(pages, file);
+        DocumentSaver saver =
+                new DocumentSaver(documentManager, (pageList, target) -> PdfProcessingFactory.getInstance()
+                        .getEditor()
+                        .saveDocument(pageList, target));
+        saver.save(pages, file, this::isCancelled);
 
         return null;
     }
