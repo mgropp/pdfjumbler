@@ -66,10 +66,10 @@ PdfJumbler accepts pdf files as command line arguments.
 Several settings can be changed using Java system properties:
 
 * `pdfjumbler.editor`: sets the editor plugin (if installed; previous plugins are no longer supported)
-	 * PDFBox: `net.sourceforge.pdfjumbler.pdfbox.PdfEditor`
+	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfEditor`
 
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed; previous plugins are no longer supported)
-	 * PDFBox: `net.sourceforge.pdfjumbler.pdfbox.PdfRenderer`
+	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfRenderer`
 
 * `user.language`: sets the program language (in case auto-detection doesn't work).
 	So far, `de` (German), `es` (Spanish), `ru` (Russian) and `en` (English; default)

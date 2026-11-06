@@ -3,7 +3,7 @@ plugins {
 	idea
 }
 
-val mainPackage = "net.sourceforge.pdfjumbler"
+val mainPackage = "io.gropp.pdfjumbler"
 val mainClass = "$mainPackage.PdfJumbler"
 
 defaultTasks("jar")
