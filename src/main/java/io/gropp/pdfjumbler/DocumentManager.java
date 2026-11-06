@@ -56,8 +56,10 @@ public class DocumentManager {
 		tempFile.deleteOnExit();
 		Files.move(file.toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-		for (Page page : pageMap.get(file)) {
+		List<Page> pages = pageMap.remove(file);
+		for (Page page : pages) {
 			page.setFile(tempFile);
 		}
+		pageMap.put(tempFile, pages);
 	}
 }
