@@ -3,6 +3,7 @@ package io.gropp.pdfjumbler.pdfbox;
 import io.gropp.pdfjumbler.pdf.Page;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -49,20 +50,24 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 	@Override
 	public Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException {
 		PDDocument pdDoc = getDocument(page.getFile());
-		PDRectangle cropBox = pdDoc.getPage(page.getIndex()).getCropBox();
+		PDPage pdPage = pdDoc.getPage(page.getIndex());
+		PDRectangle cropBox = pdPage.getCropBox();
 
 		double ax;
 		double ay;
 
 		int degrees = page.getRotation();
-		if (degrees == 0 || degrees == 180) {
-			ax = maxWidth / cropBox.getWidth();
-			ay = maxHeight / cropBox.getHeight();
-		} else if (degrees == 90 || degrees == 270) {
+		if (degrees != 0 && degrees != 90 && degrees != 180 && degrees != 270) {
+			throw new IllegalArgumentException("Unsupported rotation: " + degrees);
+		}
+
+		int displayedRotation = (pdPage.getRotation() + degrees) % 360;
+		if (displayedRotation == 90 || displayedRotation == 270) {
 			ax = maxWidth / cropBox.getHeight();
 			ay = maxHeight / cropBox.getWidth();
 		} else {
-			throw new IllegalArgumentException("Unsupported rotation: " + degrees);
+			ax = maxWidth / cropBox.getWidth();
+			ay = maxHeight / cropBox.getHeight();
 		}
 
 		PDFRenderer renderer = new PDFRenderer(pdDoc);
