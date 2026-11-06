@@ -22,7 +22,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
 
       - name: Run tests and build jar
-        run: ./gradlew test jar
+        run: ./gradlew test jar -Pversion="${GITHUB_REF_NAME#v-}"
 
       - name: Install NSIS
         run: sudo apt-get update && sudo apt-get install --yes nsis

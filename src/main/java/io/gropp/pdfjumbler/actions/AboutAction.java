@@ -1,5 +1,6 @@
 package io.gropp.pdfjumbler.actions;
 
+import io.gropp.pdfjumbler.AppVersion;
 import io.gropp.pdfjumbler.PdfJumbler;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
@@ -23,7 +24,7 @@ public class AboutAction extends AbstractAction {
                 parent,
                 String.format(
                         PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TEXT),
-                        PdfJumbler.VERSION_STRING,
+                        AppVersion.current(),
                         PdfProcessingFactory.getInstance()
                                 .getEditor()
                                 .getClass()
