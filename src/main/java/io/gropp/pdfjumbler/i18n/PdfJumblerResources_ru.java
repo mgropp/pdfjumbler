@@ -46,7 +46,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
                 ABOUT_TEXT,
                 """
                 PdfJumbler %s\s
-                Авторские права (C) 2021 Мартин Гропп
+                Авторские права (C) Мартин Гропп
                 Перевод: s-r-grass
 
                 PDF Редактор: %s

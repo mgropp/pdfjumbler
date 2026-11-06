@@ -71,7 +71,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
                 ABOUT_TEXT,
                 """
                 PdfJumbler %s\s
-                Copyright (C) 2021 Martin Gropp
+                Copyright (C) Martin Gropp
 
                 PDF Editor: %s
                 PDF Renderer: %s
