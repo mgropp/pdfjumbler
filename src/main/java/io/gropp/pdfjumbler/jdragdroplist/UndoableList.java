@@ -175,7 +175,7 @@ public class UndoableList<T> implements List<T> {
 		list.add(index, element);
 		callListenersAdd(
 				new ListEdit<>(ListEdit.Type.ADD, getMainList(), index + offset, element),
-			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_ADDED, index + offset, index)
+			new ListDataEvent(getMainList(), ListDataEvent.INTERVAL_ADDED, index + offset, index + offset)
 		);		
 	}
 

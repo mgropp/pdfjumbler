@@ -285,6 +285,17 @@ class UndoableListTest {
 		assertThat(dataListener.events).containsExactly("removed 1-2");
 	}
 
+	@Test
+	void addToSubListFiresEventWithMainListIndices() {
+		fill("a", "b", "c", "d");
+		listenToData();
+
+		list.subList(2, 4).add(1, "x");
+
+		assertThat(list).containsExactly("a", "b", "c", "x", "d");
+		assertThat(dataListener.events).containsExactly("added 3-3");
+	}
+
 	private static final class RecordingListDataListener implements ListDataListener {
 		final List<String> events = new ArrayList<>();
 
