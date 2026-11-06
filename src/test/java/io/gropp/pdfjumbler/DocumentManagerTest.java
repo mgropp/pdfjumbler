@@ -89,4 +89,18 @@ class DocumentManagerTest {
 
 		assertThat(pages).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(file));
 	}
+
+	@Test
+	void moveAsideMovesOpenFileAndRedirectsItsPages() throws IOException {
+		File file = new File(tempDir, "doc.pdf");
+		Files.writeString(file.toPath(), "original");
+		List<Page> pages = manager.getPages(file);
+
+		manager.moveAsideIfOpen(file);
+
+		assertThat(file).doesNotExist();
+		File movedFile = pages.get(0).getFile();
+		assertThat(movedFile).isNotEqualTo(file).hasContent("original");
+		assertThat(pages).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(movedFile));
+	}
 }
