@@ -307,6 +307,16 @@ class UndoableListTest {
 		assertThat(dataListener.events).containsExactly("added 0-2");
 	}
 
+	@Test
+	void clearOnEmptyListFiresNoEvent() {
+		listenToData();
+
+		list.clear();
+
+		assertThat(dataListener.events).isEmpty();
+		assertThat(undoManager.canUndo()).isFalse();
+	}
+
 	private static final class RecordingListDataListener implements ListDataListener {
 		final List<String> events = new ArrayList<>();
 
