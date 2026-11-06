@@ -44,8 +44,8 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
 
 	public PdfCellRenderer(PdfRenderer renderer, boolean showText) {
 		this.showText = showText;
-		this.renderer = PdfProcessingFactory.getRenderer();
-		PdfProcessingFactory.addProcessorListener(
+		this.renderer = PdfProcessingFactory.getInstance().getRenderer();
+		PdfProcessingFactory.getInstance().addProcessorListener(
 			new PdfProcessorListener() {
 				@Override
 				public void pdfEditorChanged(PdfEditor oldEditor, PdfEditor newEditor) { }

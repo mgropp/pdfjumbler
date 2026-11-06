@@ -25,8 +25,8 @@ public class AboutAction extends AbstractAction {
 			String.format(
 				PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TEXT),
 				PdfJumbler.VERSION_STRING,
-				PdfProcessingFactory.getEditor().getClass().getCanonicalName(),
-				PdfProcessingFactory.getRenderer().getClass().getCanonicalName()
+				PdfProcessingFactory.getInstance().getEditor().getClass().getCanonicalName(),
+				PdfProcessingFactory.getInstance().getRenderer().getClass().getCanonicalName()
 			),
 			PdfJumblerResources.getResources().getString(I18nKeys.ABOUT_TITLE),
 			JOptionPane.INFORMATION_MESSAGE

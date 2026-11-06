@@ -36,7 +36,7 @@ public class PdfList extends JDragDropList<Page> {
 		addMouseWheelListener(new ZoomMouseWheelListener());
 
 		setCellRenderer(new PdfCellRenderer(
-			PdfProcessingFactory.getRenderer(),
+			PdfProcessingFactory.getInstance().getRenderer(),
 			showText
 		));
 		this.setShowCellText(showText);

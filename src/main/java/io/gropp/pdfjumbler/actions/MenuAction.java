@@ -60,11 +60,11 @@ public class MenuAction extends AbstractAction {
 
 		ButtonGroup editorGroup = new ButtonGroup();
 		JMenu editorMenu = new JMenu(PdfJumblerResources.getResources().getString(I18nKeys.MENU_EDITOR));
-		for (Class<? extends PdfEditor> cls : PdfProcessingFactory.getAvailableEditors()) {
+		for (Class<? extends PdfEditor> cls : PdfProcessingFactory.getInstance().getAvailableEditors()) {
 			JRadioButtonMenuItem item = new JRadioButtonMenuItem(new ChangeEditorAction(parent, cls));
 			editorGroup.add(item);
 			editorMenu.add(item);
-			if (PdfProcessingFactory.getEditorClass().equals(cls)) {
+			if (PdfProcessingFactory.getInstance().getEditorClass().equals(cls)) {
 				item.setSelected(true);
 			}
 		}
@@ -72,11 +72,11 @@ public class MenuAction extends AbstractAction {
 
 		ButtonGroup rendererGroup = new ButtonGroup();
 		JMenu rendererMenu = new JMenu(PdfJumblerResources.getResources().getString(I18nKeys.MENU_RENDERER));
-		for (Class<? extends PdfRenderer> cls : PdfProcessingFactory.getAvailableRenderers()) {
+		for (Class<? extends PdfRenderer> cls : PdfProcessingFactory.getInstance().getAvailableRenderers()) {
 			JRadioButtonMenuItem item = new JRadioButtonMenuItem(new ChangeRendererAction(parent, cls));
 			rendererGroup.add(item);
 			rendererMenu.add(item);
-			if (PdfProcessingFactory.getRendererClass().equals(cls)) {
+			if (PdfProcessingFactory.getInstance().getRendererClass().equals(cls)) {
 				item.setSelected(true);
 			}
 		}

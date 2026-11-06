@@ -25,7 +25,7 @@ public class DocumentManager {
 			return pageMap.get(file);
 		}
 		
-		int pageCount = PdfProcessingFactory.getRenderer().getNumberOfPages(file);
+		int pageCount = PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file);
 		List<Page> pages = new ArrayList<>(pageCount);
 		for (int i = 0; i < pageCount; i++) {
 			Page page = new Page(file, i);
