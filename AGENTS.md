@@ -151,3 +151,5 @@ They run headless (`java.awt.headless=true`), so they must not open windows or d
 - `pdfjumbler.nsi` is the NSIS script for the Windows installer. It expects `build/libs/pdfjumbler.jar`
   and writes `build/setup-pdfjumbler.exe`. Build it locally with `makensis pdfjumbler.nsi`.
 - `setup/ubuntu/install.sh` installs the latest GitHub release jar on Ubuntu/Debian.
+- `setup/ubuntu/uninstall.sh` removes what `install.sh` installed, keeping `/opt/pdfjumbler` if it
+  contains plugins.
