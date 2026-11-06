@@ -9,17 +9,30 @@ public final class ListOperations {
 		if (!isValidIndex(model, from) || !isValidIndex(model, to) || from == to) {
 			return false;
 		}
-		T item = model.get(from);
-		model.remove(from);
-		model.add(to, item);
+		model.beginCompoundEdit("Move");
+		try {
+			T item = model.get(from);
+			model.remove(from);
+			model.add(to, item);
+		} finally {
+			model.endCompoundEdit();
+		}
 		return true;
 	}
 
 	public static <T> void removeAll(UndoableListModel<T> model, int[] indices) {
+		if (indices.length == 0) {
+			return;
+		}
 		int[] sorted = indices.clone();
 		Arrays.sort(sorted);
-		for (int i = sorted.length - 1; i >= 0; i--) {
-			model.remove(sorted[i]);
+		model.beginCompoundEdit("Delete");
+		try {
+			for (int i = sorted.length - 1; i >= 0; i--) {
+				model.remove(sorted[i]);
+			}
+		} finally {
+			model.endCompoundEdit();
 		}
 	}
 
