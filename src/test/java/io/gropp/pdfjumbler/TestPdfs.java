@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.cos.COSDictionary;
+import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 public final class TestPdfs {
@@ -40,6 +43,22 @@ public final class TestPdfs {
             PDPage page = new PDPage(new PDRectangle(widthOfPage(0), heightOfPage(0)));
             page.setRotation(intrinsicRotation);
             document.addPage(page);
+            document.save(file);
+        }
+        return file;
+    }
+
+    public static File createWithInheritedAttributes(File file, PDRectangle cropBox, PDResources resources)
+            throws IOException {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            page.getCOSObject().removeItem(COSName.MEDIA_BOX);
+            document.addPage(page);
+
+            COSDictionary pageTree = document.getPages().getCOSObject();
+            pageTree.setItem(COSName.MEDIA_BOX, new PDRectangle(widthOfPage(0), heightOfPage(0)).getCOSArray());
+            pageTree.setItem(COSName.CROP_BOX, cropBox.getCOSArray());
+            pageTree.setItem(COSName.RESOURCES, resources);
             document.save(file);
         }
         return file;

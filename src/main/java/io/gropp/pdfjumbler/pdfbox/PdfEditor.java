@@ -10,6 +10,7 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
 import org.tinylog.Logger;
 
 /**
@@ -43,10 +44,7 @@ public class PdfEditor implements io.gropp.pdfjumbler.pdf.PdfEditor {
                 }
 
                 PDPage sourcePage = pageDoc.getPage(page.getIndex());
-                PDPage pdPage = new PDPage(new COSDictionary(sourcePage.getCOSObject()));
-                pdPage.setRotation((sourcePage.getRotation() + page.getRotation()) % 360);
-
-                outDoc.addPage(pdPage);
+                outDoc.addPage(copyWithInheritedAttributes(sourcePage, page.getRotation()));
             }
 
             outDoc.save(file.toString());
@@ -56,5 +54,17 @@ public class PdfEditor implements io.gropp.pdfjumbler.pdf.PdfEditor {
                 doc.close();
             }
         }
+    }
+
+    private static PDPage copyWithInheritedAttributes(PDPage source, int additionalRotation) {
+        PDPage copy = new PDPage(new COSDictionary(source.getCOSObject()));
+        copy.setMediaBox(source.getMediaBox());
+        copy.setCropBox(source.getCropBox());
+        PDResources resources = source.getResources();
+        if (resources != null) {
+            copy.setResources(resources);
+        }
+        copy.setRotation((source.getRotation() + additionalRotation) % 360);
+        return copy;
     }
 }
