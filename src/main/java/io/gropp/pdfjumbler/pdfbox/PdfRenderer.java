@@ -3,11 +3,10 @@ package io.gropp.pdfjumbler.pdfbox;
 import io.gropp.pdfjumbler.pdf.Page;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,6 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 	}
 
 	private final Map<File, PDDocument> docMap = new HashMap<>();
-	private final Map<File, Map<Page, PDPage>> pageMap = new HashMap<>();
 
 	private PDDocument openDocument(File file) throws IOException {
 		PDDocument pdDoc = Loader.loadPDF(file);
@@ -35,7 +33,6 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 		}
 
 		docMap.put(file, pdDoc);
-		pageMap.put(file, new HashMap<>());
 
 		return pdDoc;
 	}
@@ -49,30 +46,10 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 		}
 	}
 
-	private PDPage getPDPage(Page page) throws IOException {
-		PDDocument pdDoc = docMap.get(page.getFile());
-		if (pdDoc == null) {
-			pdDoc = openDocument(page.getFile());
-		}
-
-		Map<Page,PDPage> map = pageMap.get(page.getFile());
-		assert (map != null);
-
-		PDPage pdPage;
-		if (map.containsKey(page)) {
-			pdPage = map.get(page);
-		} else {
-			pdPage = pdDoc.getPage(page.getIndex());
-			map.put(page, pdPage);
-		}
-
-		return pdPage;
-	}
-
 	@Override
 	public Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException {
-		PDPage pdPage = getPDPage(page);
-		PDRectangle cropBox = pdPage.getCropBox();
+		PDDocument pdDoc = getDocument(page.getFile());
+		PDRectangle cropBox = pdDoc.getPage(page.getIndex()).getCropBox();
 
 		double ax;
 		double ay;
@@ -88,7 +65,7 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 			throw new IllegalArgumentException("Unsupported rotation: " + degrees);
 		}
 
-		PDFRenderer renderer = new PDFRenderer(getDocument(page.getFile()));
+		PDFRenderer renderer = new PDFRenderer(pdDoc);
 		BufferedImage image = renderer.renderImage(page.getIndex(), (float)Math.min(ax, ay));
 
 		return ImageRotation.rotate(image, degrees);
@@ -101,11 +78,9 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 
 	@Override
 	public void close() throws IOException {
-		Iterator<Map.Entry<File, PDDocument>> it = docMap.entrySet().iterator();
+		Iterator<PDDocument> it = docMap.values().iterator();
 		while (it.hasNext()) {
-			Map.Entry<File, PDDocument> entry = it.next();
-			entry.getValue().close();
-			pageMap.remove(entry.getKey());
+			it.next().close();
 			it.remove();
 		}
 	}
