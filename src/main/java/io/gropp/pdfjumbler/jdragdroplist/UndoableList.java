@@ -434,7 +434,7 @@ public class UndoableList<T> implements List<T> {
 		}
 		callListenersAdd(
 			null,
-			new ListDataEvent(edit.list, ListDataEvent.INTERVAL_ADDED, edit.index, edit.index + edit.items.size())
+			new ListDataEvent(edit.list, ListDataEvent.INTERVAL_ADDED, edit.index, edit.index + edit.items.size() - 1)
 		);
 	}
 	
