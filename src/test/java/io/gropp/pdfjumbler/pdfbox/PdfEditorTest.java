@@ -9,6 +9,14 @@ import io.gropp.pdfjumbler.pdf.Page;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -84,6 +92,24 @@ class PdfEditorTest {
         editor.saveDocument(List.of(unrotated, rotated), target);
 
         assertThat(TestPdfs.read(target)).containsExactly(pageInfo(0, 90), pageInfo(0, 0));
+    }
+
+    @Test
+    void keepsAttributesInheritedFromPageTree() throws IOException {
+        PDRectangle cropBox = new PDRectangle(10, 20, 30, 40);
+        PDResources resources = new PDResources();
+        COSName fontName = resources.add(new PDType1Font(Standard14Fonts.FontName.HELVETICA));
+        File source = TestPdfs.createWithInheritedAttributes(new File(tempDir, "source.pdf"), cropBox, resources);
+        File target = new File(tempDir, "target.pdf");
+
+        editor.saveDocument(List.of(new Page(source, 0)), target);
+
+        assertThat(TestPdfs.read(target)).containsExactly(pageInfo(0, 0));
+        try (PDDocument saved = Loader.loadPDF(target)) {
+            PDPage page = saved.getPage(0);
+            assertThat(page.getCropBox().toString()).isEqualTo(cropBox.toString());
+            assertThat(page.getResources().getFont(fontName)).isNotNull();
+        }
     }
 
     @Test
