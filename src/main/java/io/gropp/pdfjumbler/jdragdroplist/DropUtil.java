@@ -75,7 +75,7 @@ public class DropUtil {
 			
 			for (String uri : uris) {
 				uri = uri.trim();
-				if (uri.length() == 0) {
+				if (uri.isEmpty() || uri.startsWith("#")) {
 					continue;
 				}
 				
