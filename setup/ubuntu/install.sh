@@ -6,10 +6,10 @@ set -o pipefail
 
 required_java_version=21
 dest_dir="/opt/pdfjumbler"
-desktop_file="/usr/share/applications/pdfjumbler.desktop"
+desktop_file="/usr/local/share/applications/pdfjumbler.desktop"
 jar_file="$dest_dir/pdfjumbler.jar"
 launcher_file="/usr/local/bin/pdfjumbler"
-icon_file="/usr/share/icons/hicolor/scalable/apps/pdfjumbler.svg"
+icon_file="/usr/local/share/icons/hicolor/scalable/apps/pdfjumbler.svg"
 
 # Make sure Java is installed
 if ! command -v java >/dev/null 2>&1
@@ -66,6 +66,7 @@ EOF
 cat > install.sh << EOF
 #!/bin/sh
 set -e
+mkdir -p "$( dirname "$desktop_file" )"
 mv pdfjumbler.desktop "$desktop_file"
 chown root:root "$desktop_file"
 chmod 644 "$desktop_file"
@@ -85,13 +86,9 @@ mv pdfjumbler.svg "$icon_file"
 chown root:root "$icon_file"
 chmod 644 "$icon_file"
 
-if command -v gtk-update-icon-cache >/dev/null 2>&1
-then
-	gtk-update-icon-cache -q /usr/share/icons/hicolor || true
-fi
 if command -v update-desktop-database >/dev/null 2>&1
 then
-	update-desktop-database -q /usr/share/applications || true
+	update-desktop-database -q "$( dirname "$desktop_file" )" || true
 fi
 EOF
 
