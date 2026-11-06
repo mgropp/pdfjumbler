@@ -15,6 +15,7 @@ public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
     private final UndoableListModel<Page> model;
     private final AtomicInteger insertPos;
     private final Collection<File> files;
+    private boolean editStarted;
 
     public OpenDocumentWorker(
             DocumentManager documentManager, UndoableListModel<Page> model, int insertPos, Collection<File> files) {
@@ -22,9 +23,6 @@ public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
         this.model = model;
         this.insertPos = new AtomicInteger((insertPos < 0) ? model.getSize() : insertPos);
         this.files = files;
-
-        // execute is final :/
-        model.beginCompoundEdit("Open");
     }
 
     @Override
@@ -47,6 +45,10 @@ public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
 
     @Override
     protected void process(List<List<Page>> pages) {
+        if (!editStarted) {
+            model.beginCompoundEdit("Open");
+            editStarted = true;
+        }
         for (List<Page> pageList : pages) {
             for (Page page : pageList) {
                 model.add(insertPos.getAndIncrement(), page);
@@ -56,6 +58,8 @@ public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
 
     @Override
     protected void done() {
-        model.endCompoundEdit();
+        if (editStarted) {
+            model.endCompoundEdit();
+        }
     }
 }
