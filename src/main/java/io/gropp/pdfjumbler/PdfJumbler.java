@@ -54,6 +54,9 @@ public class PdfJumbler extends JFrame {
 	private final PdfList mainList;
 	private final PdfList secondaryList;
 	private final UndoManager undoManager = new UniqueUndoManager();
+	private final DocumentManager documentManager = new DocumentManager(
+		file -> PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file)
+	);
 	private final Actions actions;
 
 	public PdfList getMainPdfList() {
@@ -77,6 +80,7 @@ public class PdfJumbler extends JFrame {
 			try {
 				ProgressDialog.run(
 					new OpenDocumentWorker(
+						instance.documentManager,
 						list.getModel(),
 						insertPos,
 						files
@@ -103,6 +107,7 @@ public class PdfJumbler extends JFrame {
 		try {
 			ProgressDialog.run(
 				new SaveDocumentWorker(
+					instance.documentManager,
 					list.getModel(),
 					file
 				),

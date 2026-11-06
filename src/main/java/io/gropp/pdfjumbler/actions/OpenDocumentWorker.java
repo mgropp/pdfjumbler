@@ -12,11 +12,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
+	private final DocumentManager documentManager;
 	private final UndoableListModel<Page> model;
 	private final AtomicInteger insertPos;
 	private final Collection<File> files;
 
-	public OpenDocumentWorker(UndoableListModel<Page> model, int insertPos, Collection<File> files) {
+	public OpenDocumentWorker(DocumentManager documentManager, UndoableListModel<Page> model, int insertPos, Collection<File> files) {
+		this.documentManager = documentManager;
 		this.model = model;
 		this.insertPos = new AtomicInteger((insertPos < 0) ? model.getSize() : insertPos);
 		this.files = files;
@@ -34,7 +36,7 @@ public class OpenDocumentWorker extends SwingWorker<Void, List<Page>> {
 			Logger.info("Opening file: {}", file);
 			firePropertyChange("note", "", file.getName());
 
-			publish(DocumentManager.getPages(file));
+			publish(documentManager.getPages(file));
 
 			nFiles++;
 			setProgress((int)(100 * (nFiles / (double)files.size())));
