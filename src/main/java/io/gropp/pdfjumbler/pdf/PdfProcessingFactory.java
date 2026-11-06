@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.prefs.Preferences;
+import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
 public final class PdfProcessingFactory {
-    private static PdfProcessingFactory instance;
+    private static @Nullable PdfProcessingFactory instance;
 
     public static synchronized PdfProcessingFactory getInstance() {
         if (instance == null) {
@@ -33,28 +34,26 @@ public final class PdfProcessingFactory {
             List<Class<? extends PdfEditor>> editorClasses,
             List<Class<? extends PdfRenderer>> rendererClasses,
             Preferences preferences,
-            String requestedEditor,
-            String requestedRenderer)
+            @Nullable String requestedEditor,
+            @Nullable String requestedRenderer)
             throws NoPdfProcessorException {
         this.editorClasses = List.copyOf(editorClasses);
         this.rendererClasses = List.copyOf(rendererClasses);
         this.preferences = preferences;
 
         editor = instantiateFirst(
-                candidates(this.editorClasses, requestedEditor, preferences.get(ConfigKeys.EDITOR, null)));
-        if (editor == null) {
-            throw new NoPdfProcessorException(NoPdfProcessorException.Kind.EDITOR);
-        }
+                        candidates(this.editorClasses, requestedEditor, preferences.get(ConfigKeys.EDITOR, null)))
+                .orElseThrow(() -> new NoPdfProcessorException(NoPdfProcessorException.Kind.EDITOR));
 
         renderer = instantiateFirst(
-                candidates(this.rendererClasses, requestedRenderer, preferences.get(ConfigKeys.RENDERER, null)));
-        if (renderer == null) {
-            throw new NoPdfProcessorException(NoPdfProcessorException.Kind.RENDERER);
-        }
+                        candidates(this.rendererClasses, requestedRenderer, preferences.get(ConfigKeys.RENDERER, null)))
+                .orElseThrow(() -> new NoPdfProcessorException(NoPdfProcessorException.Kind.RENDERER));
     }
 
     private static <T> List<Class<? extends T>> candidates(
-            List<Class<? extends T>> available, String requestedClassName, String preferredClassName) {
+            List<Class<? extends T>> available,
+            @Nullable String requestedClassName,
+            @Nullable String preferredClassName) {
         List<Class<? extends T>> candidates = new ArrayList<>(available.size() + 2);
         findByName(available, requestedClassName).ifPresent(candidates::add);
         findByName(available, preferredClassName).ifPresent(candidates::add);
@@ -62,20 +61,21 @@ public final class PdfProcessingFactory {
         return candidates;
     }
 
-    private static <T> Optional<Class<? extends T>> findByName(List<Class<? extends T>> classes, String className) {
+    private static <T> Optional<Class<? extends T>> findByName(
+            List<Class<? extends T>> classes, @Nullable String className) {
         return classes.stream().filter(cls -> cls.getName().equals(className)).findFirst();
     }
 
-    private static <T> T instantiateFirst(List<Class<? extends T>> candidates) {
+    private static <T> Optional<T> instantiateFirst(List<Class<? extends T>> candidates) {
         for (Class<? extends T> cls : candidates) {
             Logger.info("Trying to instantiate {}", cls);
             try {
-                return cls.getDeclaredConstructor().newInstance();
+                return Optional.of(cls.getDeclaredConstructor().newInstance());
             } catch (Exception e) {
                 Logger.error(e);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public PdfEditor getEditor() {

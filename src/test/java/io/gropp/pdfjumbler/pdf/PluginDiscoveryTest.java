@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -24,7 +25,8 @@ class PluginDiscoveryTest {
 
     private final PluginDiscovery discovery = new PluginDiscovery(List.of(BUILT_IN_EDITOR), List.of(BUILT_IN_RENDERER));
 
-    private void writePlugin(String name, String version, String editors, String renderers) throws IOException {
+    private void writePlugin(String name, String version, @Nullable String editors, @Nullable String renderers)
+            throws IOException {
         Properties properties = new Properties();
         properties.setProperty(Plugin.REQUIRED_VERSION_KEY, version);
         if (editors != null) {

@@ -6,16 +6,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import io.gropp.pdfjumbler.ConfigKeys;
 import io.gropp.pdfjumbler.InMemoryPreferences;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 class PdfProcessingFactoryTest {
     private final Preferences preferences = new InMemoryPreferences();
 
-    private PdfProcessingFactory factory(String requestedEditor, String requestedRenderer)
+    private PdfProcessingFactory factory(@Nullable String requestedEditor, @Nullable String requestedRenderer)
             throws NoPdfProcessorException {
         return new PdfProcessingFactory(
                 List.of(EditorA.class, EditorB.class),
@@ -165,7 +167,7 @@ class PdfProcessingFactoryTest {
     public static class RendererA implements PdfRenderer {
         @Override
         public Image renderPage(Page page, int maxWidth, int maxHeight) {
-            return null;
+            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
 
         @Override

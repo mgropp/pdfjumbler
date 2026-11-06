@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
+import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
 final class PdfProcessingSetup {
@@ -39,7 +40,7 @@ final class PdfProcessingSetup {
                         String.format(
                                 resources.getString(I18nKeys.PLUGIN_INIT_ERROR),
                                 e.getJarFile().getAbsolutePath()),
-                        I18nUtil.getString(resources, e.getMessage(), e.getMessage()));
+                        localizedMessage(resources, e));
                 exitWithError(message, resources.getString(I18nKeys.PLUGIN_ERROR_TITLE), EXIT_PLUGIN_ERROR);
             }
         }
@@ -68,12 +69,17 @@ final class PdfProcessingSetup {
         }
     }
 
+    private static String localizedMessage(ResourceBundle resources, Exception e) {
+        String message = e.getMessage();
+        return message == null ? e.getClass().getSimpleName() : I18nUtil.getString(resources, message, message);
+    }
+
     private static void exitWithError(String message, String title, int status) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
         System.exit(status);
     }
 
-    private static File getPluginPath() {
+    private static @Nullable File getPluginPath() {
         String userPluginPath = System.getProperty("pdfjumbler.pluginpath");
         if (userPluginPath != null) {
             return new File(userPluginPath);

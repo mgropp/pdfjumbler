@@ -14,10 +14,11 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
+import org.jspecify.annotations.Nullable;
 
 public class UndoableList<T> implements List<T> {
     private final List<T> list;
-    private final UndoableList<T> parent;
+    private final @Nullable UndoableList<T> parent;
     private final int offset;
     private final List<UndoableEditListener> editListeners;
     private final List<ListDataListener> listDataListeners;
@@ -101,7 +102,7 @@ public class UndoableList<T> implements List<T> {
         }
     }
 
-    private void callListenersAdd(ListEdit<T> edit, ListDataEvent dataEvent) {
+    private void callListenersAdd(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
         assert (!editProtection[0]);
 
         editProtection[0] = true;
@@ -120,7 +121,7 @@ public class UndoableList<T> implements List<T> {
         }
     }
 
-    private void callListenersRemove(ListEdit<T> edit, ListDataEvent dataEvent) {
+    private void callListenersRemove(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
         assert (!editProtection[0]);
 
         editProtection[0] = true;
@@ -137,7 +138,7 @@ public class UndoableList<T> implements List<T> {
         }
     }
 
-    private void callListenersSet(ListEdit<T> edit, ListDataEvent dataEvent) {
+    private void callListenersSet(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
         assert (!editProtection[0]);
 
         editProtection[0] = true;
