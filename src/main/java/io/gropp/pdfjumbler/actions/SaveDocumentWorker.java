@@ -35,7 +35,7 @@ public class SaveDocumentWorker extends SwingWorker<Void,Void> {
 			}
 		}
 
-		PdfProcessingFactory.getEditor().saveDocument(
+		PdfProcessingFactory.getInstance().getEditor().saveDocument(
 			pages,
 			file
 		);

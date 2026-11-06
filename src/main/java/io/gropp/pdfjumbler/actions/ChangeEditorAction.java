@@ -22,7 +22,7 @@ public class ChangeEditorAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			PdfProcessingFactory.setEditorClass(editorClass);
+			PdfProcessingFactory.getInstance().setEditorClass(editorClass);
 		}
 		catch (Exception ex) {
 			Logger.error(ex);

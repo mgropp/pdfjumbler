@@ -250,7 +250,7 @@ public class PdfJumbler extends JFrame {
 		openFiles(mainList, -1, files);
 
 		// Listen for editor/renderer changes
-		PdfProcessingFactory.addProcessorListener(new ReloadingProcessorListener(this));
+		PdfProcessingFactory.getInstance().addProcessorListener(new ReloadingProcessorListener(this));
 
 		// Register accelerators
 		registerAccelerators(

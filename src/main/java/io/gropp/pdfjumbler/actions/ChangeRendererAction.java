@@ -22,7 +22,7 @@ public class ChangeRendererAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			PdfProcessingFactory.setRendererClass(rendererClass);
+			PdfProcessingFactory.getInstance().setRendererClass(rendererClass);
 		}
 		catch (Exception ex) {
 			Logger.error(ex);
