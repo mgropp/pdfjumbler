@@ -46,7 +46,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
                 ABOUT_TEXT,
                 """
                 PdfJumbler %s\s
-                Copyright (C) 2021 Martin Gropp
+                Copyright (C) Martin Gropp
                 Traducción: Andres Yesid Diaz Pinto
 
                 PDF Editor: %s
