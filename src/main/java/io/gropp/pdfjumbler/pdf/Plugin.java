@@ -93,7 +93,7 @@ public class Plugin {
 				}
 			}
 		} else {
-			pdfEditorClasses = null;
+			pdfEditorClasses = List.of();
 		}
 		
 		if (pdfRendererClassNames != null) {
@@ -115,16 +115,16 @@ public class Plugin {
 				}
 			}
 		} else {
-			pdfRendererClasses = null;
+			pdfRendererClasses = List.of();
 		}
 	}
 	
 	public boolean hasPdfEditors() {
-		return (pdfEditorClasses != null && !pdfEditorClasses.isEmpty());
+		return !pdfEditorClasses.isEmpty();
 	}
 	
 	public boolean hasPdfRenderers() {
-		return (pdfRendererClasses != null && !pdfRendererClasses.isEmpty());
+		return !pdfRendererClasses.isEmpty();
 	}
 	
 	public List<Class<? extends PdfEditor>> getPdfEditorClasses() {

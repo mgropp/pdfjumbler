@@ -84,6 +84,16 @@ class PluginTest {
 	}
 
 	@Test
+	void pluginWithOnlyEditorsHasNoRenderers() throws Exception {
+		Plugin plugin = new Plugin(jarWith(properties(
+				Plugin.REQUIRED_VERSION_KEY, currentVersion(),
+				Plugin.PDF_EDITOR_KEY, EDITOR)));
+
+		assertThat(plugin.hasPdfRenderers()).isFalse();
+		assertThat(plugin.getPdfRendererClasses()).isEmpty();
+	}
+
+	@Test
 	void rejectsJarWithoutPluginProperties() throws IOException {
 		File jar = jarWith(null);
 
