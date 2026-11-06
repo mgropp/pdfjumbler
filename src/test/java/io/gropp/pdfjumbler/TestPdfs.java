@@ -36,6 +36,16 @@ public final class TestPdfs {
 		return file;
 	}
 
+	public static File createRotated(File file, int intrinsicRotation) throws IOException {
+		try (PDDocument document = new PDDocument()) {
+			PDPage page = new PDPage(new PDRectangle(widthOfPage(0), heightOfPage(0)));
+			page.setRotation(intrinsicRotation);
+			document.addPage(page);
+			document.save(file);
+		}
+		return file;
+	}
+
 	public record PageInfo(float width, float height, int rotation) {}
 
 	public static List<PageInfo> read(File file) throws IOException {
