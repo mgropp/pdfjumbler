@@ -24,6 +24,32 @@ Keep commits small and focused, one logical change each, and make sure each one 
 the tests on its own. When fixing a bug, add a test that fails without the fix and commit them
 together.
 
+### Commit Messages
+
+Start the subject line with a [gitmoji](https://gitmoji.dev) as a Unicode emoji (not a `:code:`),
+followed by a space and an imperative summary, for example `🐛 Keep inherited page attributes when saving`.
+Pick the single gitmoji that best describes the change. The ones used in this repository are:
+
+| Gitmoji | Use for |
+|---|---|
+| ✨ | New features |
+| 🐛 | Bug fixes |
+| ♻️ | Refactoring without behavior change |
+| ✅ | Adding or updating tests |
+| 📝 | Documentation |
+| 💄 | UI and style |
+| 💬 | Text and literals, including translations |
+| ✏️ | Typos |
+| 🎨 | Code formatting and structure |
+| 🏷️ | Types and null-safety annotations |
+| 🚨 | Compiler and linter warnings |
+| 🔥 | Removing code or files |
+| 🚚 | Moving or renaming files and packages |
+| ⬆️ | Upgrading dependencies or the Java version |
+| 🔧 | Build and tooling configuration |
+| 👷 | CI workflows |
+| 🙈 | `.gitignore` |
+
 ## Build Setup
 
 - Dependency and plugin versions live in the version catalog `gradle/libs.versions.toml`.
