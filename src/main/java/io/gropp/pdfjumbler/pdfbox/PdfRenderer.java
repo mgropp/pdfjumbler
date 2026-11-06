@@ -69,60 +69,6 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 		return pdPage;
 	}
 
-	private static BufferedImage rotate(BufferedImage srcImage, int degrees) {
-		// TODO: this is not fast
-
-		if (degrees == 0) {
-			return srcImage;
-		} else if (degrees == 90 || degrees == 180 || degrees == 270) {
-			int srcWidth = srcImage.getWidth();
-			int srcHeight = srcImage.getHeight();
-
-			BufferedImage dstImage;
-			if (degrees == 180) {
-				dstImage = new BufferedImage(srcWidth, srcHeight, srcImage.getType());
-
-				for (int x = 0; x < srcWidth; x++) {
-					for (int y = 0; y < srcHeight; y++) {
-						dstImage.setRGB(
-							srcWidth - x - 1,
-							srcHeight - y - 1,
-							srcImage.getRGB(x, y)
-						);
-					}
-				}
-			} else {
-				dstImage = new BufferedImage(srcHeight, srcWidth, srcImage.getType());
-
-				if (degrees == 90) {
-					for (int x = 0; x < srcWidth; x++) {
-						for (int y = 0; y < srcHeight; y++) {
-							dstImage.setRGB(
-								srcHeight - y - 1,
-								x,
-								srcImage.getRGB(x, y)
-							);
-						}
-					}
-				} else {
-					for (int x = 0; x < srcWidth; x++) {
-						for (int y = 0; y < srcHeight; y++) {
-							dstImage.setRGB(
-								y,
-								srcWidth - x - 1,
-								srcImage.getRGB(x, y)
-							);
-						}
-					}
-				}
-			}
-
-			return dstImage;
-		} else {
-			throw new IllegalArgumentException("Unsupported rotation: " + degrees);
-		}
-	}
-
 	@Override
 	public Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException {
 		PDPage pdPage = getPDPage(page);
@@ -145,7 +91,7 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
 		PDFRenderer renderer = new PDFRenderer(getDocument(page.getFile()));
 		BufferedImage image = renderer.renderImage(page.getIndex(), (float)Math.min(ax, ay));
 
-		return rotate(image, degrees);
+		return ImageRotation.rotate(image, degrees);
 	}
 
 	@Override
