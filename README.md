@@ -63,6 +63,9 @@ Several settings can be changed using Java system properties:
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed; previous plugins are no longer supported)
 	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfRenderer`
 
+* `pdfjumbler.pluginpath`: sets the directory that plugin jar files are loaded from.
+	By default, this is the directory containing `pdfjumbler.jar`.
+
 * `user.language`: sets the program language (in case auto-detection doesn't work).
 	So far, `de` (German), `es` (Spanish), `ru` (Russian) and `en` (English; default)
 	localizations are available.
