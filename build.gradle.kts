@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-	implementation("org.tinylog:tinylog-api:2.1.2")
-	implementation("org.tinylog:tinylog-impl:2.1.2")
+	implementation("org.tinylog:tinylog-api:2.8.1")
+	implementation("org.tinylog:tinylog-impl:2.8.1")
 	implementation("org.apache.pdfbox:pdfbox:2.0.21")
 	implementation("org.apache.xmlgraphics:batik-transcoder:1.13")
 	implementation("com.formdev:flatlaf:3.8")
