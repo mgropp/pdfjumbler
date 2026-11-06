@@ -24,6 +24,12 @@ jobs:
       - name: Check formatting, run tests and build the jar
         run: ./gradlew spotlessCheck test jar
 
+      - name: Install NSIS
+        run: sudo apt-get update && sudo apt-get install --yes nsis
+
+      - name: Build Windows installer
+        run: makensis pdfjumbler.nsi
+
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v7
