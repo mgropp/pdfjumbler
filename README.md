@@ -1,20 +1,12 @@
 PdfJumbler
 ==========
 
-[![Build Status](https://travis-ci.org/mgropp/pdfjumbler.svg?branch=master)](https://travis-ci.org/mgropp/pdfjumbler)
-
 PdfJumbler simple tool to rearrange, merge, delete, and rotate pages from PDF files. 
 
 Releases
 --------
 
-* v0.4.0:
-  * https://github.com/mgropp/pdfjumbler/releases/download/v0.4.0/pdfjumbler.jar
-  * https://github.com/mgropp/pdfjumbler/releases/download/v0.4.0/setup-pdfjumbler.exe
-* v0.3.0:
-  * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/pdfjumbler.jar
-  * https://github.com/mgropp/pdfjumbler/releases/download/v0.3.0/setup-pdfjumbler.exe
-* v0.2.0: https://github.com/mgropp/pdfjumbler/releases/download/v0.2.0/pdfjumbler.jar
+Releases can be found on the [releases](https://github.com/mgropp/pdfjumbler/releases) page.
 
 Installation
 ------------
@@ -61,7 +53,7 @@ Keyboard Shortcuts
 
 Command Line
 ------------
-PdfJumbler accepts pdf files as command line arguments.
+PdfJumbler accepts PDF files as command line arguments.
 
 Several settings can be changed using Java system properties:
 
