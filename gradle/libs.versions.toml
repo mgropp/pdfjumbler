@@ -4,6 +4,8 @@ pdfbox = "3.0.8"
 batik = "1.20"
 flatlaf = "3.8"
 spotless = "8.11.0"
+junit = "6.1.3"
+assertj = "3.27.7"
 
 [libraries]
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
@@ -11,6 +13,10 @@ tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 batik-transcoder = { module = "org.apache.xmlgraphics:batik-transcoder", version.ref = "batik" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
