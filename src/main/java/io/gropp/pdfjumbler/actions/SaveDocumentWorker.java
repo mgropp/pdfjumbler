@@ -4,35 +4,31 @@ import io.gropp.pdfjumbler.DocumentManager;
 import io.gropp.pdfjumbler.jdragdroplist.UndoableListModel;
 import io.gropp.pdfjumbler.pdf.Page;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
-
-import javax.swing.*;
 import java.io.File;
 import java.util.List;
+import javax.swing.*;
 
-public class SaveDocumentWorker extends SwingWorker<Void,Void> {
-	private final DocumentManager documentManager;
-	private final List<Page> pages;
-	private final File file;
+public class SaveDocumentWorker extends SwingWorker<Void, Void> {
+    private final DocumentManager documentManager;
+    private final List<Page> pages;
+    private final File file;
 
-	public SaveDocumentWorker(DocumentManager documentManager, UndoableListModel<Page> model, File file) {
-		this.documentManager = documentManager;
-		this.pages = model.getList();
-		this.file = file;
-	}
+    public SaveDocumentWorker(DocumentManager documentManager, UndoableListModel<Page> model, File file) {
+        this.documentManager = documentManager;
+        this.pages = model.getList();
+        this.file = file;
+    }
 
-	@Override
-	protected Void doInBackground() throws Exception {
-		firePropertyChange("note", "", file.getName());
+    @Override
+    protected Void doInBackground() throws Exception {
+        firePropertyChange("note", "", file.getName());
 
-		// TODO: Detect links! (java.nio.file?)
+        // TODO: Detect links! (java.nio.file?)
 
-		documentManager.moveAsideIfOpen(file);
+        documentManager.moveAsideIfOpen(file);
 
-		PdfProcessingFactory.getInstance().getEditor().saveDocument(
-			pages,
-			file
-		);
+        PdfProcessingFactory.getInstance().getEditor().saveDocument(pages, file);
 
-		return null;
-	}
+        return null;
+    }
 }

@@ -2,26 +2,25 @@ package io.gropp.pdfjumbler.actions;
 
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
-
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.undo.UndoManager;
-import java.awt.event.ActionEvent;
 
 public class RedoAction extends AbstractAction {
-	private static final long serialVersionUID = -4360624396939210557L;
-	private final UndoManager undoManager;
+    private static final long serialVersionUID = -4360624396939210557L;
+    private final UndoManager undoManager;
 
-	public RedoAction(UndoManager undoManager) {
-		super(PdfJumblerResources.getResources().getString(I18nKeys.REDO));
-		this.undoManager = undoManager;
-		putValue(Action.SHORT_DESCRIPTION, PdfJumblerResources.getResources().getString(I18nKeys.REDO));
-		putValue(Action.ACCELERATOR_KEY, PdfJumblerResources.getResources().getObject(I18nKeys.ACCELERATOR_REDO));
-	}
+    public RedoAction(UndoManager undoManager) {
+        super(PdfJumblerResources.getResources().getString(I18nKeys.REDO));
+        this.undoManager = undoManager;
+        putValue(Action.SHORT_DESCRIPTION, PdfJumblerResources.getResources().getString(I18nKeys.REDO));
+        putValue(Action.ACCELERATOR_KEY, PdfJumblerResources.getResources().getObject(I18nKeys.ACCELERATOR_REDO));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (undoManager.canRedo()) {
-			undoManager.redo();
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (undoManager.canRedo()) {
+            undoManager.redo();
+        }
+    }
 }

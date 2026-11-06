@@ -10,8 +10,16 @@ import io.gropp.pdfjumbler.actions.SaveDocumentWorker;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
-import org.tinylog.Logger;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.dnd.DropTarget;
+import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
@@ -27,268 +35,227 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.undo.UndoManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.dnd.DropTarget;
-import java.io.File;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
+import org.tinylog.Logger;
 
 /**
  * PdfJumbler main class.
- * 
+ *
  * @author Martin Gropp
  */
 public class PdfJumbler extends JFrame {
-	private static final long serialVersionUID = 4382647271800905977L;
-	public static final int VERSION = 20210402;
-	public static final String VERSION_STRING = "2021-04-02";
-	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
+    private static final long serialVersionUID = 4382647271800905977L;
+    public static final int VERSION = 20210402;
+    public static final String VERSION_STRING = "2021-04-02";
+    private static final ResourceBundle resources =
+            ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
-	private static PdfJumbler instance = null; 
+    private static PdfJumbler instance = null;
 
-	private final PdfList mainList;
-	private final PdfList secondaryList;
-	private final UndoManager undoManager = new UniqueUndoManager();
-	private final DocumentManager documentManager = new DocumentManager(
-		file -> PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file)
-	);
-	private final Actions actions;
+    private final PdfList mainList;
+    private final PdfList secondaryList;
+    private final UndoManager undoManager = new UniqueUndoManager();
+    private final DocumentManager documentManager = new DocumentManager(
+            file -> PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file));
+    private final Actions actions;
 
-	public PdfList getMainPdfList() {
-		return mainList;
-	}
+    public PdfList getMainPdfList() {
+        return mainList;
+    }
 
-	public PdfList getSecondaryPdfList() {
-		return secondaryList;
-	}
+    public PdfList getSecondaryPdfList() {
+        return secondaryList;
+    }
 
-	public UndoManager getUndoManager() {
-		return undoManager;
-	}
+    public UndoManager getUndoManager() {
+        return undoManager;
+    }
 
-	public Actions getActions() {
-		return actions;
-	}
+    public Actions getActions() {
+        return actions;
+    }
 
-	public static void openFiles(PdfList list, int insertPos, Collection<File> files) {
-		if (files.size() > 0) {
-			try {
-				ProgressDialog.run(
-					new OpenDocumentWorker(
-						instance.documentManager,
-						list.getModel(),
-						insertPos,
-						files
-					),
-					PdfJumbler.instance
-				);
-			}
-			catch (Exception e) {
-				Logger.error(e);
-				JOptionPane.showMessageDialog(instance, e.getMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
+    public static void openFiles(PdfList list, int insertPos, Collection<File> files) {
+        if (files.size() > 0) {
+            try {
+                ProgressDialog.run(
+                        new OpenDocumentWorker(instance.documentManager, list.getModel(), insertPos, files),
+                        PdfJumbler.instance);
+            } catch (Exception e) {
+                Logger.error(e);
+                JOptionPane.showMessageDialog(
+                        instance, e.getMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
-	static void openFiles(PdfList list, int insertPos, String... fileNames) {
-		ArrayList<File> files = new ArrayList<>(fileNames.length);
-		for (String fileName : fileNames) {
-			files.add(new File(fileName));
-		}
-		openFiles(list, insertPos, files);
-	}
+    static void openFiles(PdfList list, int insertPos, String... fileNames) {
+        ArrayList<File> files = new ArrayList<>(fileNames.length);
+        for (String fileName : fileNames) {
+            files.add(new File(fileName));
+        }
+        openFiles(list, insertPos, files);
+    }
 
-	public static void saveFile(PdfList list, File file) {
-		try {
-			ProgressDialog.run(
-				new SaveDocumentWorker(
-					instance.documentManager,
-					list.getModel(),
-					file
-				),
-				instance
-			);
-		}
-		catch (Exception e) {
-			Logger.error(e);
-			JOptionPane.showMessageDialog(instance, e.getMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-		}
-	}
+    public static void saveFile(PdfList list, File file) {
+        try {
+            ProgressDialog.run(new SaveDocumentWorker(instance.documentManager, list.getModel(), file), instance);
+        } catch (Exception e) {
+            Logger.error(e);
+            JOptionPane.showMessageDialog(
+                    instance, e.getMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-	public static void setLookAndFeel() {
-		FlatLightLaf.setup();
-	}
+    public static void setLookAndFeel() {
+        FlatLightLaf.setup();
+    }
 
-	private void installExceptionHandler() {
-		while (true) {
-			try {
-				SwingUtilities.invokeAndWait(
-					new Runnable() {
-						@Override
-						public void run() {
-							Thread.setDefaultUncaughtExceptionHandler(
-								new UncaughtExceptionHandler() {
-									@Override
-									public void uncaughtException(Thread t, Throwable e) {
-										Logger.error(e);
-										JOptionPane.showMessageDialog(
-											PdfJumbler.this,
-											e.getLocalizedMessage(),
-											e.getClass().getSimpleName(),
-											JOptionPane.ERROR_MESSAGE
-										);
-									}
-								}
-						);
-						}
-					}
-				);
-			}
-			catch (InterruptedException e) {
-				continue;
-			}
-			catch (InvocationTargetException e) {
-				Logger.error(e);
-				JOptionPane.showMessageDialog(
-					this,
-					e.getLocalizedMessage(),
-					e.getClass().getSimpleName(),
-					JOptionPane.ERROR_MESSAGE
-				);
-			}
+    private void installExceptionHandler() {
+        while (true) {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+                            @Override
+                            public void uncaughtException(Thread t, Throwable e) {
+                                Logger.error(e);
+                                JOptionPane.showMessageDialog(
+                                        PdfJumbler.this,
+                                        e.getLocalizedMessage(),
+                                        e.getClass().getSimpleName(),
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        });
+                    }
+                });
+            } catch (InterruptedException e) {
+                continue;
+            } catch (InvocationTargetException e) {
+                Logger.error(e);
+                JOptionPane.showMessageDialog(
+                        this, e.getLocalizedMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	private static void registerAccelerators(JComponent component, Action... actions) {
-		InputMap inputMap = component.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		ActionMap actionMap = component.getActionMap();
-		for (Action action : actions) {
-			inputMap.put((KeyStroke)action.getValue(Action.ACCELERATOR_KEY), action);
-			actionMap.put(action, action);
-		}
-	}
+    private static void registerAccelerators(JComponent component, Action... actions) {
+        InputMap inputMap = component.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = component.getActionMap();
+        for (Action action : actions) {
+            inputMap.put((KeyStroke) action.getValue(Action.ACCELERATOR_KEY), action);
+            actionMap.put(action, action);
+        }
+    }
 
-	private PdfJumbler(String[] files) {
-		Logger.info("PdfJumbler is starting");
+    private PdfJumbler(String[] files) {
+        Logger.info("PdfJumbler is starting");
 
-		PdfJumbler.instance = this;
+        PdfJumbler.instance = this;
 
-		installExceptionHandler();
-		setLookAndFeel();
-		setTitle(getClass().getSimpleName());
-		setIconImage(Icons.PDF_JUMBLER.getImage());
+        installExceptionHandler();
+        setLookAndFeel();
+        setTitle(getClass().getSimpleName());
+        setIconImage(Icons.PDF_JUMBLER.getImage());
 
-		// Prepare toolbars
-		JToolBar toolBar = new JToolBar();
-		JToolBar toolBar2 = new JToolBar();
-		toolBar.setFloatable(false);
-		toolBar2.setFloatable(false);
-		
-		// Lists
-		mainList = new PdfList(
-			Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true)
-		);
-		mainList.setDisplayMessage(resources.getString(I18nKeys.LIST_DROP_PDFS_TO_EDIT));
-		JScrollPane mainPane = new JScrollPane(mainList);
-		
-		secondaryList = new PdfList(
-			Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true)
-		);
-		secondaryList.setDisplayMessage(resources.getString(I18nKeys.LIST_CLIPBOARD_EMPTY));
-		secondaryList.setThumbnailSize(16);
-		JScrollPane secondaryPane = new JScrollPane(secondaryList);
-		
-		JPanel secondaryPanel = new JPanel();
-		secondaryPanel.setLayout(new BorderLayout());
-		secondaryPanel.add(secondaryPane, BorderLayout.CENTER);
-		secondaryPanel.add(toolBar2, BorderLayout.SOUTH);
+        // Prepare toolbars
+        JToolBar toolBar = new JToolBar();
+        JToolBar toolBar2 = new JToolBar();
+        toolBar.setFloatable(false);
+        toolBar2.setFloatable(false);
 
-		mainList.getModel().addUndoableEditListener(undoManager);
-		secondaryList.getModel().addUndoableEditListener(undoManager);
-		
-		mainList.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
-		mainPane.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
-		secondaryList.setMinimumSize(new Dimension(0, 0));
-		secondaryPane.setMinimumSize(new Dimension(0, 0));
-		secondaryPanel.setMinimumSize(new Dimension(0, 0));
+        // Lists
+        mainList = new PdfList(Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true));
+        mainList.setDisplayMessage(resources.getString(I18nKeys.LIST_DROP_PDFS_TO_EDIT));
+        JScrollPane mainPane = new JScrollPane(mainList);
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, secondaryPanel, mainPane);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerSize(UIScale.scale(splitPane.getDividerSize()));
-		splitPane.setDividerLocation(0.0);
-		add(splitPane, BorderLayout.CENTER);
+        secondaryList =
+                new PdfList(Preferences.userNodeForPackage(PdfJumbler.class).getBoolean(ConfigKeys.SHOW_TEXT, true));
+        secondaryList.setDisplayMessage(resources.getString(I18nKeys.LIST_CLIPBOARD_EMPTY));
+        secondaryList.setThumbnailSize(16);
+        JScrollPane secondaryPane = new JScrollPane(secondaryList);
 
-		// Actions
-		actions = new Actions(this);
+        JPanel secondaryPanel = new JPanel();
+        secondaryPanel.setLayout(new BorderLayout());
+        secondaryPanel.add(secondaryPane, BorderLayout.CENTER);
+        secondaryPanel.add(toolBar2, BorderLayout.SOUTH);
 
-		// Toolbar
-		toolBar.add(actions.getDocOpenAction());
-		toolBar.add(actions.getDocSaveAction());
-		toolBar.addSeparator();
-		toolBar.add(actions.getZoomOutAction());
-		toolBar.add(actions.getZoomInAction());
-		toolBar.addSeparator();
-		JButton delButton = toolBar.add(actions.getDeleteAction());
-		delButton.setDropTarget(new DropTarget(delButton, new TrashDropTargetListener()));
-		toolBar.addSeparator();
-		toolBar.add(new RotateClockwiseAction(this));
+        mainList.getModel().addUndoableEditListener(undoManager);
+        secondaryList.getModel().addUndoableEditListener(undoManager);
 
-		toolBar.add(Box.createHorizontalGlue());
-		MenuAction menuAction = new MenuAction(this);
-		menuAction.setComponent(toolBar.add(menuAction));
+        mainList.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
+        mainPane.setMinimumSize(new Dimension(UIScale.scale(100), UIScale.scale(100)));
+        secondaryList.setMinimumSize(new Dimension(0, 0));
+        secondaryPane.setMinimumSize(new Dimension(0, 0));
+        secondaryPanel.setMinimumSize(new Dimension(0, 0));
 
-		add(toolBar, BorderLayout.NORTH);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, secondaryPanel, mainPane);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerSize(UIScale.scale(splitPane.getDividerSize()));
+        splitPane.setDividerLocation(0.0);
+        add(splitPane, BorderLayout.CENTER);
 
-		// Toolbar 2
-		toolBar2.add(Box.createHorizontalGlue());
-		toolBar2.add(actions.getDocOpenAction2());
-		toolBar2.add(actions.getDocSaveAction2());
+        // Actions
+        actions = new Actions(this);
 
-		// Open files
-		openFiles(mainList, -1, files);
+        // Toolbar
+        toolBar.add(actions.getDocOpenAction());
+        toolBar.add(actions.getDocSaveAction());
+        toolBar.addSeparator();
+        toolBar.add(actions.getZoomOutAction());
+        toolBar.add(actions.getZoomInAction());
+        toolBar.addSeparator();
+        JButton delButton = toolBar.add(actions.getDeleteAction());
+        delButton.setDropTarget(new DropTarget(delButton, new TrashDropTargetListener()));
+        toolBar.addSeparator();
+        toolBar.add(new RotateClockwiseAction(this));
 
-		// Listen for editor/renderer changes
-		PdfProcessingFactory.getInstance().addProcessorListener(new ReloadingProcessorListener(this));
+        toolBar.add(Box.createHorizontalGlue());
+        MenuAction menuAction = new MenuAction(this);
+        menuAction.setComponent(toolBar.add(menuAction));
 
-		// Register accelerators
-		registerAccelerators(
-			getRootPane(),
-			actions.getDocOpenAction(), actions.getDocSaveAction(),
-			actions.getZoomInAction(), actions.getZoomOutAction(),
-			actions.getUndoAction(), actions.getRedoAction(),
-			actions.getRotateClockwiseAction(),
-			actions.getRotateCounterClockwiseAction()
-		);
-		registerAccelerators(
-			mainList,
-			actions.getMoveUpAction(), actions.getMoveDownAction(), actions.getDeleteAction()
-		);
-		registerAccelerators(
-			secondaryList,
-			actions.getMoveUpAction(),
-			actions.getMoveDownAction(),
-			actions.getDeleteAction()
-		);
-	}
+        add(toolBar, BorderLayout.NORTH);
 
-	public static void main(String[] args) {
-		try {
-			PdfJumbler frame = new PdfJumbler(args);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(UIScale.scale(340), UIScale.scale(600));
-			frame.setVisible(true);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-		}
-	}
+        // Toolbar 2
+        toolBar2.add(Box.createHorizontalGlue());
+        toolBar2.add(actions.getDocOpenAction2());
+        toolBar2.add(actions.getDocSaveAction2());
+
+        // Open files
+        openFiles(mainList, -1, files);
+
+        // Listen for editor/renderer changes
+        PdfProcessingFactory.getInstance().addProcessorListener(new ReloadingProcessorListener(this));
+
+        // Register accelerators
+        registerAccelerators(
+                getRootPane(),
+                actions.getDocOpenAction(),
+                actions.getDocSaveAction(),
+                actions.getZoomInAction(),
+                actions.getZoomOutAction(),
+                actions.getUndoAction(),
+                actions.getRedoAction(),
+                actions.getRotateClockwiseAction(),
+                actions.getRotateCounterClockwiseAction());
+        registerAccelerators(
+                mainList, actions.getMoveUpAction(), actions.getMoveDownAction(), actions.getDeleteAction());
+        registerAccelerators(
+                secondaryList, actions.getMoveUpAction(), actions.getMoveDownAction(), actions.getDeleteAction());
+    }
+
+    public static void main(String[] args) {
+        try {
+            PdfJumbler frame = new PdfJumbler(args);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(UIScale.scale(340), UIScale.scale(600));
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    null, e.getLocalizedMessage(), e.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
-

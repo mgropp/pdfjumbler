@@ -1,5 +1,8 @@
 package io.gropp.pdfjumbler.pdf;
 
+import io.gropp.pdfjumbler.PdfJumbler;
+import io.gropp.pdfjumbler.i18n.I18nKeys;
+import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,124 +17,99 @@ import java.util.ResourceBundle;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import io.gropp.pdfjumbler.PdfJumbler;
-import io.gropp.pdfjumbler.i18n.I18nKeys;
-import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
-
 /**
  * @author Martin Gropp
  */
 public class Plugin {
-	public static final String REQUIRED_VERSION_KEY = "pdfjumbler-required-version";
-	public static final String PDF_EDITOR_KEY = "pdfjumbler-plugin-editor";
-	public static final String PDF_RENDERER_KEY = "pdfjumbler-plugin-renderer";
-	
-	private static final ResourceBundle resources = ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
+    public static final String REQUIRED_VERSION_KEY = "pdfjumbler-required-version";
+    public static final String PDF_EDITOR_KEY = "pdfjumbler-plugin-editor";
+    public static final String PDF_RENDERER_KEY = "pdfjumbler-plugin-renderer";
 
-	private final List<Class<? extends PdfEditor>> pdfEditorClasses;
-	private final List<Class<? extends PdfRenderer>> pdfRendererClasses;
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Plugin(File jarFile) throws IOException, PluginException {
-		Properties properties = new Properties();
-		try (JarFile jar = new JarFile(jarFile)) {
-			ZipEntry entry = jar.getEntry("pdfjumbler-plugin.properties");
-			if (entry == null) {
-				throw new IOException("Missing pdfjumbler-plugin.properties entry!");
-			}
-			
-			try (InputStream stream = jar.getInputStream(entry)) {
-				properties.load(stream);
-			}
-		}
-		
-		String pdfEditorClassNames = properties.getProperty(PDF_EDITOR_KEY);
-		String pdfRendererClassNames = properties.getProperty(PDF_RENDERER_KEY);
-		if (pdfEditorClassNames == null && pdfRendererClassNames == null) {
-			throw new IOException("No plugins found in jar!"); 
-		}
-		
-		String requiredVersion = properties.getProperty(REQUIRED_VERSION_KEY);
-		if (requiredVersion == null) {
-			throw new PluginException("Missing version declaration in plugin!");
-		}
-		if (Integer.parseInt(requiredVersion) > PdfJumbler.VERSION) {
-			throw new PluginException(String.format(
-				resources.getString(I18nKeys.PLUGIN_ERROR_VERSION_INCOMPATIBLE),
-				requiredVersion
-			));
-		}
+    private static final ResourceBundle resources =
+            ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
-		ClassLoader classLoader;
-		try {
-			classLoader = new URLClassLoader(
-				new URL[]{ jarFile.toURI().toURL() },
-				Plugin.class.getClassLoader()
-			);
-		}
-		catch (MalformedURLException e) {
-			// This should not happen...
-			throw new AssertionError(e);
-		}
-		
-		if (pdfEditorClassNames != null) {
-			String[] classNames = pdfEditorClassNames.split(",");
-			pdfEditorClasses = new ArrayList<>(classNames.length);
-			for (String className : classNames) {
-				try {
-					pdfEditorClasses.add(
-						(Class) classLoader.loadClass(
-							className
-						)
-					);
-				}
-				catch (Exception e) {
-					throw new PluginException(
-						"Failed to load editor class from plugin!",
-						e
-					);
-				}
-			}
-		} else {
-			pdfEditorClasses = List.of();
-		}
-		
-		if (pdfRendererClassNames != null) {
-			String[] classNames = pdfRendererClassNames.split(",");
-			pdfRendererClasses = new ArrayList<>(classNames.length);
-			for (String className : classNames) {
-				try {
-					pdfRendererClasses.add(
-						(Class) classLoader.loadClass(
-							className
-						)
-					);
-				}
-				catch (Exception e) {
-					throw new PluginException(
-						"Failed to load renderer class from plugin!",
-						e
-					);
-				}
-			}
-		} else {
-			pdfRendererClasses = List.of();
-		}
-	}
-	
-	public boolean hasPdfEditors() {
-		return !pdfEditorClasses.isEmpty();
-	}
-	
-	public boolean hasPdfRenderers() {
-		return !pdfRendererClasses.isEmpty();
-	}
-	
-	public List<Class<? extends PdfEditor>> getPdfEditorClasses() {
-		return Collections.unmodifiableList(pdfEditorClasses);
-	}
-	
-	public List<Class<? extends PdfRenderer>> getPdfRendererClasses() {
-		return Collections.unmodifiableList(pdfRendererClasses);
-	}
+    private final List<Class<? extends PdfEditor>> pdfEditorClasses;
+    private final List<Class<? extends PdfRenderer>> pdfRendererClasses;
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Plugin(File jarFile) throws IOException, PluginException {
+        Properties properties = new Properties();
+        try (JarFile jar = new JarFile(jarFile)) {
+            ZipEntry entry = jar.getEntry("pdfjumbler-plugin.properties");
+            if (entry == null) {
+                throw new IOException("Missing pdfjumbler-plugin.properties entry!");
+            }
+
+            try (InputStream stream = jar.getInputStream(entry)) {
+                properties.load(stream);
+            }
+        }
+
+        String pdfEditorClassNames = properties.getProperty(PDF_EDITOR_KEY);
+        String pdfRendererClassNames = properties.getProperty(PDF_RENDERER_KEY);
+        if (pdfEditorClassNames == null && pdfRendererClassNames == null) {
+            throw new IOException("No plugins found in jar!");
+        }
+
+        String requiredVersion = properties.getProperty(REQUIRED_VERSION_KEY);
+        if (requiredVersion == null) {
+            throw new PluginException("Missing version declaration in plugin!");
+        }
+        if (Integer.parseInt(requiredVersion) > PdfJumbler.VERSION) {
+            throw new PluginException(
+                    String.format(resources.getString(I18nKeys.PLUGIN_ERROR_VERSION_INCOMPATIBLE), requiredVersion));
+        }
+
+        ClassLoader classLoader;
+        try {
+            classLoader = new URLClassLoader(new URL[] {jarFile.toURI().toURL()}, Plugin.class.getClassLoader());
+        } catch (MalformedURLException e) {
+            // This should not happen...
+            throw new AssertionError(e);
+        }
+
+        if (pdfEditorClassNames != null) {
+            String[] classNames = pdfEditorClassNames.split(",");
+            pdfEditorClasses = new ArrayList<>(classNames.length);
+            for (String className : classNames) {
+                try {
+                    pdfEditorClasses.add((Class) classLoader.loadClass(className));
+                } catch (Exception e) {
+                    throw new PluginException("Failed to load editor class from plugin!", e);
+                }
+            }
+        } else {
+            pdfEditorClasses = List.of();
+        }
+
+        if (pdfRendererClassNames != null) {
+            String[] classNames = pdfRendererClassNames.split(",");
+            pdfRendererClasses = new ArrayList<>(classNames.length);
+            for (String className : classNames) {
+                try {
+                    pdfRendererClasses.add((Class) classLoader.loadClass(className));
+                } catch (Exception e) {
+                    throw new PluginException("Failed to load renderer class from plugin!", e);
+                }
+            }
+        } else {
+            pdfRendererClasses = List.of();
+        }
+    }
+
+    public boolean hasPdfEditors() {
+        return !pdfEditorClasses.isEmpty();
+    }
+
+    public boolean hasPdfRenderers() {
+        return !pdfRendererClasses.isEmpty();
+    }
+
+    public List<Class<? extends PdfEditor>> getPdfEditorClasses() {
+        return Collections.unmodifiableList(pdfEditorClasses);
+    }
+
+    public List<Class<? extends PdfRenderer>> getPdfRendererClasses() {
+        return Collections.unmodifiableList(pdfRendererClasses);
+    }
 }
