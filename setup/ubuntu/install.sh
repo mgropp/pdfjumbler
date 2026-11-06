@@ -8,10 +8,8 @@ required_java_version=21
 dest_dir="/opt/pdfjumbler"
 desktop_file="/usr/share/applications/pdfjumbler.desktop"
 jar_file="$dest_dir/pdfjumbler.jar"
-jar_file_url="https://github.com/mgropp/pdfjumbler/releases/latest/download/pdfjumbler.jar"
 launcher_file="/usr/local/bin/pdfjumbler"
 icon_file="/usr/share/icons/hicolor/scalable/apps/pdfjumbler.svg"
-icon_file_url="https://raw.githubusercontent.com/mgropp/pdfjumbler/main/src/main/resources/icons/pdfjumbler.svg"
 
 # Make sure Java is installed
 if ! command -v java >/dev/null 2>&1
@@ -28,6 +26,18 @@ then
 	exit 1
 fi
 echo "Java $java_version found."
+
+# Find the latest release
+latest_release_url=$( curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/mgropp/pdfjumbler/releases/latest )
+release_tag="${latest_release_url##*/}"
+if [ -z "$release_tag" ] || [ "$release_tag" = "latest" ]
+then
+	echo "Could not determine the latest PdfJumbler release."
+	exit 1
+fi
+echo "Latest release: $release_tag"
+jar_file_url="https://github.com/mgropp/pdfjumbler/releases/download/$release_tag/pdfjumbler.jar"
+icon_file_url="https://raw.githubusercontent.com/mgropp/pdfjumbler/$release_tag/src/main/resources/icons/pdfjumbler.svg"
 
 # Create temp directory
 tmpdir=$( mktemp -d )
