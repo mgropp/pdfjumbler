@@ -8,6 +8,7 @@ import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import org.jspecify.annotations.Nullable;
@@ -44,7 +45,7 @@ public class DocOpenAction extends AbstractAction {
                         || (file.exists()
                                 && file.isFile()
                                 && file.canRead()
-                                && file.getName().toLowerCase().endsWith(".pdf"));
+                                && file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf"));
             }
 
             @Override
