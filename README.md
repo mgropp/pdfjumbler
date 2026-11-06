@@ -18,8 +18,8 @@ Releases
 
 Installation
 ------------
-PdfJumbler requires a Java Runtime Environment (JRE), version 11 or above.
-You can download one at <https://adoptopenjdk.net/>.
+PdfJumbler requires a Java Runtime Environment (JRE), version 21 or above.
+You can download one at <https://adoptium.net/>.
 
 Windows users can simply download and run the installer (setup-pdfjumbler.exe),
 which creates a start menu entry for PdfJumbler.

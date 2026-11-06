@@ -6,11 +6,6 @@ plugins {
 val mainPackage = "net.sourceforge.pdfjumbler"
 val mainClass = "$mainPackage.PdfJumbler"
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_11
-	targetCompatibility = JavaVersion.VERSION_11
-}
-
 defaultTasks("jar")
 
 repositories {
@@ -27,6 +22,7 @@ dependencies {
 
 tasks.compileJava {
 	options.encoding = "UTF-8"
+	options.release = 21
 }
 
 tasks.jar {
