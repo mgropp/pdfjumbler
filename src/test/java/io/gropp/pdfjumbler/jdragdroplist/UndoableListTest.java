@@ -296,6 +296,17 @@ class UndoableListTest {
 		assertThat(dataListener.events).containsExactly("added 3-3");
 	}
 
+	@Test
+	void undoClearFiresIntervalAddedForRestoredItems() {
+		fill("a", "b", "c");
+		list.clear();
+		listenToData();
+
+		undoManager.undo();
+
+		assertThat(dataListener.events).containsExactly("added 0-2");
+	}
+
 	private static final class RecordingListDataListener implements ListDataListener {
 		final List<String> events = new ArrayList<>();
 
