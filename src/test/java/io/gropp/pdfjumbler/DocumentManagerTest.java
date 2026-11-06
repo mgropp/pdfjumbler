@@ -103,4 +103,19 @@ class DocumentManagerTest {
 		assertThat(movedFile).isNotEqualTo(file).hasContent("original");
 		assertThat(pages).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(movedFile));
 	}
+
+	@Test
+	void reopeningOverwrittenFileCreatesFreshPages() throws IOException {
+		File file = new File(tempDir, "doc.pdf");
+		Files.writeString(file.toPath(), "original");
+		List<Page> oldPages = manager.getPages(file);
+
+		manager.moveAsideIfOpen(file);
+		Files.writeString(file.toPath(), "saved");
+		List<Page> newPages = manager.getPages(file);
+
+		assertThat(newPages).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(file));
+		assertThat(manager.getAllFiles()).containsExactlyInAnyOrder(file, oldPages.get(0).getFile());
+		assertThat(manager.getPages(oldPages.get(0).getFile())).isSameAs(oldPages);
+	}
 }
