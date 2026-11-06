@@ -10,6 +10,8 @@ desktop_file="/usr/share/applications/pdfjumbler.desktop"
 jar_file="$dest_dir/pdfjumbler.jar"
 jar_file_url="https://github.com/mgropp/pdfjumbler/releases/latest/download/pdfjumbler.jar"
 launcher_file="/usr/local/bin/pdfjumbler"
+icon_file="/usr/share/icons/hicolor/scalable/apps/pdfjumbler.svg"
+icon_file_url="https://raw.githubusercontent.com/mgropp/pdfjumbler/main/src/main/resources/icons/pdfjumbler.svg"
 
 # Make sure Java is installed
 if ! command -v java >/dev/null 2>&1
@@ -42,10 +44,11 @@ EOF
 cat > pdfjumbler.desktop << EOF
 [Desktop Entry]
 Name=PdfJumbler
-Exec=$launcher_file
-Icon=pdf
+Exec=$launcher_file %F
+Icon=pdfjumbler
 Type=Application
-Categories=GTK;GNOME;Utility;
+MimeType=application/pdf;
+Categories=Office;
 Terminal=false
 EOF
 
@@ -66,11 +69,26 @@ chmod 644 "$jar_file"
 mv pdfjumbler "$launcher_file"
 chown root:root "$launcher_file"
 chmod 755 "$launcher_file"
+
+mkdir -p "$( dirname "$icon_file" )"
+mv pdfjumbler.svg "$icon_file"
+chown root:root "$icon_file"
+chmod 644 "$icon_file"
+
+if command -v gtk-update-icon-cache >/dev/null 2>&1
+then
+	gtk-update-icon-cache -q /usr/share/icons/hicolor || true
+fi
+if command -v update-desktop-database >/dev/null 2>&1
+then
+	update-desktop-database -q /usr/share/applications || true
+fi
 EOF
 
 # Download
 echo "Downloading PdfJumbler"
 curl -fL "$jar_file_url" -o pdfjumbler.jar
+curl -fsSL "$icon_file_url" -o pdfjumbler.svg
 
 # Install
 sudo sh install.sh
