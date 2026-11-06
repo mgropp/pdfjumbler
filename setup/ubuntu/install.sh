@@ -62,29 +62,14 @@ Categories=Office;
 Terminal=false
 EOF
 
-# Create script to move files and set permissions
+# Create script to install files
 cat > install.sh << EOF
 #!/bin/sh
 set -e
-mkdir -p "$( dirname "$desktop_file" )"
-mv pdfjumbler.desktop "$desktop_file"
-chown root:root "$desktop_file"
-chmod 644 "$desktop_file"
-
-mkdir -p "$dest_dir"
-mv pdfjumbler.jar "$jar_file"
-chown -R root:root "$dest_dir"
-chmod 755 "$dest_dir"
-chmod 644 "$jar_file"
-
-mv pdfjumbler "$launcher_file"
-chown root:root "$launcher_file"
-chmod 755 "$launcher_file"
-
-mkdir -p "$( dirname "$icon_file" )"
-mv pdfjumbler.svg "$icon_file"
-chown root:root "$icon_file"
-chmod 644 "$icon_file"
+install -D -o root -g root -m 644 pdfjumbler.jar "$jar_file"
+install -D -o root -g root -m 755 pdfjumbler "$launcher_file"
+install -D -o root -g root -m 644 pdfjumbler.desktop "$desktop_file"
+install -D -o root -g root -m 644 pdfjumbler.svg "$icon_file"
 
 if command -v update-desktop-database >/dev/null 2>&1
 then
