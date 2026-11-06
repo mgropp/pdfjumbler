@@ -561,40 +561,4 @@ public class UndoableList<T> implements List<T> {
 		
 		return sb.toString();
 	}
-	
-	public static void main(String[] args) {
-		final LinkedList<UndoableEdit> edits = new LinkedList<>();
-		UndoableEditListener editListener = new UndoableEditListener() {
-			@Override
-			public void undoableEditHappened(UndoableEditEvent e) {
-				System.out.println(e.getEdit());
-				edits.addFirst(e.getEdit());
-			}
-		};
-		
-		UndoableList<Integer> list = new UndoableList<>(new LinkedList<>());
-		list.addUndoableEditListener(editListener);
-		for (int i = 1; i < 10; i++) {
-			list.add(2*i);
-		}
-		System.out.println(list);
-		list.add(6, 13);
-		System.out.println(list);
-		list.set(3, 7);
-		System.out.println(list);
-		
-		List<Integer> subList = list.subList(3, 6);
-		System.out.println(subList);
-		subList.set(0, 8);
-		System.out.println(list);
-		System.out.println(subList);
-		subList.remove(1);
-		
-		System.out.println("----------------------------------");
-		for (UndoableEdit edit : edits) {
-			System.out.println("Undo " + edit);
-			edit.undo();
-			System.out.println(list);
-		}
-	}
 }
