@@ -9,6 +9,7 @@ import java.util.Map;
 import io.gropp.pdfjumbler.pdf.Page;
 
 import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -44,8 +45,9 @@ public class PdfEditor implements io.gropp.pdfjumbler.pdf.PdfEditor {
 					docs.put(page.getFile(), pageDoc);
 				}
 
-				PDPage pdPage = pageDoc.getPage(page.getIndex());
-				pdPage.setRotation(page.getRotation());
+				PDPage sourcePage = pageDoc.getPage(page.getIndex());
+				PDPage pdPage = new PDPage(new COSDictionary(sourcePage.getCOSObject()));
+				pdPage.setRotation((sourcePage.getRotation() + page.getRotation()) % 360);
 
 				outDoc.addPage(pdPage);
 			}
