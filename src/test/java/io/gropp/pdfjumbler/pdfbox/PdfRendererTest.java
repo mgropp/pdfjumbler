@@ -69,6 +69,16 @@ class PdfRendererTest {
 	}
 
 	@Test
+	void fitsPageWithIntrinsicRotationWithinBounds() throws IOException {
+		File rotatedPdf = TestPdfs.createRotated(new File(tempDir, "rotated.pdf"), 90);
+
+		BufferedImage image = (BufferedImage) renderer.renderPage(new Page(rotatedPdf, 0), 1000, 50);
+
+		assertThat(image.getWidth()).isEqualTo(100);
+		assertThat(image.getHeight()).isEqualTo(50);
+	}
+
+	@Test
 	void rejectsUnsupportedRotation() {
 		Page page = new Page(pdf, 0);
 		page.setRotation(45);
