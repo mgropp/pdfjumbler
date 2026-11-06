@@ -7,6 +7,7 @@ import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import org.jspecify.annotations.Nullable;
@@ -40,7 +41,9 @@ public class DocSaveAction extends AbstractAction {
                                         && file.getParentFile().exists())
                                 && ((!file.exists() || file.isFile())
                                         && file.canWrite()
-                                        && file.getName().toLowerCase().endsWith(".pdf"));
+                                        && file.getName()
+                                                .toLowerCase(Locale.ROOT)
+                                                .endsWith(".pdf"));
             }
 
             @Override
@@ -51,7 +54,7 @@ public class DocSaveAction extends AbstractAction {
 
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            if (!file.getName().toLowerCase().endsWith(".pdf")) {
+            if (!file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 file = new File(file.getAbsolutePath() + ".pdf");
             }
             if (file.exists()
