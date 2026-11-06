@@ -60,4 +60,31 @@ class ListOperationsTest {
 
 		assertThat(indices).containsExactly(3, 0);
 	}
+
+	@Test
+	void moveIsUndoneInOneStep() {
+		ListOperations.move(model, 2, 1);
+
+		undoManager.undo();
+
+		assertThat(model.getList()).containsExactly("a", "b", "c", "d");
+		assertThat(undoManager.canUndo()).isFalse();
+	}
+
+	@Test
+	void removeAllIsUndoneInOneStep() {
+		ListOperations.removeAll(model, new int[] {0, 2});
+
+		undoManager.undo();
+
+		assertThat(model.getList()).containsExactly("a", "b", "c", "d");
+		assertThat(undoManager.canUndo()).isFalse();
+	}
+
+	@Test
+	void removeAllWithoutIndicesRecordsNoEdit() {
+		ListOperations.removeAll(model, new int[0]);
+
+		assertThat(undoManager.canUndo()).isFalse();
+	}
 }
