@@ -1,11 +1,11 @@
 package io.gropp.pdfjumbler.jdragdroplist;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import javax.swing.event.ListDataEvent;
@@ -29,7 +29,7 @@ public class UndoableList<T> implements List<T> {
      */
     private final boolean[] editProtection;
 
-    private final Deque<CompoundEdit> compoundEdits = new LinkedList<>();
+    private final Deque<CompoundEdit> compoundEdits = new ArrayDeque<>();
 
     public UndoableList(List<T> list) {
         this.list = list;
@@ -103,7 +103,7 @@ public class UndoableList<T> implements List<T> {
     }
 
     private void callListenersAdd(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
-        assert (!editProtection[0]);
+        assert !editProtection[0];
 
         editProtection[0] = true;
         try {
@@ -122,7 +122,7 @@ public class UndoableList<T> implements List<T> {
     }
 
     private void callListenersRemove(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
-        assert (!editProtection[0]);
+        assert !editProtection[0];
 
         editProtection[0] = true;
         try {
@@ -139,7 +139,7 @@ public class UndoableList<T> implements List<T> {
     }
 
     private void callListenersSet(@Nullable ListEdit<T> edit, ListDataEvent dataEvent) {
-        assert (!editProtection[0]);
+        assert !editProtection[0];
 
         editProtection[0] = true;
         try {
@@ -388,8 +388,9 @@ public class UndoableList<T> implements List<T> {
         return list.toArray(a);
     }
 
+    @SuppressWarnings("ReferenceEquality")
     private void undoAdd(ListEdit<T> edit) {
-        assert (edit.list.list.get(edit.index) == edit.item);
+        assert edit.list.list.get(edit.index) == edit.item;
         edit.list.list.remove(edit.index);
         callListenersRemove(null, new ListDataEvent(edit.list, ListDataEvent.INTERVAL_REMOVED, edit.index, edit.index));
     }
@@ -399,12 +400,13 @@ public class UndoableList<T> implements List<T> {
         callListenersAdd(null, new ListDataEvent(edit.list, ListDataEvent.INTERVAL_ADDED, edit.index, edit.index));
     }
 
+    @SuppressWarnings("ReferenceEquality")
     private void undoAddMultiple(ListEdit<T> edit) {
         if (edit.items == null) {
             throw new IllegalArgumentException("edit.items is null!");
         }
         for (T item : edit.items) {
-            assert (edit.list.list.get(edit.index) == item);
+            assert edit.list.list.get(edit.index) == item;
             edit.list.list.remove(edit.index);
         }
         callListenersRemove(
@@ -437,6 +439,7 @@ public class UndoableList<T> implements List<T> {
         callListenersSet(null, new ListDataEvent(edit.list, ListDataEvent.CONTENTS_CHANGED, edit.index, edit.index));
     }
 
+    @SuppressWarnings("ReferenceEquality")
     void undo(ListEdit<T> edit) {
         if (editProtection[0]) {
             throw new ConcurrentModificationException();
@@ -446,23 +449,11 @@ public class UndoableList<T> implements List<T> {
         }
 
         switch (edit.type) {
-            case ADD:
-                undoAdd(edit);
-                break;
-            case REMOVE:
-                undoRemove(edit);
-                break;
-            case ADD_MULTIPLE:
-                undoAddMultiple(edit);
-                break;
-            case REMOVE_MULTIPLE:
-                undoRemoveMultiple(edit);
-                break;
-            case SET:
-                undoSet(edit);
-                break;
-            default:
-                throw new AssertionError();
+            case ADD -> undoAdd(edit);
+            case REMOVE -> undoRemove(edit);
+            case ADD_MULTIPLE -> undoAddMultiple(edit);
+            case REMOVE_MULTIPLE -> undoRemoveMultiple(edit);
+            case SET -> undoSet(edit);
         }
     }
 
@@ -472,28 +463,16 @@ public class UndoableList<T> implements List<T> {
         }
 
         switch (edit.type) {
-            case ADD:
-                undoRemove(edit);
-                break;
-            case REMOVE:
-                undoAdd(edit);
-                break;
-            case ADD_MULTIPLE:
-                undoRemoveMultiple(edit);
-                break;
-            case REMOVE_MULTIPLE:
-                undoAddMultiple(edit);
-                break;
-            case SET:
-                redoSet(edit);
-                break;
-            default:
-                throw new AssertionError();
+            case ADD -> undoRemove(edit);
+            case REMOVE -> undoAdd(edit);
+            case ADD_MULTIPLE -> undoRemoveMultiple(edit);
+            case REMOVE_MULTIPLE -> undoAddMultiple(edit);
+            case SET -> redoSet(edit);
         }
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other instanceof UndoableList) {
             if (((UndoableList<?>) other).size() != size()) {
                 return false;

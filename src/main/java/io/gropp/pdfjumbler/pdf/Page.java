@@ -4,6 +4,7 @@ import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.io.File;
 import java.util.ResourceBundle;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a page from a PDF file.
@@ -85,12 +86,8 @@ public final class Page {
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Page)) {
-            return false;
-        }
-
-        return file.equals(((Page) o).file) && (index == ((Page) o).index) && (rotation == ((Page) o).rotation);
+    public final boolean equals(@Nullable Object o) {
+        return o instanceof Page other && file.equals(other.file) && index == other.index && rotation == other.rotation;
     }
 
     @Override

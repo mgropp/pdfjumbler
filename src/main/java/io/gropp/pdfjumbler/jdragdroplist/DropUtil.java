@@ -60,10 +60,9 @@ public class DropUtil {
                 throw new RuntimeException(e);
             }
 
-            String[] uris = data.split("\n");
-            List<URI> uriList = new ArrayList<>(uris.length);
+            List<URI> uriList = new ArrayList<>();
 
-            for (String uri : uris) {
+            for (String uri : data.lines().toList()) {
                 uri = uri.trim();
                 if (uri.isEmpty() || uri.startsWith("#")) {
                     continue;

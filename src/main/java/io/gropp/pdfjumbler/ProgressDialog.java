@@ -74,6 +74,7 @@ public class ProgressDialog extends JDialog {
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 abort();
             }

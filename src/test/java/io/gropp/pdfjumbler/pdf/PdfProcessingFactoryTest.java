@@ -152,10 +152,12 @@ class PdfProcessingFactoryTest {
         public void close() {}
     }
 
-    public static class EditorB extends EditorA {
-        public static String getFriendlyName() {
-            throw new UnsupportedOperationException();
-        }
+    public static class EditorB implements PdfEditor {
+        @Override
+        public void saveDocument(List<Page> pages, File file) {}
+
+        @Override
+        public void close() {}
     }
 
     public static class BrokenEditor extends EditorA {
