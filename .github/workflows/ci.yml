@@ -21,8 +21,8 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Check formatting and run tests
-        run: ./gradlew spotlessCheck test
+      - name: Check formatting, run tests and build the jar
+        run: ./gradlew spotlessCheck test jar
 
       - name: Upload test reports
         if: failure()
