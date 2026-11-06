@@ -1,9 +1,4 @@
-﻿;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IMPORTANT:                                     ;;
-;; Build fat jars of the plugins (or use gradle)! ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-!include "MUI2.nsh"
+﻿!include "MUI2.nsh"
 !include "FileFunc.nsh"
 Name "PdfJumbler"
 OutFile "build\setup-pdfjumbler.exe"
