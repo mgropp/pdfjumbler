@@ -56,7 +56,8 @@ public class PdfJumbler extends JFrame {
     private final PdfList secondaryList;
     private final UndoManager undoManager = new UniqueUndoManager();
     private final DocumentManager documentManager = new DocumentManager(
-            file -> PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file));
+            file -> PdfProcessingFactory.getInstance().getRenderer().getNumberOfPages(file),
+            () -> PdfProcessingFactory.getInstance().getRenderer().close());
     private final Actions actions;
 
     public PdfList getMainPdfList() {

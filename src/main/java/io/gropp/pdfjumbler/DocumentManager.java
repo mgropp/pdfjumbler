@@ -18,11 +18,18 @@ public class DocumentManager {
         int getNumberOfPages(File file) throws IOException;
     }
 
+    @FunctionalInterface
+    public interface OpenFileCloser {
+        void closeOpenFiles() throws IOException;
+    }
+
     private final PageCounter pageCounter;
+    private final OpenFileCloser openFileCloser;
     private final Map<File, List<Page>> pageMap = new HashMap<>();
 
-    public DocumentManager(PageCounter pageCounter) {
+    public DocumentManager(PageCounter pageCounter, OpenFileCloser openFileCloser) {
         this.pageCounter = pageCounter;
+        this.openFileCloser = openFileCloser;
     }
 
     public synchronized List<Page> getPages(File file) throws IOException {
@@ -53,6 +60,7 @@ public class DocumentManager {
 
         File tempFile = File.createTempFile("pdfjumbler", ".pdf");
         tempFile.deleteOnExit();
+        openFileCloser.closeOpenFiles();
         Files.move(file.toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         List<Page> pages = pageMap.remove(file);
