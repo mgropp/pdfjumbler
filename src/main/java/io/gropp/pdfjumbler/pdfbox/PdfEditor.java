@@ -8,6 +8,7 @@ import java.util.Map;
 
 import io.gropp.pdfjumbler.pdf.Page;
 
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -39,7 +40,7 @@ public class PdfEditor implements io.gropp.pdfjumbler.pdf.PdfEditor {
 			for (Page page : pages) {
 				PDDocument pageDoc = docs.get(page.getFile());
 				if (pageDoc == null) {
-					pageDoc = PDDocument.load(page.getFile());
+					pageDoc = Loader.loadPDF(page.getFile());
 					docs.put(page.getFile(), pageDoc);
 				}
 
