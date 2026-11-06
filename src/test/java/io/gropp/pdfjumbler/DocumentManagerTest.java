@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.gropp.pdfjumbler.pdf.Page;
+import io.gropp.pdfjumbler.pdfbox.PdfEditor;
+import io.gropp.pdfjumbler.pdfbox.PdfRenderer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -17,10 +20,13 @@ class DocumentManagerTest {
     File tempDir;
 
     private final List<File> countedFiles = new ArrayList<>();
-    private final DocumentManager manager = new DocumentManager(file -> {
-        countedFiles.add(file);
-        return 3;
-    });
+    private final AtomicInteger closeCalls = new AtomicInteger();
+    private final DocumentManager manager = new DocumentManager(
+            file -> {
+                countedFiles.add(file);
+                return 3;
+            },
+            closeCalls::incrementAndGet);
 
     @Test
     void createsOnePagePerPageOfTheFile() throws IOException {
@@ -51,9 +57,11 @@ class DocumentManagerTest {
 
     @Test
     void propagatesPageCountFailure() {
-        DocumentManager failing = new DocumentManager(file -> {
-            throw new IOException("broken");
-        });
+        DocumentManager failing = new DocumentManager(
+                file -> {
+                    throw new IOException("broken");
+                },
+                () -> {});
 
         assertThatThrownBy(() -> failing.getPages(new File(tempDir, "doc.pdf"))).hasMessage("broken");
         assertThat(failing.getAllFiles()).isEmpty();
@@ -117,5 +125,43 @@ class DocumentManagerTest {
         assertThat(manager.getAllFiles())
                 .containsExactlyInAnyOrder(file, oldPages.get(0).getFile());
         assertThat(manager.getPages(oldPages.get(0).getFile())).isSameAs(oldPages);
+    }
+
+    @Test
+    void moveAsideClosesOpenFilesBeforeMoving() throws IOException {
+        File file = new File(tempDir, "doc.pdf");
+        Files.writeString(file.toPath(), "original");
+        List<Boolean> existedWhenClosing = new ArrayList<>();
+        DocumentManager checking = new DocumentManager(f -> 1, () -> existedWhenClosing.add(file.exists()));
+        checking.getPages(file);
+
+        checking.moveAsideIfOpen(file);
+
+        assertThat(existedWhenClosing).containsExactly(true);
+    }
+
+    @Test
+    void moveAsideDoesNotCloseFilesWhenNothingIsMoved() throws IOException {
+        File file = new File(tempDir, "doc.pdf");
+        Files.writeString(file.toPath(), "content");
+
+        manager.moveAsideIfOpen(file);
+
+        assertThat(closeCalls).hasValue(0);
+    }
+
+    @Test
+    void reopeningOverwrittenPdfReadsNewContent() throws IOException {
+        File file = TestPdfs.create(new File(tempDir, "doc.pdf"), 3);
+        PdfRenderer renderer = new PdfRenderer();
+        DocumentManager pdfManager = new DocumentManager(renderer::getNumberOfPages, renderer::close);
+        List<Page> oldPages = pdfManager.getPages(file);
+
+        pdfManager.moveAsideIfOpen(file);
+        new PdfEditor().saveDocument(List.of(oldPages.get(2)), file);
+
+        assertThat(pdfManager.getPages(file)).hasSize(1);
+        assertThat(pdfManager.getPages(oldPages.get(0).getFile())).hasSize(3);
+        renderer.close();
     }
 }

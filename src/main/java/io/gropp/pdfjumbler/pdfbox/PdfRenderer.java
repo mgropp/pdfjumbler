@@ -47,7 +47,7 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
     }
 
     @Override
-    public Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException {
+    public synchronized Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException {
         PDDocument pdDoc = getDocument(page.getFile());
         PDPage pdPage = pdDoc.getPage(page.getIndex());
         PDRectangle cropBox = pdPage.getCropBox();
@@ -76,12 +76,12 @@ public class PdfRenderer implements io.gropp.pdfjumbler.pdf.PdfRenderer {
     }
 
     @Override
-    public int getNumberOfPages(File file) throws IOException {
+    public synchronized int getNumberOfPages(File file) throws IOException {
         return getDocument(file).getNumberOfPages();
     }
 
     @Override
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         Iterator<PDDocument> it = docMap.values().iterator();
         while (it.hasNext()) {
             it.next().close();
