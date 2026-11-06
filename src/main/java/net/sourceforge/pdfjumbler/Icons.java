@@ -74,6 +74,6 @@ public final class Icons {
 			}
 		}
 
-		return new ImageIcon(new BaseMultiResolutionImage(images.toArray(new Image[0])));
+		return new ScaledImageIcon(new BaseMultiResolutionImage(images.toArray(new Image[0])));
 	}
 }

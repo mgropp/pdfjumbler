@@ -1,5 +1,6 @@
 package net.sourceforge.pdfjumbler;
 
+import com.formdev.flatlaf.util.UIScale;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -39,7 +40,7 @@ public class ProgressDialog extends JDialog {
         super(parent, true);
         this.worker = worker;
 
-        setSize(300, 120);
+        setSize(UIScale.scale(300), UIScale.scale(120));
         if (parent != null) {
         	setLocationRelativeTo(null);
 	        setLocation(
@@ -54,7 +55,7 @@ public class ProgressDialog extends JDialog {
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
         c.weighty = 0.0;
-        c.insets = new Insets(4, 4, 4, 4);
+        c.insets = UIScale.scale(new Insets(4, 4, 4, 4));
         
         statusLabel = new JLabel();
         add(statusLabel, c);
