@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Martin Gropp
@@ -35,7 +36,7 @@ public class ProgressDialog extends JDialog {
     private final JProgressBar progressBar;
     private final JLabel statusLabel;
 
-    public ProgressDialog(Frame parent, SwingWorker<?, ?> worker) {
+    public ProgressDialog(@Nullable Frame parent, SwingWorker<?, ?> worker) {
         super(parent, true);
         this.worker = worker;
 
@@ -122,7 +123,7 @@ public class ProgressDialog extends JDialog {
         dispose();
     }
 
-    public static boolean run(SwingWorker<?, ?> worker, Frame parent) throws Exception {
+    public static boolean run(SwingWorker<?, ?> worker, @Nullable Frame parent) throws Exception {
         ProgressDialog dialog = new ProgressDialog(parent, worker);
         worker.execute();
         dialog.setVisible(true);

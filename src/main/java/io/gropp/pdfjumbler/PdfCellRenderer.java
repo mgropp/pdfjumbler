@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Martin Gropp
@@ -27,7 +28,7 @@ public class PdfCellRenderer extends DefaultListCellRenderer {
     private final Map<Page, Image> imageCache = new HashMap<>();
     private PdfRenderer renderer;
 
-    private Page page = null;
+    private @Nullable Page page;
     private final int padding = 6;
     private final int textWidth = 128;
 

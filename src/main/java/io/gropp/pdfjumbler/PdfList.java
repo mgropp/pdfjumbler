@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import javax.swing.JList;
 import javax.swing.TransferHandler.TransferSupport;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Martin Gropp
@@ -25,7 +26,7 @@ public class PdfList extends JDragDropList<Page> {
 
     private static final int DEFAULT_VISIBLE_ROW_COUNT = 8;
 
-    private String displayMessage = null;
+    private @Nullable String displayMessage;
 
     public PdfList(boolean showText) {
         super(new UndoableListModel<>());
@@ -118,14 +119,14 @@ public class PdfList extends JDragDropList<Page> {
         updateUI();
     }
 
-    public void setDisplayMessage(String displayMessage) {
+    public void setDisplayMessage(@Nullable String displayMessage) {
         this.displayMessage = displayMessage;
         if (getModel().getSize() == 0) {
             invalidate();
         }
     }
 
-    public String getDisplayMessage() {
+    public @Nullable String getDisplayMessage() {
         return displayMessage;
     }
 

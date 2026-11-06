@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class PluginTest {
         Locale.setDefault(previousLocale);
     }
 
-    private File jarWith(Properties properties) throws IOException {
+    private File jarWith(@Nullable Properties properties) throws IOException {
         File jar = new File(tempDir, "plugin.jar");
         try (JarOutputStream out = new JarOutputStream(new FileOutputStream(jar))) {
             if (properties != null) {

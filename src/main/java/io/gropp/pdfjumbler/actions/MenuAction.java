@@ -10,12 +10,13 @@ import io.gropp.pdfjumbler.pdf.PdfRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
+import org.jspecify.annotations.Nullable;
 
 public class MenuAction extends AbstractAction {
     private static final long serialVersionUID = -3880011502734901446L;
     private final PdfJumbler parent;
     public JPopupMenu menu = new JPopupMenu();
-    private Component component = null;
+    private @Nullable Component component;
 
     public MenuAction(PdfJumbler parent) {
         super(PdfJumblerResources.getResources().getString(I18nKeys.MENU), Icons.MENU);
@@ -94,6 +95,8 @@ public class MenuAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        menu.show(component, 0, component.getHeight());
+        if (component != null) {
+            menu.show(component, 0, component.getHeight());
+        }
     }
 }

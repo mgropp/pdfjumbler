@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.TransferHandler.TransferSupport;
+import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
 /**
@@ -35,7 +36,7 @@ public class DropUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<URI> getURIs(TransferSupport info) {
+    public static @Nullable List<URI> getURIs(TransferSupport info) {
         if (info.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             List<File> data;
             try {

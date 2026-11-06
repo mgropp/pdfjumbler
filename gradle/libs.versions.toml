@@ -7,6 +7,9 @@ spotless = "8.11.0"
 junit = "6.1.3"
 assertj = "3.27.7"
 jspecify = "1.0.1"
+errorprone = "2.52.0"
+nullaway = "0.14.3"
+errorprone-plugin = "5.2.0"
 
 [libraries]
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
@@ -15,6 +18,8 @@ pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 batik-transcoder = { module = "org.apache.xmlgraphics:batik-transcoder", version.ref = "batik" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
+nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
@@ -22,3 +27,4 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone-plugin" }

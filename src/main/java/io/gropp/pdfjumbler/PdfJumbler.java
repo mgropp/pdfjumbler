@@ -18,6 +18,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javax.swing.Action;
@@ -35,6 +36,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.undo.UndoManager;
+import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
 /**
@@ -49,7 +51,7 @@ public class PdfJumbler extends JFrame {
     private static final ResourceBundle resources =
             ResourceBundle.getBundle(PdfJumblerResources.class.getCanonicalName());
 
-    private static PdfJumbler instance = null;
+    private static @Nullable PdfJumbler instance;
 
     private final PdfList mainList;
     private final PdfList secondaryList;
@@ -74,11 +76,15 @@ public class PdfJumbler extends JFrame {
         return actions;
     }
 
+    private static PdfJumbler runningInstance() {
+        return Objects.requireNonNull(instance, "PdfJumbler has not been started");
+    }
+
     public static void openFiles(PdfList list, int insertPos, Collection<File> files) {
         if (files.size() > 0) {
             try {
                 ProgressDialog.run(
-                        new OpenDocumentWorker(instance.documentManager, list.getModel(), insertPos, files),
+                        new OpenDocumentWorker(runningInstance().documentManager, list.getModel(), insertPos, files),
                         PdfJumbler.instance);
             } catch (Exception e) {
                 Logger.error(e);
@@ -98,7 +104,8 @@ public class PdfJumbler extends JFrame {
 
     public static void saveFile(PdfList list, File file) {
         try {
-            ProgressDialog.run(new SaveDocumentWorker(instance.documentManager, list.getModel(), file), instance);
+            ProgressDialog.run(
+                    new SaveDocumentWorker(runningInstance().documentManager, list.getModel(), file), instance);
         } catch (Exception e) {
             Logger.error(e);
             JOptionPane.showMessageDialog(

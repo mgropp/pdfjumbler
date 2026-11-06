@@ -10,11 +10,12 @@ import java.io.File;
 import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import org.jspecify.annotations.Nullable;
 
 public class DocOpenAction extends AbstractAction {
     private static final long serialVersionUID = -1652454884847492822L;
 
-    private static String lastOpenedFileLocation = null;
+    private static @Nullable String lastOpenedFileLocation;
     private final PdfJumbler parent;
     private final PdfList list;
 

@@ -1,7 +1,11 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
+import net.ltgt.gradle.errorprone.errorprone
+
 plugins {
 	java
 	idea
 	alias(libs.plugins.spotless)
+	alias(libs.plugins.errorprone)
 }
 
 val mainPackage = "io.gropp.pdfjumbler"
@@ -21,6 +25,9 @@ dependencies {
 	implementation(libs.flatlaf)
 	implementation(libs.jspecify)
 
+	errorprone(libs.errorprone.core)
+	errorprone(libs.nullaway)
+
 	testImplementation(platform(libs.junit.bom))
 	testImplementation(libs.junit.jupiter)
 	testImplementation(libs.assertj.core)
@@ -38,6 +45,13 @@ tasks.register("installGitHooks") {
 		val hook = file("${rootDir}/.git/hooks/pre-push")
 		hook.writeText("#!/bin/sh\n./gradlew spotlessCheck\n")
 		hook.setExecutable(true)
+	}
+}
+
+tasks.withType<JavaCompile>().configureEach {
+	options.errorprone {
+		check("NullAway", CheckSeverity.ERROR)
+		option("NullAway:OnlyNullMarked", "true")
 	}
 }
 

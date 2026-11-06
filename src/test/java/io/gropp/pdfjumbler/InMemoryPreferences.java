@@ -3,6 +3,7 @@ package io.gropp.pdfjumbler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.AbstractPreferences;
+import org.jspecify.annotations.Nullable;
 
 public final class InMemoryPreferences extends AbstractPreferences {
     private final Map<String, String> values = new HashMap<>();
@@ -12,7 +13,7 @@ public final class InMemoryPreferences extends AbstractPreferences {
         this(null, "");
     }
 
-    private InMemoryPreferences(InMemoryPreferences parent, String name) {
+    private InMemoryPreferences(@Nullable InMemoryPreferences parent, String name) {
         super(parent, name);
     }
 
@@ -22,7 +23,7 @@ public final class InMemoryPreferences extends AbstractPreferences {
     }
 
     @Override
-    protected String getSpi(String key) {
+    protected @Nullable String getSpi(String key) {
         return values.get(key);
     }
 

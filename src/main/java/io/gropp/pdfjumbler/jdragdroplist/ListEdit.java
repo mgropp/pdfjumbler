@@ -3,6 +3,7 @@ package io.gropp.pdfjumbler.jdragdroplist;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.undo.AbstractUndoableEdit;
+import org.jspecify.annotations.Nullable;
 
 class ListEdit<T> extends AbstractUndoableEdit {
     private static final long serialVersionUID = 1158687785913642971L;
@@ -17,25 +18,23 @@ class ListEdit<T> extends AbstractUndoableEdit {
 
     final Type type;
     final UndoableList<T> list;
-    final UndoableList<T> list2;
     final int index;
 
-    final T item;
-    final T item2;
-    final Collection<T> items;
+    final @Nullable T item;
+    final @Nullable T item2;
+    final @Nullable Collection<T> items;
 
     ListEdit(Type type, UndoableList<T> list, int index, T item) {
         this(type, list, index, item, null);
     }
 
-    ListEdit(Type type, UndoableList<T> list, int index, T item, T item2) {
+    ListEdit(Type type, UndoableList<T> list, int index, T item, @Nullable T item2) {
         if ((type != Type.ADD) && (type != Type.REMOVE) && (type != Type.SET)) {
             throw new IllegalArgumentException();
         }
 
         this.type = type;
         this.list = list;
-        this.list2 = null;
         this.index = index;
         this.item = item;
         this.item2 = item2;
@@ -49,7 +48,6 @@ class ListEdit<T> extends AbstractUndoableEdit {
 
         this.type = type;
         this.list = list;
-        this.list2 = null;
         this.index = index;
         this.item = null;
         this.item2 = null;

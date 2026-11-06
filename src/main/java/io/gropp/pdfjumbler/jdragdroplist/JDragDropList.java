@@ -13,6 +13,7 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.undo.CompoundEdit;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A JList that supports drag & drop.
@@ -22,7 +23,7 @@ import javax.swing.undo.CompoundEdit;
 public class JDragDropList<T> extends JList<T> {
     private static final long serialVersionUID = -6709912327369063711L;
 
-    private DropListener dropListener = null;
+    private @Nullable DropListener dropListener;
 
     public JDragDropList(UndoableListModel<T> model) {
         super(model);
@@ -33,7 +34,7 @@ public class JDragDropList<T> extends JList<T> {
         setTransferHandler(new JDDLTransferHandler());
     }
 
-    public DropListener getDropListener() {
+    public @Nullable DropListener getDropListener() {
         return dropListener;
     }
 

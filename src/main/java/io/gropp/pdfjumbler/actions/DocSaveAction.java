@@ -9,10 +9,11 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import org.jspecify.annotations.Nullable;
 
 public class DocSaveAction extends AbstractAction {
     private static final long serialVersionUID = -1652454884847492822L;
-    private static String lastSavedLocation = null;
+    private static @Nullable String lastSavedLocation;
     private final PdfJumbler parent;
     private final PdfList list;
 
