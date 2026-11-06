@@ -23,9 +23,11 @@ public class DocumentManager {
         void closeOpenFiles() throws IOException;
     }
 
+    private record OpenDocument(int pageCount, List<Page> issuedPages) {}
+
     private final PageCounter pageCounter;
     private final OpenFileCloser openFileCloser;
-    private final Map<File, List<Page>> pageMap = new HashMap<>();
+    private final Map<File, OpenDocument> documents = new HashMap<>();
 
     public DocumentManager(PageCounter pageCounter, OpenFileCloser openFileCloser) {
         this.pageCounter = pageCounter;
@@ -33,28 +35,26 @@ public class DocumentManager {
     }
 
     public synchronized List<Page> getPages(File file) throws IOException {
-        List<Page> pages = pageMap.get(file);
-        if (pages != null) {
-            return pages;
+        OpenDocument document = documents.get(file);
+        if (document == null) {
+            document = new OpenDocument(pageCounter.getNumberOfPages(file), new ArrayList<>());
+            documents.put(file, document);
         }
 
-        int pageCount = pageCounter.getNumberOfPages(file);
-        List<Page> newPages = new ArrayList<>(pageCount);
-        for (int i = 0; i < pageCount; i++) {
-            newPages.add(new Page(file, i));
+        List<Page> pages = new ArrayList<>(document.pageCount());
+        for (int i = 0; i < document.pageCount(); i++) {
+            pages.add(new Page(file, i));
         }
-
-        pages = Collections.unmodifiableList(newPages);
-        pageMap.put(file, pages);
-        return pages;
+        document.issuedPages().addAll(pages);
+        return Collections.unmodifiableList(pages);
     }
 
     public synchronized Collection<File> getAllFiles() {
-        return List.copyOf(pageMap.keySet());
+        return List.copyOf(documents.keySet());
     }
 
     public synchronized void moveAsideIfOpen(File file) throws IOException {
-        if (!file.exists() || !pageMap.containsKey(file)) {
+        if (!file.exists() || !documents.containsKey(file)) {
             return;
         }
 
@@ -63,10 +63,10 @@ public class DocumentManager {
         openFileCloser.closeOpenFiles();
         Files.move(file.toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        List<Page> pages = pageMap.remove(file);
-        for (Page page : pages) {
+        OpenDocument document = documents.remove(file);
+        for (Page page : document.issuedPages()) {
             page.setFile(tempFile);
         }
-        pageMap.put(tempFile, pages);
+        documents.put(tempFile, document);
     }
 }

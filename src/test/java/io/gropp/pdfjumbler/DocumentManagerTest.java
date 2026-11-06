@@ -38,14 +38,39 @@ class DocumentManagerTest {
     }
 
     @Test
-    void returnsSamePagesForSameFile() throws IOException {
+    void countsPagesOnlyOncePerFile() throws IOException {
         File file = new File(tempDir, "doc.pdf");
 
         List<Page> first = manager.getPages(file);
         List<Page> second = manager.getPages(file);
 
-        assertThat(second).isSameAs(first);
+        assertThat(second).isEqualTo(first);
         assertThat(countedFiles).containsExactly(file);
+    }
+
+    @Test
+    void returnsIndependentPagesWhenFileIsOpenedAgain() throws IOException {
+        File file = new File(tempDir, "doc.pdf");
+        List<Page> first = manager.getPages(file);
+        List<Page> second = manager.getPages(file);
+
+        first.get(0).setRotation(90);
+
+        assertThat(second.get(0).getRotation()).isZero();
+    }
+
+    @Test
+    void moveAsideRedirectsPagesOfEveryOpening() throws IOException {
+        File file = new File(tempDir, "doc.pdf");
+        Files.writeString(file.toPath(), "original");
+        List<Page> first = manager.getPages(file);
+        List<Page> second = manager.getPages(file);
+
+        manager.moveAsideIfOpen(file);
+
+        File movedFile = first.get(0).getFile();
+        assertThat(movedFile).isNotEqualTo(file);
+        assertThat(second).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(movedFile));
     }
 
     @Test
@@ -124,7 +149,8 @@ class DocumentManagerTest {
         assertThat(newPages).allSatisfy(page -> assertThat(page.getFile()).isEqualTo(file));
         assertThat(manager.getAllFiles())
                 .containsExactlyInAnyOrder(file, oldPages.get(0).getFile());
-        assertThat(manager.getPages(oldPages.get(0).getFile())).isSameAs(oldPages);
+        assertThat(manager.getPages(oldPages.get(0).getFile())).isEqualTo(oldPages);
+        assertThat(countedFiles).containsExactly(file, file);
     }
 
     @Test

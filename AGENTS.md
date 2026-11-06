@@ -61,8 +61,9 @@ All code is under `src/main/java/io/gropp/pdfjumbler/`:
 ### Key Concepts
 
 - **Pages:** `Page` is a mutable reference to a page (file, page index, rotation) and is not a copy
-  of the page content. `DocumentManager` creates the pages of each opened file once and returns the
-  same instances on later calls.
+  of the page content. `DocumentManager` counts the pages of each file once and returns new,
+  independent `Page` instances on every call, so the same file can be opened several times. It keeps
+  track of all instances it handed out so that `moveAsideIfOpen` can redirect them to the moved file.
 - **Undo:** all list changes go through `UndoableList`/`UndoableListModel`, which emit undoable edits
   to the main window's `UniqueUndoManager`. Group multi-step changes into one compound edit with
   `beginCompoundEdit`/`endCompoundEdit` so that a single undo reverts them.
