@@ -7,14 +7,15 @@ import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
 
 import javax.swing.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.List;
 
 public class SaveDocumentWorker extends SwingWorker<Void,Void> {
+	private final DocumentManager documentManager;
 	private final List<Page> pages;
 	private final File file;
 
-	public SaveDocumentWorker(UndoableListModel<Page> model, File file) {
+	public SaveDocumentWorker(DocumentManager documentManager, UndoableListModel<Page> model, File file) {
+		this.documentManager = documentManager;
 		this.pages = model.getList();
 		this.file = file;
 	}
@@ -25,15 +26,7 @@ public class SaveDocumentWorker extends SwingWorker<Void,Void> {
 
 		// TODO: Detect links! (java.nio.file?)
 
-		if (file.exists() && DocumentManager.getAllFiles().contains(file)) {
-			File tempFile = File.createTempFile("pdfjumbler", ".pdf");
-			Files.move(file.toPath(), tempFile.toPath());
-			tempFile.deleteOnExit();
-
-			for (Page page : DocumentManager.getPages(file)) {
-				page.setFile(tempFile);
-			}
-		}
+		documentManager.moveAsideIfOpen(file);
 
 		PdfProcessingFactory.getInstance().getEditor().saveDocument(
 			pages,
