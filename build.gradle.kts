@@ -13,11 +13,11 @@ repositories {
 }
 
 dependencies {
-	implementation("org.tinylog:tinylog-api:2.8.1")
-	implementation("org.tinylog:tinylog-impl:2.8.1")
-	implementation("org.apache.pdfbox:pdfbox:3.0.8")
-	implementation("org.apache.xmlgraphics:batik-transcoder:1.20")
-	implementation("com.formdev:flatlaf:3.8")
+	implementation(libs.tinylog.api)
+	implementation(libs.tinylog.impl)
+	implementation(libs.pdfbox)
+	implementation(libs.batik.transcoder)
+	implementation(libs.flatlaf)
 }
 
 tasks.compileJava {
