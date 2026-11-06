@@ -19,6 +19,11 @@ dependencies {
 	implementation(libs.pdfbox)
 	implementation(libs.batik.transcoder)
 	implementation(libs.flatlaf)
+
+	testImplementation(platform(libs.junit.bom))
+	testImplementation(libs.junit.jupiter)
+	testImplementation(libs.assertj.core)
+	testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 spotless {
@@ -38,6 +43,11 @@ tasks.register("installGitHooks") {
 tasks.compileJava {
 	options.encoding = "UTF-8"
 	options.release = 21
+}
+
+tasks.test {
+	useJUnitPlatform()
+	systemProperty("java.awt.headless", "true")
 }
 
 tasks.jar {
