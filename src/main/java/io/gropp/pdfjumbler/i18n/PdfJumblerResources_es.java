@@ -44,27 +44,32 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
             {PLUGIN_ERROR_VERSION_INCOMPATIBLE, "Este plugin requiere la versión %s de PdfJumbler."},
             {
                 ABOUT_TEXT,
-                "PdfJumbler %s \nCopyright (C) 2021 Martin Gropp\n" + "Traducción: Andres Yesid Diaz Pinto\n"
-                        + "\n"
-                        + "PDF Editor: %s\n"
-                        + "PDF Renderer: %s\n"
-                        + "\n"
-                        + "This program is free software; you can redistribute it and/or modify it\n"
-                        + "under the terms of the GNU General Public License as published by the\n"
-                        + "Free Software Foundation; either version 3 of the License, or (at your\n"
-                        + "option) any later version.\n\n"
-                        + "This program is distributed in the hope that it will be useful, but\n"
-                        + "WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                        + "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
-                        + "See the GNU General Public License for more details.\n\n"
-                        + "You should have received a copy of the GNU General Public License along\n"
-                        + "with this program; if not, see http://www.gnu.org/licenses/.\n"
-                        + "\n"
-                        + "Este programa puede incluir, entre otros, las siguientes partes de software de terceros:\n"
-                        + "PdfBox - Copyright Apache Foundation (Apache license)\n"
-                        + "FlatLaf - Copyright FormDev Software GmbH (Apache License)\n"
-                        + "IntelliJ IDEA CE Icons - Copyright JetBrains s.r.o. (Apache License)\n"
-                        + "Ubuntu Mobile Icons - Copyright Canonical Ltd. (CC-BY-SA-3.0)"
+                """
+                PdfJumbler %s\s
+                Copyright (C) 2021 Martin Gropp
+                Traducción: Andres Yesid Diaz Pinto
+
+                PDF Editor: %s
+                PDF Renderer: %s
+
+                This program is free software; you can redistribute it and/or modify it
+                under the terms of the GNU General Public License as published by the
+                Free Software Foundation; either version 3 of the License, or (at your
+                option) any later version.
+
+                This program is distributed in the hope that it will be useful, but
+                WITHOUT ANY WARRANTY; without even the implied warranty of
+                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                See the GNU General Public License for more details.
+
+                You should have received a copy of the GNU General Public License along
+                with this program; if not, see http://www.gnu.org/licenses/.
+
+                Este programa puede incluir, entre otros, las siguientes partes de software de terceros:
+                PdfBox - Copyright Apache Foundation (Apache license)
+                FlatLaf - Copyright FormDev Software GmbH (Apache License)
+                IntelliJ IDEA CE Icons - Copyright JetBrains s.r.o. (Apache License)
+                Ubuntu Mobile Icons - Copyright Canonical Ltd. (CC-BY-SA-3.0)"""
             }
         };
     }

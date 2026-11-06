@@ -15,7 +15,7 @@ public class TrashDropTargetListener implements DropTargetListener {
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
         if (((dtde.getDropAction() & DnDConstants.ACTION_MOVE) != 0)
-                && (dtde.getTransferable().isDataFlavorSupported(JDDLTransferData.DATA_FLAVOR))) {
+                && dtde.getTransferable().isDataFlavorSupported(JDDLTransferData.DATA_FLAVOR)) {
             dtde.acceptDrag(DnDConstants.ACTION_MOVE);
         } else {
             dtde.rejectDrag();

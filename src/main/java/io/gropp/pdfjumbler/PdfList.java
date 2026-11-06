@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.JList;
 import javax.swing.TransferHandler.TransferSupport;
@@ -35,10 +36,10 @@ public class PdfList extends JDragDropList<Page> {
     }
 
     private void drawCenteredText(Graphics g, String message, boolean alignCenter) {
-        String[] lines = message.split("\n");
+        List<String> lines = message.lines().toList();
 
         FontMetrics fm = g.getFontMetrics();
-        int height = lines.length * fm.getHeight();
+        int height = lines.size() * fm.getHeight();
         int width = 0;
         if (!alignCenter) {
             for (String line : lines) {
@@ -48,10 +49,11 @@ public class PdfList extends JDragDropList<Page> {
             }
         }
 
-        for (int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
             g.drawString(
-                    lines[i],
-                    (getWidth() - (alignCenter ? fm.stringWidth(lines[i]) : width)) / 2,
+                    line,
+                    (getWidth() - (alignCenter ? fm.stringWidth(line) : width)) / 2,
                     (getHeight() - height) / 2 + i * fm.getHeight());
         }
     }
@@ -142,7 +144,7 @@ public class PdfList extends JDragDropList<Page> {
     private final class URIDropListener implements DropListener {
         @Override
         public boolean acceptDrop(Object sender, TransferSupport info) {
-            return (info.getTransferable().isDataFlavorSupported(JDDLTransferData.DATA_FLAVOR))
+            return info.getTransferable().isDataFlavorSupported(JDDLTransferData.DATA_FLAVOR)
                     || DropUtil.isURIDrop(info);
         }
 
