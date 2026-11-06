@@ -19,9 +19,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import org.jspecify.annotations.Nullable;
 
-/**
- * @author Martin Gropp
- */
 public class PdfCellRenderer extends DefaultListCellRenderer {
     private static final long serialVersionUID = 2395480480996785313L;
 

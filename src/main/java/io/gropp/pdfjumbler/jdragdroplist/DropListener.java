@@ -2,9 +2,6 @@ package io.gropp.pdfjumbler.jdragdroplist;
 
 import javax.swing.TransferHandler;
 
-/**
- * @author Martin Gropp
- */
 public interface DropListener {
     /**
      * Called for all possible drops, including list items.
@@ -12,8 +9,6 @@ public interface DropListener {
      *
      * @param sender
      *   The JDragDropList.
-     * @param info
-     * @return
      */
     boolean acceptDrop(Object sender, TransferHandler.TransferSupport info);
 
@@ -24,8 +19,6 @@ public interface DropListener {
      *
      * @param sender
      *   The JDragDropList.
-     * @param info
-     * @return
      */
     boolean handleDrop(Object sender, TransferHandler.TransferSupport info);
 }

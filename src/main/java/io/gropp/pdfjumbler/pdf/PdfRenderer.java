@@ -4,9 +4,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author Martin Gropp
- */
 public interface PdfRenderer {
     /**
      * Render a page from a PDF document as an image.
@@ -25,24 +22,19 @@ public interface PdfRenderer {
      *   The maximum image height.
      * @return
      *   An Image of the PDF page.
-     * @throws IOException
      */
     Image renderPage(Page page, int maxWidth, int maxHeight) throws IOException;
 
     /**
      * Return the number of pages in a PDF file.
      *
-     * @param file
      * @return
      *   The number of pages in the file.
-     * @throws IOException
      */
     int getNumberOfPages(File file) throws IOException;
 
     /**
      * Close the editor, for example because a different editor is selected.
-     *
-     * @throws IOException
      */
     void close() throws IOException;
 }

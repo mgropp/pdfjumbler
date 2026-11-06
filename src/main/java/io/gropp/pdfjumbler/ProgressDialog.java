@@ -24,9 +24,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import org.jspecify.annotations.Nullable;
 
-/**
- * @author Martin Gropp
- */
 public class ProgressDialog extends JDialog {
     private static final long serialVersionUID = 5790932640733135316L;
     private static final ResourceBundle resources =

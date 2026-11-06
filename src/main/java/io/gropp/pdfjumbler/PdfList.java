@@ -18,9 +18,6 @@ import javax.swing.JList;
 import javax.swing.TransferHandler.TransferSupport;
 import org.jspecify.annotations.Nullable;
 
-/**
- * @author Martin Gropp
- */
 public class PdfList extends JDragDropList<Page> {
     private static final long serialVersionUID = 7475943073466784769L;
 
