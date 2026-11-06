@@ -17,12 +17,12 @@ launcher_file="/usr/local/bin/pdfjumbler"
 # Make sure Java is installed
 if command -v java >/dev/null 2>&1
 then
-    echo "Java found."
-    echo "Version:"
+	echo "Java found."
+	echo "Version:"
 	java -version
 else
-    echo "Java not found. Please install Java!"
-    exit 1
+	echo "Java not found. Please install Java!"
+	exit 1
 fi
 
 # Create temp directory
