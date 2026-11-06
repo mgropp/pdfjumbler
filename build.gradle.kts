@@ -70,7 +70,10 @@ tasks.jar {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 	manifest {
-		attributes("Main-Class" to mainClass)
+		attributes(
+			"Main-Class" to mainClass,
+			"Implementation-Version" to project.version,
+		)
 	}
 
 	from({
