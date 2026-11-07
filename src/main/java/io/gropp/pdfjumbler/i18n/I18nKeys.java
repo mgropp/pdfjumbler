@@ -8,6 +8,7 @@ public interface I18nKeys {
     String OVERWRITE_FILE_TEXT = "OVERWRITE_FILE_TEXT";
     String ZOOM_OUT = "ZOOM_OUT";
     String ZOOM_IN = "ZOOM_IN";
+    String TOGGLE_CLIPBOARD = "TOGGLE_CLIPBOARD";
     String CLEAR_LIST = "CLEAR_LIST";
     String DELETE = "DELETE";
     String ABOUT = "ABOUT";

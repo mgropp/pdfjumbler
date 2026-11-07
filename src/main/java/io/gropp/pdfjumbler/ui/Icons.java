@@ -28,6 +28,7 @@ public final class Icons {
     public static final ImageIcon ZOOM_OUT = createMultiResIcon("zoom-out.svg", STANDARD_BASE_SIZE);
     public static final ImageIcon DOCUMENT_OPEN = createMultiResIcon("document-open.svg", STANDARD_BASE_SIZE);
     public static final ImageIcon DOCUMENT_SAVE = createMultiResIcon("document-save.svg", STANDARD_BASE_SIZE);
+    public static final ImageIcon CLIPBOARD = createMultiResIcon("clipboard.svg", STANDARD_BASE_SIZE);
     public static final ImageIcon EDIT_DELETE = createMultiResIcon("edit-delete.svg", STANDARD_BASE_SIZE);
     public static final ImageIcon MENU = createMultiResIcon("menu.svg", STANDARD_BASE_SIZE);
     public static final ImageIcon ROTATE_CW = createMultiResIcon("rotate-cw.svg", STANDARD_BASE_SIZE);

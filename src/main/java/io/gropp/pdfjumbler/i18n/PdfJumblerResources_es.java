@@ -13,6 +13,7 @@ public class PdfJumblerResources_es extends ListResourceBundle implements I18nKe
             {OVERWRITE_FILE_TEXT, "El fichero ya existe, ¿lo desea sobreescribir?"},
             {ZOOM_OUT, "Zoom out"},
             {ZOOM_IN, "Zoom in"},
+            {TOGGLE_CLIPBOARD, "Portapapeles"},
             {CLEAR_LIST, "Borrar lista"},
             {DELETE, "Eliminar"},
             {ABOUT, "Acerca de"},
