@@ -63,10 +63,10 @@ PdfJumbler accepts PDF files as command line arguments.
 Several settings can be changed using Java system properties:
 
 * `pdfjumbler.editor`: sets the editor plugin (if installed; previous plugins are no longer supported)
-	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfEditor`
+	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfBoxEditor`
 
 * `pdfjumbler.renderer`: sets the renderer plugin (if installed; previous plugins are no longer supported)
-	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfRenderer`
+	 * PDFBox: `io.gropp.pdfjumbler.pdfbox.PdfBoxRenderer`
 
 * `pdfjumbler.pluginpath`: sets the directory that plugin jar files are loaded from.
 	By default, this is the directory containing `pdfjumbler.jar`.

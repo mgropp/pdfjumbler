@@ -63,8 +63,9 @@ Pick the single gitmoji that best describes the change. The ones used in this re
 
 ## Null Safety
 
-Every package has a `package-info.java` annotated with JSpecify's `@NullMarked`, so all types
-are non-null by default. New packages need a `package-info.java` with `@NullMarked` as well.
+Every package, in `src/main/java` and in `src/test/java`, has a `package-info.java` annotated with
+JSpecify's `@NullMarked`, so all types are non-null by default and NullAway checks test code too.
+New packages, including new test packages, need a `package-info.java` with `@NullMarked` as well.
 
 - Mark fields, parameters and return types that may hold `null` with
   `org.jspecify.annotations.Nullable`, using type-use placement (`private @Nullable String name;`).
@@ -77,12 +78,22 @@ All code is under `src/main/java/io/gropp/pdfjumbler/`:
 
 | Package | Contents |
 |---|---|
-| `io.gropp.pdfjumbler` | Main window (`PdfJumbler`), page lists (`PdfList`, `PdfCellRenderer`), `DocumentManager`, icons, progress dialog |
-| `…actions` | Swing `Action`s for toolbar/menu entries, background workers for opening and saving, `RotatePagesEdit` |
+| `io.gropp.pdfjumbler` | Launcher (`PdfJumbler`) and `AppVersion` |
+| `…ui` | Main window (`MainFrame`, `MainPanel`), `ProgressDialog`, `ErrorDialog`, `Icons`, `TrashDropTargetListener` |
+| `…ui.pagelist` | Page list view: `PdfList`, `PdfCellRenderer`, `ThumbnailCache` |
+| `…actions` | `Actions`, Swing `Action`s for toolbar/menu entries, background workers for opening and saving, `FileOperations` |
+| `…document` | `Page`, `DocumentManager`, `DocumentSaver` |
+| `…edit` | `UniqueUndoManager`, `RotatePagesEdit` |
 | `…jdragdroplist` | Generic drag-and-drop list (`JDragDropList`), undoable list and model (`UndoableList`, `UndoableListModel`), `ListOperations` |
-| `…pdf` | Processing abstractions: `Page`, `PdfEditor`, `PdfRenderer`, plugin loading (`Plugin`, `PluginDiscovery`), `PdfProcessingFactory` |
-| `…pdfbox` | PDFBox implementations of `PdfEditor` and `PdfRenderer`, `ImageRotation` |
+| `…pdf` | Processing abstractions: `PdfEditor`, `PdfRenderer`, `PdfProcessingFactory` |
+| `…pdf.plugin` | Plugin loading (`Plugin`, `PluginDiscovery`, `PluginApi`) and startup wiring (`PdfProcessingSetup`) |
+| `…pdfbox` | PDFBox implementations `PdfBoxEditor` and `PdfBoxRenderer`, `ImageRotation` |
+| `…config` | `ConfigKeys`, `UserPreferences` |
 | `…i18n` | `I18nKeys` and `ListResourceBundle` translations |
+
+Dependencies flow `ui` → `actions` → `document`/`pdf` → `pdfbox`. `document`, `pdf`, `pdfbox`, `config` and
+`jdragdroplist` do not import `ui` or `actions`. Shared test helpers (`TestPdfs`, `InMemoryPreferences`) are in
+the test package `…testutil`.
 
 ### Key Concepts
 
@@ -93,17 +104,17 @@ All code is under `src/main/java/io/gropp/pdfjumbler/`:
 - **Undo:** all list changes go through `UndoableList`/`UndoableListModel`, which emit undoable edits
   to the main window's `UniqueUndoManager`. Group multi-step changes into one compound edit with
   `beginCompoundEdit`/`endCompoundEdit` so that a single undo reverts them.
-- **Editors and renderers:** `PdfProcessingFactory.getInstance()` holds the active `PdfEditor` and
+- **Editors and renderers:** `PdfProcessingFactory` holds the active `PdfEditor` and
   `PdfRenderer`. They are selected from the built-in PDFBox classes plus classes from plugin jars,
   in this order: system property `pdfjumbler.editor` / `pdfjumbler.renderer`, then the stored user
   preference, then the first available. The startup wiring (plugin path, error dialogs,
-  `System.exit`) is in `PdfProcessingSetup`; the factory itself can be constructed directly in tests.
+  `System.exit`) is in `PdfProcessingSetup`, which `PdfJumbler` calls once at startup. The factory is passed to `MainFrame`, the lists and the actions; there is no singleton, and tests construct it directly.
 - **Plugins:** jar files in the plugin directory (system property `pdfjumbler.pluginpath`; by default
   the directory containing `pdfjumbler.jar`). Each plugin jar contains a `pdfjumbler-plugin.properties`
-  file with `pdfjumbler-required-version` (compared against `PdfJumbler.VERSION`) and
+  file with `pdfjumbler-required-version` (compared against `PluginApi.VERSION`) and
   comma-separated class names under `pdfjumbler-plugin-editor` and/or `pdfjumbler-plugin-renderer`.
 - **Preferences:** user settings are stored via `java.util.prefs` under the `io.gropp.pdfjumbler`
-  node; keys are in `ConfigKeys`.
+  node; keys are in `ConfigKeys`. The show-text setting is read and written through `UserPreferences`, which takes a `Preferences` so tests can pass `InMemoryPreferences`.
 
 ### Translations
 
@@ -135,7 +146,7 @@ They run headless (`java.awt.headless=true`), so they must not open windows or d
   and is set with `-Pversion=…` for releases. It is written to the jar manifest as `Implementation-Version`.
 - `AppVersion.current()` reads the version from the manifest and returns `dev` when there is none
   (for example when running from the IDE). The About dialog shows this version.
-- `PdfJumbler.VERSION` is a separate integer that plugins check compatibility against
+- `PluginApi.VERSION` is a separate integer that plugins check compatibility against
   (`pdfjumbler-required-version`). Only change it when the plugin API changes.
 
 ## CI and Releases

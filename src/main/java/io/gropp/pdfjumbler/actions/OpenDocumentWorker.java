@@ -1,8 +1,8 @@
 package io.gropp.pdfjumbler.actions;
 
-import io.gropp.pdfjumbler.DocumentManager;
+import io.gropp.pdfjumbler.document.DocumentManager;
+import io.gropp.pdfjumbler.document.Page;
 import io.gropp.pdfjumbler.jdragdroplist.UndoableListModel;
-import io.gropp.pdfjumbler.pdf.Page;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;

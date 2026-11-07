@@ -1,30 +1,32 @@
 package io.gropp.pdfjumbler.actions;
 
-import io.gropp.pdfjumbler.Icons;
-import io.gropp.pdfjumbler.PdfJumbler;
-import io.gropp.pdfjumbler.PdfList;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
+import io.gropp.pdfjumbler.ui.Dialogs;
+import io.gropp.pdfjumbler.ui.Icons;
+import io.gropp.pdfjumbler.ui.pagelist.PdfList;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.Serial;
 import java.util.Locale;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import org.jspecify.annotations.Nullable;
 
 public class DocSaveAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = -1652454884847492822L;
-    private static @Nullable String lastSavedLocation;
-    private final PdfJumbler parent;
+
+    private final Dialogs dialogs;
+    private final FileOperations fileOperations;
     private final PdfList list;
 
-    public DocSaveAction(PdfJumbler parent, PdfList list) {
-        this(parent, list, Icons.DOCUMENT_SAVE);
+    public DocSaveAction(Dialogs dialogs, FileOperations fileOperations, PdfList list) {
+        this(dialogs, fileOperations, list, Icons.DOCUMENT_SAVE);
     }
 
-    public DocSaveAction(PdfJumbler parent, PdfList list, Icon icon) {
+    public DocSaveAction(Dialogs dialogs, FileOperations fileOperations, PdfList list, Icon icon) {
         super(PdfJumblerResources.getResources().getString(I18nKeys.SAVE_DOCUMENT), icon);
-        this.parent = parent;
+        this.dialogs = dialogs;
+        this.fileOperations = fileOperations;
         this.list = list;
         putValue(Action.SHORT_DESCRIPTION, PdfJumblerResources.getResources().getString(I18nKeys.SAVE_DOCUMENT));
         putValue(Action.ACCELERATOR_KEY, PdfJumblerResources.getResources().getObject(I18nKeys.ACCELERATOR_SAVE));
@@ -32,49 +34,24 @@ public class DocSaveAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser(DocSaveAction.lastSavedLocation);
-        chooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory() || (hasExistingParent(file) && isWritablePdf(file));
-            }
-
-            @Override
-            public String getDescription() {
-                return PdfJumblerResources.getResources().getString(I18nKeys.FILE_FILTER_PDF);
+        dialogs.chooseFileToSave().map(DocSaveAction::withPdfExtension).ifPresent(file -> {
+            if (!file.exists() || confirmOverwrite(file)) {
+                fileOperations.saveFile(list, file);
             }
         });
-
-        if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            if (!file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-                file = new File(file.getAbsolutePath() + ".pdf");
-            }
-            if (file.exists()
-                    && (JOptionPane.showConfirmDialog(
-                                    parent,
-                                    String.format(
-                                            PdfJumblerResources.getResources().getString(I18nKeys.OVERWRITE_FILE_TEXT),
-                                            file.getAbsolutePath()),
-                                    PdfJumblerResources.getResources().getString(I18nKeys.OVERWRITE_FILE_TITLE),
-                                    JOptionPane.OK_CANCEL_OPTION,
-                                    JOptionPane.WARNING_MESSAGE)
-                            != JOptionPane.OK_OPTION)) {
-                return;
-            }
-            DocSaveAction.lastSavedLocation = file.getParent();
-            PdfJumbler.saveFile(list, file);
-        }
     }
 
-    private static boolean hasExistingParent(File file) {
-        File parent = file.getParentFile();
-        return parent != null && parent.exists();
+    private boolean confirmOverwrite(File file) {
+        return dialogs.confirmWarning(
+                String.format(
+                        PdfJumblerResources.getResources().getString(I18nKeys.OVERWRITE_FILE_TEXT),
+                        file.getAbsolutePath()),
+                PdfJumblerResources.getResources().getString(I18nKeys.OVERWRITE_FILE_TITLE));
     }
 
-    private static boolean isWritablePdf(File file) {
-        return (!file.exists() || file.isFile())
-                && file.canWrite()
-                && file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf");
+    private static File withPdfExtension(File file) {
+        return file.getName().toLowerCase(Locale.ROOT).endsWith(".pdf")
+                ? file
+                : new File(file.getAbsolutePath() + ".pdf");
     }
 }

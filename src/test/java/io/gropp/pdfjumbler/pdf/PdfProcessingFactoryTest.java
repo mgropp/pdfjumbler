@@ -3,8 +3,9 @@ package io.gropp.pdfjumbler.pdf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import io.gropp.pdfjumbler.ConfigKeys;
-import io.gropp.pdfjumbler.InMemoryPreferences;
+import io.gropp.pdfjumbler.config.ConfigKeys;
+import io.gropp.pdfjumbler.document.Page;
+import io.gropp.pdfjumbler.testutil.InMemoryPreferences;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,7 +15,7 @@ import java.util.prefs.Preferences;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
-class PdfProcessingFactoryTest {
+public class PdfProcessingFactoryTest {
     private final Preferences preferences = new InMemoryPreferences();
 
     private PdfProcessingFactory factory(@Nullable String requestedEditor, @Nullable String requestedRenderer)

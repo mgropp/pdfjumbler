@@ -1,10 +1,12 @@
 package io.gropp.pdfjumbler.jdragdroplist;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.List;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
@@ -21,6 +23,7 @@ import org.jspecify.annotations.Nullable;
  * @author Martin Gropp
  */
 public class JDragDropList<T> extends JList<T> {
+    @Serial
     private static final long serialVersionUID = -6709912327369063711L;
 
     private @Nullable DropListener dropListener;
@@ -29,7 +32,9 @@ public class JDragDropList<T> extends JList<T> {
         super(model);
 
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        setDragEnabled(true);
+        if (!GraphicsEnvironment.isHeadless()) {
+            setDragEnabled(true);
+        }
         setDropMode(DropMode.INSERT);
         setTransferHandler(new JDDLTransferHandler());
     }
@@ -43,6 +48,7 @@ public class JDragDropList<T> extends JList<T> {
     }
 
     private final class JDDLTransferHandler extends TransferHandler {
+        @Serial
         private static final long serialVersionUID = 8850624713729645277L;
 
         private void copyItems(JDragDropList<? super T> targetList, List<T> sourceObjects, int destIndex) {
@@ -69,6 +75,7 @@ public class JDragDropList<T> extends JList<T> {
             UndoableListModel<? super T> targetModel = targetList.getModel();
 
             CompoundEdit edit = new CompoundEdit() {
+                @Serial
                 private static final long serialVersionUID = -8658162613932247385L;
 
                 @Override

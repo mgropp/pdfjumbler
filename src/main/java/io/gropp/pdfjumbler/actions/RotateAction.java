@@ -1,30 +1,28 @@
 package io.gropp.pdfjumbler.actions;
 
-import io.gropp.pdfjumbler.PdfJumbler;
-import io.gropp.pdfjumbler.jdragdroplist.JDragDropList;
-import io.gropp.pdfjumbler.pdf.Page;
+import io.gropp.pdfjumbler.edit.RotatePagesEdit;
+import io.gropp.pdfjumbler.ui.pagelist.PdfList;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 
 public abstract class RotateAction extends AbstractAction {
-    protected final PdfJumbler parent;
+    private final PdfList pdfList;
+    private final UndoManager undoManager;
     private final int degrees;
 
-    public RotateAction(String name, ImageIcon icon, PdfJumbler parent, int degrees) {
+    public RotateAction(String name, ImageIcon icon, PdfList pdfList, UndoManager undoManager, int degrees) {
         super(name, icon);
-        this.parent = parent;
+        this.pdfList = pdfList;
+        this.undoManager = undoManager;
         this.degrees = degrees;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void actionPerformed(ActionEvent e) {
-        JDragDropList<Page> list;
-        if (e.getSource() instanceof JDragDropList) {
-            list = (JDragDropList<Page>) e.getSource();
-        } else {
-            list = parent.getMainPdfList();
+        int[] selectedIndices = pdfList.getSelectedIndices();
+        if (selectedIndices.length > 0) {
+            undoManager.addEdit(RotatePagesEdit.apply(pdfList.getModel(), selectedIndices, degrees));
         }
-        parent.getUndoManager().addEdit(RotatePagesEdit.apply(list.getModel(), list.getSelectedIndices(), degrees));
     }
 }
