@@ -59,6 +59,7 @@ Icon=pdfjumbler
 Type=Application
 MimeType=application/pdf;
 Categories=Office;
+StartupWMClass=io-gropp-pdfjumbler-PdfJumbler
 Terminal=false
 EOF
 
