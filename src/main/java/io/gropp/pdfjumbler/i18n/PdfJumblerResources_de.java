@@ -13,6 +13,7 @@ public class PdfJumblerResources_de extends ListResourceBundle implements I18nKe
             {OVERWRITE_FILE_TEXT, "Die Datei %s existiert bereits. Überschreiben?"},
             {ZOOM_OUT, "Verkleinern"},
             {ZOOM_IN, "Vergrößern"},
+            {TOGGLE_CLIPBOARD, "Zwischenablage"},
             {CLEAR_LIST, "Alle löschen"},
             {DELETE, "Löschen"},
             {ABOUT, "Informationen"},

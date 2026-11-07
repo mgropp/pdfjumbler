@@ -13,6 +13,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
             {OVERWRITE_FILE_TEXT, "Файл %s уже существует. Перезаписать?"},
             {ZOOM_OUT, "Уменьшить"},
             {ZOOM_IN, "Увеличить"},
+            {TOGGLE_CLIPBOARD, "Буфер обмена"},
             {CLEAR_LIST, "Очистить список"},
             {DELETE, "Удалить"},
             {ABOUT, "О программе"},

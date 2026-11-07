@@ -24,6 +24,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
             {OVERWRITE_FILE_TEXT, "The file %s already exists. Overwrite?"},
             {ZOOM_OUT, "Zoom out"},
             {ZOOM_IN, "Zoom in"},
+            {TOGGLE_CLIPBOARD, "Clipboard"},
             {CLEAR_LIST, "Clear list"},
             {DELETE, "Delete"},
             {ABOUT, "About"},

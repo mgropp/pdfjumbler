@@ -3,6 +3,7 @@ package io.gropp.pdfjumbler.ui;
 import com.formdev.flatlaf.util.UIScale;
 import io.gropp.pdfjumbler.actions.Actions;
 import io.gropp.pdfjumbler.actions.MenuAction;
+import io.gropp.pdfjumbler.actions.ToggleClipboardAction;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
 import io.gropp.pdfjumbler.ui.pagelist.PdfList;
 import java.awt.BorderLayout;
@@ -10,11 +11,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.io.Serial;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 class MainPanel extends JPanel {
@@ -34,8 +37,12 @@ class MainPanel extends JPanel {
         mainList.setMinimumSize(mainMinimumSize());
         secondaryList.setMinimumSize(collapsedSize());
 
-        add(createMainToolbar(parent, dialogs, actions, mainList, processing), BorderLayout.NORTH);
-        add(createSplitPane(actions, mainList, secondaryList), BorderLayout.CENTER);
+        JSplitPane splitPane = createSplitPane(actions, mainList, secondaryList);
+        Action toggleClipboardAction = new ToggleClipboardAction(splitPane);
+        add(
+                createMainToolbar(parent, dialogs, actions, toggleClipboardAction, mainList, processing),
+                BorderLayout.NORTH);
+        add(splitPane, BorderLayout.CENTER);
     }
 
     private static JSplitPane createSplitPane(Actions actions, PdfList mainList, PdfList secondaryList) {
@@ -50,7 +57,12 @@ class MainPanel extends JPanel {
     }
 
     private static JToolBar createMainToolbar(
-            Component parent, Dialogs dialogs, Actions actions, PdfList mainList, PdfProcessingFactory processing) {
+            Component parent,
+            Dialogs dialogs,
+            Actions actions,
+            Action toggleClipboardAction,
+            PdfList mainList,
+            PdfProcessingFactory processing) {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         toolBar.add(actions.getDocOpenAction());
@@ -63,6 +75,10 @@ class MainPanel extends JPanel {
         delButton.setDropTarget(new DropTarget(delButton, new TrashDropTargetListener()));
         toolBar.addSeparator();
         toolBar.add(actions.getRotateClockwiseAction());
+        toolBar.addSeparator();
+        JToggleButton clipboardButton = new JToggleButton(toggleClipboardAction);
+        clipboardButton.setHideActionText(true);
+        toolBar.add(clipboardButton);
 
         toolBar.add(Box.createHorizontalGlue());
         MenuAction menuAction = new MenuAction(parent, dialogs, actions, mainList, processing);
