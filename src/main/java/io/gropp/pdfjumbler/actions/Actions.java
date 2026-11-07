@@ -17,7 +17,6 @@ public class Actions {
     private final Action docOpenAction;
     private final Action docSaveAction;
     private final Action docOpenAction2;
-    private final Action docSaveAction2;
     private final Action undoAction;
     private final Action redoAction;
     private final Action zoomOutAction;
@@ -42,7 +41,6 @@ public class Actions {
         docOpenAction = new DocOpenAction(dialogs, fileOperations, mainList);
         docSaveAction = new DocSaveAction(dialogs, fileOperations, mainList);
         docOpenAction2 = new DocOpenAction(dialogs, fileOperations, secondaryList, Icons.Size16.DOCUMENT_OPEN);
-        docSaveAction2 = new DocSaveAction(dialogs, fileOperations, secondaryList, Icons.Size16.DOCUMENT_SAVE);
         undoAction = new UndoAction(undoManager);
         redoAction = new RedoAction(undoManager);
         zoomOutAction = new ZoomOutAction(mainList);
@@ -91,10 +89,6 @@ public class Actions {
 
     public Action getDocOpenAction2() {
         return docOpenAction2;
-    }
-
-    public Action getDocSaveAction2() {
-        return docSaveAction2;
     }
 
     public Action getZoomOutAction() {

@@ -20,11 +20,7 @@ public class DocSaveAction extends AbstractAction {
     private final PdfList list;
 
     public DocSaveAction(Dialogs dialogs, FileOperations fileOperations, PdfList list) {
-        this(dialogs, fileOperations, list, Icons.DOCUMENT_SAVE);
-    }
-
-    public DocSaveAction(Dialogs dialogs, FileOperations fileOperations, PdfList list, Icon icon) {
-        super(PdfJumblerResources.getResources().getString(I18nKeys.SAVE_DOCUMENT_AS), icon);
+        super(PdfJumblerResources.getResources().getString(I18nKeys.SAVE_DOCUMENT_AS), Icons.DOCUMENT_SAVE);
         this.dialogs = dialogs;
         this.fileOperations = fileOperations;
         this.list = list;

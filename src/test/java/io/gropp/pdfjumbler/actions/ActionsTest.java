@@ -47,7 +47,6 @@ class ActionsTest {
                 actions.getDocOpenAction(),
                 actions.getDocSaveAction(),
                 actions.getDocOpenAction2(),
-                actions.getDocSaveAction2(),
                 actions.getZoomOutAction(),
                 actions.getZoomInAction(),
                 actions.getMoveUpAction(),
@@ -61,10 +60,9 @@ class ActionsTest {
     }
 
     @Test
-    void secondaryOpenAndSaveActionsAreDistinctFromMainOnes() {
+    void secondaryOpenActionIsDistinctFromMainOne() {
         Actions actions = actions();
 
         assertThat(actions.getDocOpenAction2()).isNotSameAs(actions.getDocOpenAction());
-        assertThat(actions.getDocSaveAction2()).isNotSameAs(actions.getDocSaveAction());
     }
 }
