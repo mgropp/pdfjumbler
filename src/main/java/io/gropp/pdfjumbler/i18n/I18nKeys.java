@@ -2,7 +2,7 @@ package io.gropp.pdfjumbler.i18n;
 
 public interface I18nKeys {
     String OPEN_DOCUMENT = "OPEN_DOCUMENT";
-    String SAVE_DOCUMENT = "SAVE_DOCUMENT";
+    String SAVE_DOCUMENT_AS = "SAVE_DOCUMENT_AS";
     String FILE_FILTER_PDF = "FILE_FILTER_PDF";
     String OVERWRITE_FILE_TITLE = "OVERWRITE_FILE_TITLE";
     String OVERWRITE_FILE_TEXT = "OVERWRITE_FILE_TEXT";
