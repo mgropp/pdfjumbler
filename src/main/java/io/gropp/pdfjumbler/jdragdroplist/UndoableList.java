@@ -1,5 +1,6 @@
 package io.gropp.pdfjumbler.jdragdroplist;
 
+import java.io.Serial;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,6 +72,7 @@ public class UndoableList<T> implements List<T> {
 
     public void beginCompoundEdit(final String name) {
         CompoundEdit edit = new CompoundEdit() {
+            @Serial
             private static final long serialVersionUID = 2894975385303438798L;
 
             @Override

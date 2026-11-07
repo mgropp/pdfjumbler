@@ -1,16 +1,18 @@
 package io.gropp.pdfjumbler.actions;
 
-import io.gropp.pdfjumbler.PdfJumbler;
 import io.gropp.pdfjumbler.pdf.PdfEditor;
 import io.gropp.pdfjumbler.pdf.PdfProcessorListener;
 import io.gropp.pdfjumbler.pdf.PdfRenderer;
+import io.gropp.pdfjumbler.ui.pagelist.PdfList;
 import java.io.IOException;
 
 public class ReloadingProcessorListener implements PdfProcessorListener {
-    private final PdfJumbler parent;
+    private final PdfList mainList;
+    private final PdfList secondaryList;
 
-    public ReloadingProcessorListener(PdfJumbler parent) {
-        this.parent = parent;
+    public ReloadingProcessorListener(PdfList mainList, PdfList secondaryList) {
+        this.mainList = mainList;
+        this.secondaryList = secondaryList;
     }
 
     @Override
@@ -20,8 +22,8 @@ public class ReloadingProcessorListener implements PdfProcessorListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            parent.getMainPdfList().updateUI();
-            parent.getSecondaryPdfList().updateUI();
+            mainList.updateUI();
+            secondaryList.updateUI();
         }
     }
 

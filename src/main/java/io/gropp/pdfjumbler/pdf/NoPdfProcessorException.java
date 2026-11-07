@@ -1,8 +1,10 @@
 package io.gropp.pdfjumbler.pdf;
 
+import java.io.Serial;
 import java.util.Locale;
 
 public class NoPdfProcessorException extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public enum Kind {

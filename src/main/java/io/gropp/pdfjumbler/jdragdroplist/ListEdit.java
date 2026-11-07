@@ -1,11 +1,13 @@
 package io.gropp.pdfjumbler.jdragdroplist;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.undo.AbstractUndoableEdit;
 import org.jspecify.annotations.Nullable;
 
 class ListEdit<T> extends AbstractUndoableEdit {
+    @Serial
     private static final long serialVersionUID = 1158687785913642971L;
 
     public enum Type {
@@ -56,11 +58,13 @@ class ListEdit<T> extends AbstractUndoableEdit {
 
     @Override
     public void undo() {
+        super.undo();
         list.undo(this);
     }
 
     @Override
     public void redo() {
+        super.redo();
         list.redo(this);
     }
 

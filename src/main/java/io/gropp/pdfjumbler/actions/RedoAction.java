@@ -3,11 +3,14 @@ package io.gropp.pdfjumbler.actions;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import javax.swing.*;
 import javax.swing.undo.UndoManager;
 
 public class RedoAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = -4360624396939210557L;
+
     private final UndoManager undoManager;
 
     public RedoAction(UndoManager undoManager) {

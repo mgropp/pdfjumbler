@@ -1,14 +1,16 @@
 package io.gropp.pdfjumbler.actions;
 
+import io.gropp.pdfjumbler.document.Page;
 import io.gropp.pdfjumbler.i18n.I18nKeys;
 import io.gropp.pdfjumbler.i18n.PdfJumblerResources;
 import io.gropp.pdfjumbler.jdragdroplist.JDragDropList;
 import io.gropp.pdfjumbler.jdragdroplist.ListOperations;
-import io.gropp.pdfjumbler.pdf.Page;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import javax.swing.*;
 
 public class MoveDownAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = -4468213711264218766L;
 
     public MoveDownAction() {

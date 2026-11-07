@@ -1,6 +1,6 @@
 package io.gropp.pdfjumbler.pdf;
 
-import io.gropp.pdfjumbler.ConfigKeys;
+import io.gropp.pdfjumbler.config.ConfigKeys;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,15 +13,6 @@ import org.jspecify.annotations.Nullable;
 import org.tinylog.Logger;
 
 public final class PdfProcessingFactory {
-    private static @Nullable PdfProcessingFactory instance;
-
-    public static synchronized PdfProcessingFactory getInstance() {
-        if (instance == null) {
-            instance = PdfProcessingSetup.createFactory();
-        }
-        return instance;
-    }
-
     private final List<Class<? extends PdfEditor>> editorClasses;
     private final List<Class<? extends PdfRenderer>> rendererClasses;
     private final Preferences preferences;

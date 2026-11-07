@@ -1,31 +1,36 @@
 package io.gropp.pdfjumbler.actions;
 
-import io.gropp.pdfjumbler.PdfJumbler;
 import io.gropp.pdfjumbler.pdf.PdfEditor;
 import io.gropp.pdfjumbler.pdf.PdfProcessingFactory;
+import io.gropp.pdfjumbler.ui.Dialogs;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import javax.swing.*;
 import org.tinylog.Logger;
 
 public class ChangeEditorAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = -8468488158161906330L;
-    private final PdfJumbler parent;
+
+    private final Dialogs dialogs;
+    private final PdfProcessingFactory processing;
     private final Class<? extends PdfEditor> editorClass;
 
-    public ChangeEditorAction(PdfJumbler parent, Class<? extends PdfEditor> editorClass) {
+    public ChangeEditorAction(
+            Dialogs dialogs, PdfProcessingFactory processing, Class<? extends PdfEditor> editorClass) {
         super(PdfProcessingFactory.getFriendlyName(editorClass));
-        this.parent = parent;
+        this.dialogs = dialogs;
+        this.processing = processing;
         this.editorClass = editorClass;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            PdfProcessingFactory.getInstance().setEditorClass(editorClass);
+            processing.setEditorClass(editorClass);
         } catch (Exception ex) {
             Logger.error(ex);
-            JOptionPane.showMessageDialog(
-                    parent, ex.getLocalizedMessage(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            dialogs.showError(ex.getLocalizedMessage(), ex.getClass().getSimpleName());
         }
     }
 }
