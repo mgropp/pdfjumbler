@@ -7,7 +7,7 @@ public class PdfJumblerResources_ru extends ListResourceBundle implements I18nKe
     protected Object[][] getContents() {
         return new Object[][] {
             {OPEN_DOCUMENT, "Открыть/Добавить"},
-            {SAVE_DOCUMENT, "Сохранить"},
+            {SAVE_DOCUMENT_AS, "Сохранить как"},
             {FILE_FILTER_PDF, "PDF документы (*.pdf)"},
             {OVERWRITE_FILE_TITLE, "Перезаписать?"},
             {OVERWRITE_FILE_TEXT, "Файл %s уже существует. Перезаписать?"},

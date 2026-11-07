@@ -18,7 +18,7 @@ public class PdfJumblerResources extends ListResourceBundle implements I18nKeys 
     protected Object[][] getContents() {
         return new Object[][] {
             {OPEN_DOCUMENT, "Open/add document"},
-            {SAVE_DOCUMENT, "Save document"},
+            {SAVE_DOCUMENT_AS, "Save document as"},
             {FILE_FILTER_PDF, "PDF documents (*.pdf)"},
             {OVERWRITE_FILE_TITLE, "Overwrite?"},
             {OVERWRITE_FILE_TEXT, "The file %s already exists. Overwrite?"},
