@@ -36,7 +36,6 @@ public final class Icons {
 
     public interface Size16 {
         ImageIcon DOCUMENT_OPEN = createMultiResIcon("document-open.svg", SMALL_BASE_SIZE);
-        ImageIcon DOCUMENT_SAVE = createMultiResIcon("document-save.svg", SMALL_BASE_SIZE);
     }
 
     private static ImageIcon createMultiResIcon(String svgResourceName, int baseSize) {

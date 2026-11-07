@@ -92,7 +92,6 @@ class MainPanel extends JPanel {
         toolBar.setFloatable(false);
         toolBar.add(Box.createHorizontalGlue());
         toolBar.add(actions.getDocOpenAction2());
-        toolBar.add(actions.getDocSaveAction2());
         return toolBar;
     }
 
