@@ -1,7 +1,7 @@
 PdfJumbler
 ==========
 
-PdfJumbler simple tool to rearrange, merge, delete, and rotate pages from PDF files. 
+A simple tool to rearrange, merge, delete, and rotate pages from PDF files. 
 
 Releases
 --------
